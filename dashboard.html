@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BillBliss</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <!-- Navigation Menu -->
+  <nav>
+    <ul id="navigationList">
+      <li><a href="#info">Informations</a></li>
+      <li><a href="#bills">Bills</a></li>
+      <li><a href="#summary">Summary</a></li>
+    </ul>
+    <div id="progress-bar"></div>
+    <div id="progress-bar-back"></div>
+  </nav>
+
+  <!-- Project information Pge -->
+  <section id="page-container" onscroll='document.getElementById("progress-bar").style.marginLeft = document.getElementById("page-container").scrollLeft/3+"px"'>
+    <div id="info-page" class="grid-pages">
+      <div id="info" class="linktarget"></div>
+      <h2>Informations</h2>
+      <div id="projectinfo">
+        Project name: <div id="projectName"></div> <br/>
+        Contact email: <div id="contactEmail"></div> <br/>
+        Default currency: <div id="currency"></div> <br/>
+      </div>
+      <div id="members">
+        <h2>Members</h2>
+        <div id="membersList"></div>
+      </div>
+
+    </div>
+    <!-- Bills Page -->
+    <div id="bills-page" class="grid-pages">
+      <div id="bills" class="linktarget"></div>
+      <h1>Bills</h1>
+    	<div id="bills_list">
+    		<!-- Add bill entry form here -->
+    		<!-- Display list of bills here -->
+    	</div>
+      <!--
+      <div id="billFooter">
+        <div id="addBill" onclick="addBill()">+</div>
+      </div>
+      -->
+    </div>
+
+    <!-- Current State Page -->
+    <div id="summary-page" class="grid-pages">
+      <div id="summary" class="linktarget"></div>
+      <h1>Summary</h1>
+      <!-- Display current state information here -->
+    </div>
+  </section>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

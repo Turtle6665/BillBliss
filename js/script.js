@@ -26,7 +26,7 @@ function authenticateToIHateMoney(projectId, privateCode) {
     // You can use the fetch API or any other method to send a POST request
     // Replace 'YOUR_API_URL' with the actual API endpoint
     const apiUrl = mainApiUrl + projectId;
-    
+
     // Define headers for basic authentication
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(projectId + ':' + privateCode));
@@ -77,7 +77,7 @@ function getMemberNameById(memberId) {
 function fetchinfo(projectId, privateCode) {
 	// Define the API URL for fetching info
 	const apiUrl = mainApiUrl + projectId + '/bills';
-	
+
 	// Define headers for basic authentication
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(projectId + ':' + privateCode));

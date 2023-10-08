@@ -1,0 +1,199 @@
+:root {
+  --couleur1: #adb6f4;
+  --couleur2: #bdc4e6;
+  --couleur3: #ced2d7;
+  --couleur4: #dfdfc5;
+  --couleur5: #f1ecb1;
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+.hidden{
+  display: none;
+  visibility: hidden;
+}
+
+/*---------
+Main layout
+---------*/
+body{
+  display: flex;
+  flex-flow: column;
+  height:100vh;
+  width: 100vw;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/*---------
+Navigation Menu
+---------*/
+#navigationList{
+  display:flex;
+}
+
+#navigationList > li{
+  list-style: none;
+  width:100%;
+  text-align:center;
+}
+
+#navigationList a{
+  text-decoration: none;
+  width:100%;
+  height:100%;
+  display:block;
+  padding: 0.2em 0;
+  color: black;
+}
+
+#progress-bar {
+  height: 2em;
+  top: -0.4em;
+  width: calc(100% / 3);
+  background-color: var(--couleur1);
+  border-radius:0.4em;
+  z-index:-1;
+  left: 0;
+  position: absolute;
+  box-shadow:0px 0px 5px 2px grey;
+}
+#progress-bar-back{
+  height: 2em;
+  top: -0.4em;
+  width: 100%;
+  background-color: var(--couleur5);
+  left: 0;
+  animation: marginLeft 0.3s;
+  position: absolute;
+  z-index:-2;
+  border-radius:0.4em;
+  box-shadow:0px 0px 5px 2px grey;
+}
+
+
+/*---------
+Pages layout
+---------*/
+#page-container{
+  flex: 1 1 auto;
+  display:grid;
+  scroll-snap-type: x mandatory;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  grid-template-columns: 100vw 100vw 100vw;
+}
+
+.linktarget{
+  height: 0.8em;
+}
+
+.grid-pages{
+  scroll-snap-align:center;
+  overflow-y: scroll;
+  width: 100vw;
+  text-align: center;
+  position: relative;
+  z-index:-10;
+}
+
+
+/*---------
+Information page
+---------*/
+#info-page > div:not(.linktarget){
+  margin: 1em auto;
+}
+
+#projectinfo > div{
+  width: 80%;
+  display: inline;
+  margin: 0.2em 0;
+}
+
+#membersList > div{
+  border-radius: 0.4em;
+  background-color: var(--couleur5);
+  border-style: 1px solid var(--couleur5);
+  box-shadow:0px 0px 5px 2px grey;
+  padding:0.4em;
+  margin: 0.4em;
+  width: auto;
+  display: inline-block;
+}
+
+/*---------
+Bills page
+----------*/
+
+/*list of bills*/
+#bills-page{
+  background-color: var(--couleur3);
+}
+
+#billsList{
+  height: 100%;
+  overflow:scroll;
+}
+
+#bills-page>*{
+  background-color: #fff;
+}
+
+.billPayer, .billWhat{
+  float:left;
+  width:70%;
+  text-align: left;
+  padding-left: 0.5em;
+}
+
+.billDate, .billAmount{
+  float:right;
+  width:29%;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.billPayer, .billDate{
+  font-size: 0.8em;
+  padding-top:0.2em;
+}
+
+#bills-page>h1{
+  border-bottom: 2px solid var(--couleur3);
+}
+
+.billdiv{
+  overflow: auto;
+  border-bottom: 2px solid var(--couleur3);
+  background-color: #fff;
+  padding: 0.3em 0;
+}
+
+/*Bill footer*/
+#billFooter{
+  position:absolute;
+  bottom: 0;
+  left:0;
+  width:100%;
+}
+#addBill{
+  position:absolute;
+  bottom: 0.5em;
+  left:calc(50vw - 1.2em/2);
+  border-radius: 1.2em;
+  font-size:2.5em;
+  box-shadow:0px 0px 5px 2px grey;
+  font-style: var(couleur5);
+  width: 1.2em;
+  height:1.2em;
+  padding:0;
+  margin: 0 auto;
+  cursor: pointer;
+}
