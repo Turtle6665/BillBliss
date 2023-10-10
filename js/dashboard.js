@@ -105,7 +105,13 @@ function updateBills(){
   });
 }
 
-//update the informations of the project
+//get the settelment
+function updateSummary(){
+
+}
+
+
+//edit the informations of the project
 function editMember(MemberID){
   console.log(MemberID)
 }
