@@ -1,4 +1,7 @@
 
+// JS for the layout
+
+
 
 const URLQueryParams = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
@@ -114,9 +117,37 @@ function editBill(BillID){
   console.log(BillID)
 }
 
-function addBill(){
-  console.log("New Bill")
+let lastwho = ""
+function addBill(what = "", much=""){
+  document.getElementById("newBillPage").classList.remove("hidden");
+  document.getElementById("bill-when").value=new Date().toISOString().split('T')[0]
+  document.getElementById("bill-what").value=what
+  document.getElementById("bill-much").value=much
 
+  const who = document.getElementById("bill-who");
+  who.innerHTML="";
+  const forWhom = document.getElementById("bill-forWhom");
+  forWhom.innerHTML = "";
+  info.members.forEach(member =>{
+    //adding all member to who
+    const memberSelect = document.createElement("option");
+    Object.assign(memberSelect,{"textContent":memberNames[member.id], "value": member.id, "id":"who~"+member.id});
+    who.appendChild(memberSelect);
+    //adding all member to whom
+    const memberInput = document.createElement("input");
+    Object.assign(memberInput,{"type":"checkbox","id":"whom~"+member.id, "name":"whom~"+member.id, "checked":true});
+    forWhom.appendChild(memberInput);
+    const memberLabel = document.createElement("label");
+    Object.assign(memberLabel,{"htmlFor":"whom~"+member.id, "textContent":memberNames[member.id]});
+    forWhom.appendChild(memberLabel);
+  });
+  who.value=lastwho //select same as last for who payed the bill
+}
+
+function pushBill(addNew = false){
+  document.getElementById('newBillPage').classList.add('hidden')
+  lastwho = 1
+  if(addNew){addBill()}
 }
 
 //the main run for all

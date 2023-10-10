@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BillBliss</title>
   <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="manifest" href="./manifest.json"/>
 </head>
 <body>
   <!-- Navigation Menu -->
@@ -36,17 +37,18 @@
     </div>
     <!-- Bills Page -->
     <div id="bills-page" class="grid-pages">
-      <div id="bills" class="linktarget"></div>
-      <h1>Bills</h1>
-    	<div id="bills_list">
-    		<!-- Add bill entry form here -->
-    		<!-- Display list of bills here -->
-    	</div>
-      <!--
+      <div id="billMain">
+        <div id="bills" class="linktarget"></div>
+        <h1>Bills</h1>
+        <div id="bills_list">
+          <!-- Add bill entry form here -->
+          <!-- Display list of bills here -->
+        </div>
+        <div id="bills_endSpacer"></div>
+      </div>
       <div id="billFooter">
         <div id="addBill" onclick="addBill()">+</div>
       </div>
-      -->
     </div>
 
     <!-- Current State Page -->
@@ -55,6 +57,22 @@
       <h1>Summary</h1>
       <!-- Display current state information here -->
     </div>
+  </section>
+
+  <section id="newBillPage" class="hidden">
+    <h1>New bill</h1>
+    <label for="bill-when">When</label><input id="bill-when" type="date" name="bill-when" value=""> <br/>
+    <label for="bill-what">What</label><input id="bill-what" type="text" name="bill-what" value=""> <br/>
+    <label for="bill-much">How much?</label><input id="bill-much" type="text" name="bill-much" value=""> <br/>
+    <label for="bill-who">Who paid</label><select id="bill-who" class="" name="bill-who"></select> <br/>
+    For whom?
+    <div id="bill-forWhom">
+      <input type="checkbox" id="3RT2" name="3RT2"/><label for="3RT2">Scales</label>
+    </div>
+    <!--Currency-->
+    <button type="button" name="Submit" onclick="pushBill()">Submit</button>
+    <button type="button" name="Submit" onclick="pushBill(true)">Submit and add a new one</button>
+
   </section>
 
   <script src="js/dashboard.js"></script>
