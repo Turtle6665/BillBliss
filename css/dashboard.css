@@ -28,6 +28,7 @@ body{
   height:100vh;
   width: 100vw;
   font-family: Arial, Helvetica, sans-serif;
+  overflow:hidden;
 }
 
 
@@ -143,7 +144,7 @@ Bills page
 
 #billMain{
   height: 100%;
-  overflow:scroll;
+  overflow:auto;
   background-color: var(--couleur3);
 }
 
@@ -179,6 +180,7 @@ Bills page
   border-bottom: 2px solid var(--couleur3);
   background-color: #fff;
   padding: 0.3em 0;
+  cursor: pointer;
 }
 
 #bills_endSpacer{

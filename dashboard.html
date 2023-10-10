@@ -60,19 +60,22 @@
   </section>
 
   <section id="newBillPage" class="hidden">
-    <h1>New bill</h1>
-    <label for="bill-when">When</label><input id="bill-when" type="date" name="bill-when" value=""> <br/>
+    <h1 class="newBill">New bill</h1>
+    <h1 class="editBill hidden">Edit bill</h1>
+    <label for="bill-when">When</label><input id="bill-when" type="date" name="bill-date" value=""> <br/>
     <label for="bill-what">What</label><input id="bill-what" type="text" name="bill-what" value=""> <br/>
-    <label for="bill-much">How much?</label><input id="bill-much" type="text" name="bill-much" value=""> <br/>
-    <label for="bill-who">Who paid</label><select id="bill-who" class="" name="bill-who"></select> <br/>
+    <label for="bill-much">How much?</label><input id="bill-much" type="text" name="bill-amount" value=""> <br/>
+    <label for="bill-who">Who paid</label><select id="bill-who" class="" name="bill-payer"></select> <br/>
     For whom?
     <div id="bill-forWhom">
       <input type="checkbox" id="3RT2" name="3RT2"/><label for="3RT2">Scales</label>
     </div>
     <!--Currency-->
-    <button type="button" name="Submit" onclick="pushBill()">Submit</button>
-    <button type="button" name="Submit" onclick="pushBill(true)">Submit and add a new one</button>
-
+    <button type="button" name="Submit" onclick="pushBill()" class="newBill">Submit</button>
+    <button type="button" name="SubmitAndNew" onclick="pushBill(true)" class="newBill">Submit and add a new one</button>
+    <button id="btn-UpdateBill" type="button" name="UpdateBill" onclick="" class="editBill hidden">Submit</button>
+    <button id="btn-RemoveBill" type="button" name="RemoveBill" onclick="" class="editBill hidden">Delete</button>
+    <button type="button" name="CancelBill" onclick="document.getElementById('newBillPage').classList.add('hidden')" class="editBill hidden">Cancel</button>
   </section>
 
   <script src="js/dashboard.js"></script>
