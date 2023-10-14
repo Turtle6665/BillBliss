@@ -87,7 +87,7 @@ function updateBills(){
         Object.assign(name, {"textContent":bill.what, "classList":"billWhat"});
         billdiv.appendChild(name);
         const price = document.createElement("div");
-        Object.assign(price, {"textContent":`${bill.amount} ${bill.original_currency}`, "classList":"billAmount"});
+        Object.assign(price, {"textContent":amountToText(bill.amount, bill.original_currency), "classList":"billAmount"});
         billdiv.appendChild(price);
         const payer = document.createElement("div");
         Object.assign(payer, {"textContent":"payed by ", "classList":"billPayer"});
@@ -107,8 +107,51 @@ function updateBills(){
 }
 
 //get the settlement
+let stats = null
 function updateSummary(){
+  return fetch(apiUrl+"/statistics", {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(response => {
+      if (response.status === 200) {
+          return response.json(); // Parse the response JSON
+      } else {
+          throw new Error('Failed to fetch statistics. Please check your credentials.');
+      }
+  })
+  .then(stat => {
+    stat = stat.sort((a,b)=>{return a.member.name > b.member.name});
+    stats = stat
+    //balanceByID = stats.reduce((one,nex)=>{one[nex.member.id] = nex.balance; return one}, {});
+    maxBalance = stats.reduce((one,nex)=>{return Math.max(Math.abs(one),Math.abs(nex.balance))}, 0);
+    const BalanceTree = document.getElementById("balance_tree")
+    stat.forEach(member => {
+      const memberBranch = document.createElement("div")
+      const memberName = document.createElement("div")
+      const memberLeaf = document.createElement("div")
+      const memberLeafContained = document.createElement("div")
+      const Leafwidth = Math.abs(member.balance / maxBalance)*50
+      const leafMargin = member.balance >=0? 0 : 50 - Leafwidth
+      Object.assign(memberName, {"textContent": member.member.name, "classList":"memberName"})
+      Object.assign(memberLeaf, {"classList":"memberLeaf", "style":`width : ${Leafwidth}%; margin-left: ${leafMargin}%`})
+      Object.assign(memberLeafContained, {"textContent": amountToText(member.balance, info.default_currency), "classList" : "memberLeafContained"})
+      memberLeaf.appendChild(memberLeafContained);
+      if(member.balance >= 0){
+        Object.assign(memberBranch, {"classList":"memberBranch positiveMB"})
+        memberBranch.appendChild(memberName);
+        memberBranch.appendChild(memberLeaf);
+      }else{
+        Object.assign(memberBranch, {"classList":"memberBranch NegativeMB"})
+        memberBranch.appendChild(memberLeaf);
+        memberBranch.appendChild(memberName);
+      };
+      BalanceTree.appendChild(memberBranch)
+    });
 
+  })
 }
 
 
@@ -117,6 +160,8 @@ function editMember(MemberID){
   console.log(MemberID);
 };
 
+
+//edit the bills
 function editBill(BillID){
   //console.log(BillID);
   const bill = allbills.filter(bill => {return bill.id===BillID})[0]; //select the bill
@@ -126,9 +171,12 @@ function editBill(BillID){
 
 };
 
-let lastwho = "";
+let lastwho = ""; //a variable that stores the last person used as the payer
+
+// show the pannel to add a new bill/edit an old one
 function addBill(edit=false,BillID="",what = "", much="", date="",who="",whom="",currency="",external_link=""){
   document.getElementById("newBillPage").classList.remove("hidden");
+  document.getElementById("bill-when").focus()
   document.getElementById("bill-when").value= (date=="")? new Date().toISOString().split('T')[0] : date //select the provided date and if no, the current date
   document.getElementById("bill-what").value=what
   document.getElementById("bill-much").value=much
@@ -137,18 +185,24 @@ function addBill(edit=false,BillID="",what = "", much="", date="",who="",whom=""
   who_input.innerHTML="";
   const forWhom = document.getElementById("bill-forWhom");
   forWhom.innerHTML = "";
-  info.members.forEach(member =>{
+  info.members.sort(
+    (a,b)=>{return a.name > b.name}
+  ).forEach(member =>{
     //adding all member to who
     const memberSelect = document.createElement("option");
     Object.assign(memberSelect,{"textContent":memberNames[member.id], "value": member.id, "id":"who~"+member.id});
     who_input.appendChild(memberSelect);
     //adding all member to whom
+    const memberDiv   = document.createElement("div");
+    memberDiv.onclick = function(){SelectforWhom(member.id)}
+    forWhom.appendChild(memberDiv);
     const memberInput = document.createElement("input");
     Object.assign(memberInput,{"type":"checkbox","id":"whom~"+member.id, "name":"whom~"+member.id, "checked":true});
-    forWhom.appendChild(memberInput);
+    memberInput.onclick = function(){SelectforWhom(member.id)}
+    memberDiv.appendChild(memberInput);
     const memberLabel = document.createElement("label");
     Object.assign(memberLabel,{"htmlFor":"whom~"+member.id, "textContent":memberNames[member.id]});
-    forWhom.appendChild(memberLabel);
+    memberDiv.appendChild(memberLabel);
   });
   who_input.value=(who=="")? lastwho:who //select same as last for who payed the bill or the who if provided
   if(whom!=""){
@@ -159,21 +213,36 @@ function addBill(edit=false,BillID="",what = "", much="", date="",who="",whom=""
   if(edit){
     [...document.getElementsByClassName("editBill")].forEach(buttons => {buttons.classList.remove("hidden")});
     [...document.getElementsByClassName("newBill")].forEach(buttons => {buttons.classList.add("hidden")});
-    document.getElementById("btn-UpdateBill").onclick=function(){updateBill(BillID)};
+    document.getElementById("btn-UpdateBill").onclick=function(){pushEditedBill(BillID)};
     document.getElementById("btn-RemoveBill").onclick=function(){removeBill(BillID)};
   }else{
     [...document.getElementsByClassName("editBill")].forEach(buttons => {buttons.classList.add("hidden")});
     [...document.getElementsByClassName("newBill")].forEach(buttons => {buttons.classList.remove("hidden")});
   }
-
 }
 
+//make the button SelectAll and SelectNone
+function SelectforWhom(SelectAll){
+  //SelectAll [id/bool] : if id, invert the one, if true, all selected, if false, none selected
+  if(typeof SelectAll == "boolean"){
+    [...document.getElementById("bill-forWhom").getElementsByTagName("input")].forEach(memberCheck=>{
+      memberCheck.checked = SelectAll;
+    });
+  }else{
+    inp = document.getElementById("whom~"+SelectAll);
+    inp.checked = !inp.checked
+  }
+}
+
+//push the bill to the server
 let lastbillID = 0
-function pushBill(addNew = false){
+function pushNewBill(addNew = false){
   const billInputData = [...document.getElementById('newBillPage').getElementsByTagName('input'),
                          ...document.getElementById('newBillPage').getElementsByTagName('select')].reduce((one,nex)=> {
                            if (nex.type==="checkbox"){
-                             one["payed_for"].push(nex.name.split("~")[1])
+                              if(nex.checked){
+                               one["payed_for"].push(nex.name.split("~")[1])
+                             }
                            }else{
                              one[nex.name.split("-")[1]] = nex.value;
                            }
@@ -188,19 +257,107 @@ function pushBill(addNew = false){
     },
     body : JSON.stringify(billInputData)
   }).then(response => {
-      console.log(response)
+      //console.log(response)
       if (response.status === 201) {
           return response.json(); // Parse the response JSON
-      } else {
+      }else if(response.status === 400){
+
+        throw new Error('Failed to Update bills. Please check your input values.')
+      }else {
           throw new Error('Failed to fetch bills. Please check your credentials.');
       }
   }).then(data =>{
-    lastbillID = data
-    lastwho = billInputData["payer"]
-    document.getElementById('newBillPage').classList.add('hidden')
+    lastbillID = data;
+    lastwho = billInputData["payer"];
+    updateBills();
+    updateSummary();
+    document.getElementById('newBillPage').classList.add('hidden');
     if(addNew){addBill()}
   })
 }
 
+//push the edits made for a bill
+function pushEditedBill(billID){
+  const billInputData = [...document.getElementById('newBillPage').getElementsByTagName('input'),
+                         ...document.getElementById('newBillPage').getElementsByTagName('select')].reduce((one,nex)=> {
+                           if (nex.type==="checkbox"){
+                              if(nex.checked){
+                               one["payed_for"].push(nex.name.split("~")[1])
+                             }
+                           }else{
+                             one[nex.name.split("-")[1]] = nex.value;
+                           }
+                           return one;
+                         },{"payed_for":[]})
+  return fetch(apiUrl+"/bills/"+billID,{
+    method : "PUT",
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
+    body : JSON.stringify(billInputData)
+  }).then(response => {
+      //console.log(response)
+      if (response.status === 200) {
+          return response.json(); // Parse the response JSON
+      }else if(response.status === 400){
+
+        throw new Error('Failed to Update bills. Please check your input values.')
+      }else {
+        throw new Error('Failed to Update bills. Please check your credentials.');
+      }
+  }).then(data =>{
+    lastbillID = data;
+    lastwho = billInputData["payer"];
+    updateBills();
+    document.getElementById('newBillPage').classList.add('hidden');
+  })
+}
+
+function removeBill(billID){
+  return fetch(apiUrl+"/bills/"+billID,{
+    method : "DELETE",
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  }).then(response => {
+      //console.log(response)
+      if (response.status === 200) {
+          return response.json(); // Parse the response JSON
+      }else {
+          throw new Error('Failed to Update bills. Please check your credentials.');
+      }
+  }).then(data =>{
+    updateBills();
+    document.getElementById('newBillPage').classList.add('hidden');
+  })
+}
+
+
+//function to render amoney
+function amountToText(amount, currency){
+  function round(v) { //to properly round negative value + round to 10E-4
+    v = v*10000
+    return (v >= 0 || -1) * Math.round(Math.abs(v))/10000;
+  }
+  amount = round(amount)
+  if (currency == "EUR") {
+    currency = "€"
+  }else if (currency == "XXX"){
+    return `${amount}`
+  }
+  return `${amount} ${currency}`
+}
+
+
+//the function to update all the page
+function updateAll(){
+  updateInfo().then(t =>{
+    updateBills();
+    updateSummary();
+  })
+}
+
+
 //the main run for all
-updateInfo().then(updateBills())
+updateAll()

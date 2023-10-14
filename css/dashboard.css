@@ -4,6 +4,8 @@
   --couleur3: #ced2d7;
   --couleur4: #dfdfc5;
   --couleur5: #f1ecb1;
+  --couleurVert : #adfc2e;
+  --couleurRouge: #ff5e47;
 }
 
 
@@ -214,6 +216,55 @@ Bills page
   background-color: var(--couleur1);
 }
 
+/*---------
+Summary Page
+---------*/
+.memberBranch{
+  padding:  0.2em 0.5em;
+  border-bottom: 1px solid var(--couleur3);
+  text-align: left;
+}
+
+.memberName{
+  width: 50%;
+  display: inline-block;
+  padding: 0 0.3em;
+}
+
+.memberLeaf{
+  overflow-y: visible;
+  width: 50%;
+  display: inline-block;
+  padding-block: min(0.3em,50%) min(0.3em,50%);
+}
+
+.positiveMB .memberName, .NegativeMB .memberLeaf{
+  text-align: right;
+}
+.positiveMB .memberLeaf{
+  background-color: var(--couleurVert);
+  border-radius: 0 0.3em 0.3em 0;
+}
+
+.NegativeMB .memberName, .positiveMB .memberLeaf{
+  text-align: left;
+}
+.NegativeMB .memberLeaf{
+  background-color: var(--couleurRouge);
+  border-radius: 0.3em 0 0 0.3em ;
+  direction: rtl;
+}
+
+.NegativeMB .memberLeafContained{
+  direction: ltr;
+  width: 50vh;
+}
+
+
+/*---------
+Aadd Bill page
+----------*/
+
 label, input, select{
   cursor: pointer;
 }
@@ -227,4 +278,50 @@ label, input, select{
   z-index:10;
   background-color:#fff;
   text-align:center;
+  padding: 1em;
+  overflow-y: auto;
+}
+
+#newBillPage > label{
+  display: inline-block;
+  width: 40%;
+  padding: 0.3em 0;
+}
+
+#newBillPage > input, #newBillPage > select{
+  width: 60%;
+  padding: 0.25em 0.2em;
+  margin: 0.2em 0;
+}
+
+#forWhomTitle{
+  padding: 0.3em 0;
+}
+
+#bill-forWhom{
+  padding: 0 0.2em;
+}
+
+#bill-forWhom > div{
+  display: inline-block;
+  min-width: calc(50% - 0.1em);
+  text-align: left;
+  padding: 0.3em;
+  border: 1px solid var(--couleur3);
+  border-radius: 0.3em;
+  margin: 0.05em;
+  cursor: pointer;
+}
+#bill-forWhom > div:hover{
+  background-color: var(--couleur2)
+}
+
+#bill-forWhom > div > label{
+  margin: 0.3em;
+}
+
+#newBillPage button{
+  padding: 0.3em;
+  border-radius: 0.3em;
+  margin: 0.1em;
 }
