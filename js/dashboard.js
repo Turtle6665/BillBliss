@@ -45,7 +45,7 @@ function updateInfo(){
     membersList.innerHTML = '';
     data.members.forEach(member => {
        const memberDiv = document.createElement('div');
-       Object.assign(memberDiv, {"textContent":member.name,"id":member.id,  "onclick":function() {editMember(member.id)}, "style":"cursor: pointer;"})
+       Object.assign(memberDiv, {"textContent":member.name,"id":member.id, "onclick":function() {editMember(member.id)}, "style":"cursor: pointer;"})
        let img_edit = document.createElement('img');
        Object.assign(img_edit, {"src":"pen.svg", "style":"height:0.8em; display:inline-block; margin:auto auto;"})
        memberDiv.appendChild(img_edit);
@@ -127,6 +127,7 @@ function updateSummary(){
     stats = stat
     //balanceByID = stats.reduce((one,nex)=>{one[nex.member.id] = nex.balance; return one}, {});
     maxBalance = stats.reduce((one,nex)=>{return Math.max(Math.abs(one),Math.abs(nex.balance))}, 0);
+    maxBalance = maxBalance<0.01? 0.01 : maxBalance;
     const BalanceTree = document.getElementById("balance_tree")
     stat.forEach(member => {
       const memberBranch = document.createElement("div")
@@ -149,6 +150,26 @@ function updateSummary(){
         memberBranch.appendChild(memberName);
       };
       BalanceTree.appendChild(memberBranch)
+
+      //add the settlements
+      balances = info.members.reduce((a,b)=>{a.push([b.id, b.balance]); return a},[])
+      //balances = balances.sort((a,b)=> b[0]-a[0]);
+      const settlements = settle(balances)
+      const settlementslist = document.getElementById("settlements_list");
+      settlementslist.innerHTML = "";
+      settlements.forEach(transfer => {
+        const settlementdiv = document.createElement("div");
+        Object.assign(settlementdiv, {"classList":"settlementdiv"});
+        const settlementNames = document.createElement("div");
+        Object.assign(settlementNames, {"classList":"settlementNames", "textContent":`${memberNames[transfer[0]]} pays ${memberNames[transfer[2]]}`});
+        const settlementAmount = document.createElement("div");
+        Object.assign(settlementAmount, {"classList":"settlementAmount", "textContent":amountToText(transfer[1], info.default_currency)});
+
+        settlementdiv.appendChild(settlementNames);
+        settlementdiv.appendChild(settlementAmount);
+        settlementslist.appendChild(settlementdiv);
+      });
+
     });
 
   })
@@ -201,6 +222,7 @@ function addBill(edit=false,BillID="",what = "", much="", date="",who="",whom=""
     memberInput.onclick = function(){SelectforWhom(member.id)}
     memberDiv.appendChild(memberInput);
     const memberLabel = document.createElement("label");
+    memberLabel.onclick = function(){SelectforWhom(member.id)}
     Object.assign(memberLabel,{"htmlFor":"whom~"+member.id, "textContent":memberNames[member.id]});
     memberDiv.appendChild(memberLabel);
   });
@@ -336,11 +358,11 @@ function removeBill(billID){
 
 //function to render amoney
 function amountToText(amount, currency){
-  function round(v) { //to properly round negative value + round to 10E-4
-    v = v*10000
-    return (v >= 0 || -1) * Math.round(Math.abs(v))/10000;
+  function round(v) { //to properly round negative value + round to 10E-2
+    v = v*100
+    return (v >= 0 || -1) * Math.round(Math.abs(v))/100;
   }
-  amount = round(amount)
+  amount = round(amount).toFixed(2)
   if (currency == "EUR") {
     currency = "€"
   }else if (currency == "XXX"){
@@ -357,6 +379,21 @@ function updateAll(){
     updateSummary();
   })
 }
+
+// Example usage:
+let balances = [
+    ['A', 100],
+    ['B', -50],
+    ['C', -20],
+    ['D',  10],
+    ['E', -40]
+];
+
+//import settle from 'deptSettle.js';
+
+const results = settle(balances);
+console.log(results);
+
 
 
 //the main run for all

@@ -260,6 +260,9 @@ Summary Page
   width: 50vh;
 }
 
+.memberLeafContained{
+  padding: 0 0.3em;
+}
 
 /*---------
 Aadd Bill page
@@ -324,4 +327,8 @@ label, input, select{
   padding: 0.3em;
   border-radius: 0.3em;
   margin: 0.1em;
+}
+
+.settlementdiv{
+  border-bottom: 1px solid var(--couleur3);
 }

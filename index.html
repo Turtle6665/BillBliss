@@ -7,45 +7,51 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Navigation Menu -->
-    <nav>
-        <ul>
-            <li><a href="#login">Login</a></li>
-            <li><a href="#bills">Bills</a></li>
-            <li><a href="#current-state">Current State</a></li>
-        </ul>
-    </nav>
+    The webpage uses the ihatemoney.org api to access there projects. No data is stored in our pages.
+    <br/>
+    Go to <a href="./dashboard.html?project=demo&token=WyJkZW1vIl0.GGWpACJMuleIMJj9HxbUrEDSSAc"> the demo page</a>.
+    <br/>
+    <div style="display: none; visibility: hidden;">
+      <!-- Navigation Menu -->
+      <nav>
+          <ul>
+              <li><a href="#login">Login</a></li>
+              <li><a href="#bills">Bills</a></li>
+              <li><a href="#current-state">Current State</a></li>
+          </ul>
+      </nav>
 
-    <!-- Login Page -->
-    <section id="login">
-        <h1>Login</h1>
-		<form id="auth-form">
-			<label for="project-id">Project ID:</label>
-			<input type="text" id="project-id" name="project-id" required>
+      <!-- Login Page -->
+      <section id="login">
+          <h1>Login</h1>
+  		<form id="auth-form">
+  			<label for="project-id">Project ID:</label>
+  			<input type="text" id="project-id" name="project-id" required>
 
-			<label for="private-code">Private Code:</label>
-			<input type="password" id="private-code" name="private-code" required>
+  			<label for="private-code">Private Code:</label>
+  			<input type="password" id="private-code" name="private-code" required>
 
-			<button type="button" id="authenticate">Authenticate</button>
-		</form>
+  			<button type="button" id="authenticate">Authenticate</button>
+  		</form>
 
-    </section>
+      </section>
 
-    <!-- Bills Page -->
-    <section id="bills">
-        <h1>Bills</h1>
-		<div id="bills_list">
-			<!-- Add bill entry form here -->
-			<!-- Display list of bills here -->
-		</div>
-    </section>
+      <!-- Bills Page -->
+      <section id="bills">
+          <h1>Bills</h1>
+  		<div id="bills_list">
+  			<!-- Add bill entry form here -->
+  			<!-- Display list of bills here -->
+  		</div>
+      </section>
 
-    <!-- Current State Page -->
-    <section id="current-state">
-        <h1>Current State</h1>
-        <!-- Display current state information here -->
-    </section>
+      <!-- Current State Page -->
+      <section id="current-state">
+          <h1>Current State</h1>
+          <!-- Display current state information here -->
+      </section>
 
-    <script src="js/script.js"></script>
+      <!-- <script src="js/script.js"></script> -->
+    </div
 </body>
 </html>
