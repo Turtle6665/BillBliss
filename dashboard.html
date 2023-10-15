@@ -46,6 +46,10 @@
       </div>
       <div id="members">
         <h2>Members</h2>
+        <label id="addMemberLabel" for="addMember">New member:</label>
+        <div id="addMemberDiv">
+          <input id="addMemberInput" type="text" name="addMember" value="" placeholder="Member name"><button type="button" name="button" onclick="addMember()">+</button>
+        </div>
         <div id="membersList"></div>
       </div>
 
@@ -75,8 +79,19 @@
       </div>
       <h2>Settlement</h2>
       <div id="settlements_list">
-        
+
       </div>
+    </div>
+  </section>
+
+  <section id="editMemberPage" class="hidden">
+    <div id="editMemberDiv">
+      <h1>Edit member</h1> <br/>
+      <label id="editMemberLabel" for="addMember">Name: </label><input id="editMemberInput" type="text" name="editMember" value="" placeholder="Member name">
+
+      <br/>
+      <button type="button" name="saveEditMember" onclick="pushEditedMember()">Save</button>
+      <button type="button" name="cancelEditMember" onclick="document.getElementById('editMemberPage').classList.add('hidden')">Cancel</button>
     </div>
   </section>
 

@@ -127,8 +127,9 @@ function updateSummary(){
     stats = stat
     //balanceByID = stats.reduce((one,nex)=>{one[nex.member.id] = nex.balance; return one}, {});
     maxBalance = stats.reduce((one,nex)=>{return Math.max(Math.abs(one),Math.abs(nex.balance))}, 0);
-    maxBalance = maxBalance<0.01? 0.01 : maxBalance;
+    maxBalance = maxBalance==0? 0.01 : maxBalance;
     const BalanceTree = document.getElementById("balance_tree")
+    BalanceTree.innerHTML = "";
     stat.forEach(member => {
       const memberBranch = document.createElement("div")
       const memberName = document.createElement("div")
@@ -175,12 +176,65 @@ function updateSummary(){
   })
 }
 
+//functions about members
+function addMember(){
+  const newMemberData = {
+        "name": document.getElementById("addMemberInput").value
+    };
+  return fetch(apiUrl+ "/members", {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newMemberData)
+  }).then(response => {
+    if (response.status === 201) {
+      console.log('New member added successfully.');
+      updateInfo();
+      document.getElementById("addMemberInput").value = ""
+    } else {
+      console.error('Error adding new member:', response.status);
+    }
+  }).catch(error => {
+    console.error('Error:', error);
+  });
+}
 
-//edit the informations of the project
-function editMember(MemberID){
-  console.log(MemberID);
-};
+//function to show the edit membertab
+function editMember(memberID){
+  document.getElementById("editMemberInput").value = memberNames[memberID];
+  document.getElementById("editMemberDiv").getElementsByTagName("button")[0].onclick = function(){pushEditedMember(memberID);};
+  document.getElementById("editMemberPage").classList.remove("hidden");
+  document.getElementById("editMemberInput").focus();
 
+}
+
+function pushEditedMember(memberID){
+  const MemberInputData = {
+    "name" : document.getElementById("editMemberInput").value
+  }
+  return fetch(apiUrl+"/members/"+memberID,{
+    method : "PUT",
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
+    body : JSON.stringify(MemberInputData)
+  }).then(response =>{
+    if (response.status === 200) {
+      document.getElementById("editMemberPage").classList.add("hidden");
+      updateInfo();
+      return response.json(); // Parse the response JSON
+    }else if(response.status === 400){
+      throw new Error('Failed to Update member. Please check your input values.')
+    }else{
+      throw new Error('Failed to Update Member. Please check your credentials.')
+    }
+  }).catch(error => {
+    console.error('Error:', error);
+  });
+}
 
 //edit the bills
 function editBill(BillID){
@@ -189,7 +243,6 @@ function editBill(BillID){
   addBill(edit=true,BillID=bill.id,what = bill.what, much=bill.amount,
           date=bill.date,who=bill.payer_id,whom=bill.owers.reduce((a,b) => a.concat(b.id),[]),
           currency=bill.original_currency,external_link=bill.external_link);
-
 };
 
 let lastwho = ""; //a variable that stores the last person used as the payer
@@ -211,24 +264,28 @@ function addBill(edit=false,BillID="",what = "", much="", date="",who="",whom=""
   ).forEach(member =>{
     //adding all member to who
     const memberSelect = document.createElement("option");
-    Object.assign(memberSelect,{"textContent":memberNames[member.id], "value": member.id, "id":"who~"+member.id});
-    who_input.appendChild(memberSelect);
+    Object.assign(memberSelect,{"textContent":memberNames[member.id], "value": member.id, "id":"who~"+member.id, "disabled": !member.activated});
+    if((edit&(who == member.id))|| member.activated){
+      who_input.appendChild(memberSelect);
+    }
     //adding all member to whom
     const memberDiv   = document.createElement("div");
     memberDiv.onclick = function(){SelectforWhom(member.id)}
-    forWhom.appendChild(memberDiv);
     const memberInput = document.createElement("input");
-    Object.assign(memberInput,{"type":"checkbox","id":"whom~"+member.id, "name":"whom~"+member.id, "checked":true});
+    Object.assign(memberInput,{"type":"checkbox","id":"whom~"+member.id, "name":"whom~"+member.id, "checked":true, "disabled": !member.activated});
     memberInput.onclick = function(){SelectforWhom(member.id)}
-    memberDiv.appendChild(memberInput);
     const memberLabel = document.createElement("label");
     memberLabel.onclick = function(){SelectforWhom(member.id)}
     Object.assign(memberLabel,{"htmlFor":"whom~"+member.id, "textContent":memberNames[member.id]});
-    memberDiv.appendChild(memberLabel);
+    if((edit&whom.includes(member.id))|| member.activated){
+      forWhom.appendChild(memberDiv);
+      memberDiv.appendChild(memberInput);
+      memberDiv.appendChild(memberLabel);
+    };
   });
   who_input.value=(who=="")? lastwho:who //select same as last for who payed the bill or the who if provided
   if(whom!=""){
-    info.members.forEach(member =>{document.getElementById("whom~"+member.id).checked=false}) //reset all checked
+    [...document.getElementById("bill-forWhom").getElementsByTagName("input")].forEach(option =>{option.checked=false}) //reset all checked
     whom.forEach(memberid => {document.getElementById("whom~"+memberid).checked=true}) //select only the required checked
   };
   // change the buttons if we edit a bill rather than creating a new one
@@ -248,11 +305,15 @@ function SelectforWhom(SelectAll){
   //SelectAll [id/bool] : if id, invert the one, if true, all selected, if false, none selected
   if(typeof SelectAll == "boolean"){
     [...document.getElementById("bill-forWhom").getElementsByTagName("input")].forEach(memberCheck=>{
-      memberCheck.checked = SelectAll;
+      if(!memberCheck.disabled){
+        memberCheck.checked = SelectAll;
+      }
     });
   }else{
-    inp = document.getElementById("whom~"+SelectAll);
-    inp.checked = !inp.checked
+    let inp = document.getElementById("whom~"+SelectAll);
+    if(!inp.disabled){
+      inp.checked = !inp.checked;
+    }
   }
 }
 
@@ -262,7 +323,7 @@ function pushNewBill(addNew = false){
   const billInputData = [...document.getElementById('newBillPage').getElementsByTagName('input'),
                          ...document.getElementById('newBillPage').getElementsByTagName('select')].reduce((one,nex)=> {
                            if (nex.type==="checkbox"){
-                              if(nex.checked){
+                              if(nex.checked & !nex.disabled){
                                one["payed_for"].push(nex.name.split("~")[1])
                              }
                            }else{
@@ -303,7 +364,7 @@ function pushEditedBill(billID){
   const billInputData = [...document.getElementById('newBillPage').getElementsByTagName('input'),
                          ...document.getElementById('newBillPage').getElementsByTagName('select')].reduce((one,nex)=> {
                            if (nex.type==="checkbox"){
-                              if(nex.checked){
+                              if(nex.checked){ // & !nex.disabled
                                one["payed_for"].push(nex.name.split("~")[1])
                              }
                            }else{
@@ -323,7 +384,6 @@ function pushEditedBill(billID){
       if (response.status === 200) {
           return response.json(); // Parse the response JSON
       }else if(response.status === 400){
-
         throw new Error('Failed to Update bills. Please check your input values.')
       }else {
         throw new Error('Failed to Update bills. Please check your credentials.');
@@ -332,6 +392,7 @@ function pushEditedBill(billID){
     lastbillID = data;
     lastwho = billInputData["payer"];
     updateBills();
+    updateSummary();
     document.getElementById('newBillPage').classList.add('hidden');
   })
 }
@@ -351,6 +412,7 @@ function removeBill(billID){
       }
   }).then(data =>{
     updateBills();
+    updateSummary();
     document.getElementById('newBillPage').classList.add('hidden');
   })
 }

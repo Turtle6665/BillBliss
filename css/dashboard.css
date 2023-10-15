@@ -120,15 +120,73 @@ Information page
   margin: 0.2em 0;
 }
 
+#addMemberDiv{
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+#addMemberDiv > input, #addMemberDiv > button{
+  display: inline-block;
+  padding:0.3em;
+  margin : 0;
+  height: 2.3em;
+}
+
+#addMemberDiv > input{
+  border-radius: 0.3em 0 0 0.3em;
+}
+#addMemberDiv > button{
+  border-radius: 0 0.3em 0.3em 0;
+  width: 2.3em;
+}
+
+
 #membersList > div{
-  border-radius: 0.4em;
+  border-radius: 0.5em;
   background-color: var(--couleur5);
   border-style: 1px solid var(--couleur5);
   box-shadow:0px 0px 5px 2px grey;
-  padding:0.4em;
+  padding:0.5em;
   margin: 0.4em;
   width: auto;
   display: inline-block;
+}
+
+/*---------------
+Editi member page
+---------------*/
+#editMemberPage{
+  z-index: 10;
+  height: 100vh;
+  width: 100vw;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: auto auto;
+  background-color: rgba(200, 200, 200, 0.5);
+  text-align: center;
+  overflow-y: auto;
+}
+
+#editMemberDiv{
+  display: inline-block;
+  border-radius: 0.5em;
+  padding: 1em;
+  margin: 2em;
+  background-color: #fff;
+  box-shadow:0px 0px 5px 2px grey;
+}
+
+#editMemberDiv>input{
+  padding: 0.3em;
+  border-radius: 0.3em;
+}
+
+#editMemberDiv>button{
+  padding: 0.3em;
+  border-radius: 0.3em;
+  margin: 0.7em 0.1em 0 0.1em;
 }
 
 /*---------
@@ -136,9 +194,6 @@ Bills page
 ----------*/
 
 /*list of bills*/
-#bills-page{
-
-}
 
 #billsList{
   height: 100%;
