@@ -13,9 +13,11 @@ let token = URLQueryParams.token;
 const apiUrl = 'https://ihatemoney.org/api/projects/'+projectID;
 
 //Get the informations of the project
-let info=null
-let memberIDs = {}
-let memberNames = {}
+let info=null;
+let memberIDs = {};
+let memberNames = {};
+let memberTrueActivated = {}; //members are "TrueActivated" if they are truly activated (= referenced as is on the server)
+let memberActivated = {}; //members are "activated" if they are truly activated or deactivated but a ballance different than 0
 function updateInfo(){
   return fetch(apiUrl, {
     method: 'GET',
@@ -40,18 +42,24 @@ function updateInfo(){
 
     // Create a list of members
     const membersList = document.getElementById('membersList');
-    memberIDs = {} //Reset member list
-    memberNames = {}
+    memberIDs = {}; //Reset member list
+    memberNames = {};
+    memberTrueActivated = {};
+    memberActivated = {};
     membersList.innerHTML = '';
     data.members.forEach(member => {
-       const memberDiv = document.createElement('div');
-       Object.assign(memberDiv, {"textContent":member.name,"id":member.id, "onclick":function() {editMember(member.id)}, "style":"cursor: pointer;"})
-       let img_edit = document.createElement('img');
-       Object.assign(img_edit, {"src":"pen.svg", "style":"height:0.8em; display:inline-block; margin:auto auto;"})
-       memberDiv.appendChild(img_edit);
-       membersList.appendChild(memberDiv);
-       memberIDs[member.name] = member.id;
-       memberNames[member.id] = member.name;
+      memberIDs[member.name] = member.id;
+      memberNames[member.id] = member.name;
+      memberTrueActivated[member.id] = member.activated
+      memberActivated[member.id] = !(!member.activated&&(Math.abs(member.balance)<=0.01));
+      const memberDiv = document.createElement('div');
+      Object.assign(memberDiv, {"textContent":member.name,"id":member.id, "onclick":function() {editMember(member.id)}, "style":"cursor: pointer;"})
+      let img_edit = document.createElement('img');
+      Object.assign(img_edit, {"src":"pen.svg", "style":"height:0.8em; display:inline-block; margin:auto auto;"})
+      memberDiv.appendChild(img_edit);
+      if(memberActivated[member.id]){
+        membersList.appendChild(memberDiv);
+      };
     });
   })
   .catch(error => {
@@ -109,71 +117,55 @@ function updateBills(){
 //get the settlement
 let stats = null
 function updateSummary(){
-  return fetch(apiUrl+"/statistics", {
-    method: 'GET',
-    headers: {
-      'Authorization': 'Bearer ' + token
-    }
-  })
-  .then(response => {
-      if (response.status === 200) {
-          return response.json(); // Parse the response JSON
-      } else {
-          throw new Error('Failed to fetch statistics. Please check your credentials.');
-      }
-  })
-  .then(stat => {
-    stat = stat.sort((a,b)=>{return a.member.name > b.member.name});
-    stats = stat
-    //balanceByID = stats.reduce((one,nex)=>{one[nex.member.id] = nex.balance; return one}, {});
-    maxBalance = stats.reduce((one,nex)=>{return Math.max(Math.abs(one),Math.abs(nex.balance))}, 0);
-    maxBalance = maxBalance==0? 0.01 : maxBalance;
-    const BalanceTree = document.getElementById("balance_tree")
-    BalanceTree.innerHTML = "";
-    stat.forEach(member => {
-      const memberBranch = document.createElement("div")
-      const memberName = document.createElement("div")
-      const memberLeaf = document.createElement("div")
-      const memberLeafContained = document.createElement("div")
-      const Leafwidth = Math.abs(member.balance / maxBalance)*50
-      const leafMargin = member.balance >=0? 0 : 50 - Leafwidth
-      Object.assign(memberName, {"textContent": member.member.name, "classList":"memberName"})
-      Object.assign(memberLeaf, {"classList":"memberLeaf", "style":`width : ${Leafwidth}%; margin-left: ${leafMargin}%`})
-      Object.assign(memberLeafContained, {"textContent": amountToText(member.balance, info.default_currency), "classList" : "memberLeafContained"})
-      memberLeaf.appendChild(memberLeafContained);
-      if(member.balance >= 0){
-        Object.assign(memberBranch, {"classList":"memberBranch positiveMB"})
-        memberBranch.appendChild(memberName);
-        memberBranch.appendChild(memberLeaf);
-      }else{
-        Object.assign(memberBranch, {"classList":"memberBranch NegativeMB"})
-        memberBranch.appendChild(memberLeaf);
-        memberBranch.appendChild(memberName);
-      };
-      BalanceTree.appendChild(memberBranch)
+  balances = info.members.reduce((a,b)=>{a.push([b.id, b.balance]); return a},[])
 
-      //add the settlements
-      balances = info.members.reduce((a,b)=>{a.push([b.id, b.balance]); return a},[])
-      //balances = balances.sort((a,b)=> b[0]-a[0]);
-      const settlements = settle(balances)
-      const settlementslist = document.getElementById("settlements_list");
-      settlementslist.innerHTML = "";
-      settlements.forEach(transfer => {
-        const settlementdiv = document.createElement("div");
-        Object.assign(settlementdiv, {"classList":"settlementdiv"});
-        const settlementNames = document.createElement("div");
-        Object.assign(settlementNames, {"classList":"settlementNames", "textContent":`${memberNames[transfer[0]]} pays ${memberNames[transfer[2]]}`});
-        const settlementAmount = document.createElement("div");
-        Object.assign(settlementAmount, {"classList":"settlementAmount", "textContent":amountToText(transfer[1], info.default_currency)});
+  //add the BarPlot
+  balances_sorted = balances.sort((a,b)=>{return memberNames[a[0]] > memberNames[b[0]]});
+  balances_sorted = balances_sorted.filter(a => memberActivated[a[0]])
+  //balanceByID = stats.reduce((one,nex)=>{one[nex.member.id] = nex.balance; return one}, {});
+  maxBalance = balances_sorted.reduce((one,nex)=>{return Math.max(Math.abs(one),Math.abs(nex[1]))}, 0);
+  maxBalance = maxBalance==0? 0.01 : maxBalance;
+  const BalanceTree = document.getElementById("balance_tree")
+  BalanceTree.innerHTML = "";
+  balances_sorted.forEach(member => {
+    const memberBranch = document.createElement("div")
+    const memberName = document.createElement("div")
+    const memberLeaf = document.createElement("div")
+    const memberLeafContained = document.createElement("div")
+    const Leafwidth = Math.abs(member[1] / maxBalance)*50
+    const leafMargin = member[1] >=0? 0 : 50 - Leafwidth
+    Object.assign(memberName, {"textContent": memberNames[member[0]], "classList":"memberName"})
+    Object.assign(memberLeaf, {"classList":"memberLeaf", "style":`width : ${Leafwidth}%; margin-left: ${leafMargin}%`})
+    Object.assign(memberLeafContained, {"textContent": amountToText(member[1], info.default_currency), "classList" : "memberLeafContained"})
+    memberLeaf.appendChild(memberLeafContained);
+    if(member[1] >= 0){
+      Object.assign(memberBranch, {"classList":"memberBranch positiveMB"})
+      memberBranch.appendChild(memberName);
+      memberBranch.appendChild(memberLeaf);
+    }else{
+      Object.assign(memberBranch, {"classList":"memberBranch NegativeMB"})
+      memberBranch.appendChild(memberLeaf);
+      memberBranch.appendChild(memberName);
+    };
+    BalanceTree.appendChild(memberBranch)
+  });
 
-        settlementdiv.appendChild(settlementNames);
-        settlementdiv.appendChild(settlementAmount);
-        settlementslist.appendChild(settlementdiv);
-      });
+  //add the settlements
+  const settlements = settle(balances)
+  const settlementslist = document.getElementById("settlements_list");
+  settlementslist.innerHTML = "";
+  settlements.forEach(transfer => {
+    const settlementdiv = document.createElement("div");
+    Object.assign(settlementdiv, {"classList":"settlementdiv", "onclick":()=>{addBill({what:"payback", much:transfer[1], who:transfer[0],whom:[transfer[2]]})}});
+    const settlementNames = document.createElement("div");
+    Object.assign(settlementNames, {"classList":"settlementNames", "textContent":`${memberNames[transfer[0]]} pays ${memberNames[transfer[2]]}`});
+    const settlementAmount = document.createElement("div");
+    Object.assign(settlementAmount, {"classList":"settlementAmount", "textContent":amountToText(transfer[1], info.default_currency)});
 
-    });
-
-  })
+    settlementdiv.appendChild(settlementNames);
+    settlementdiv.appendChild(settlementAmount);
+    settlementslist.appendChild(settlementdiv);
+  });
 }
 
 //functions about members
@@ -205,14 +197,18 @@ function addMember(){
 function editMember(memberID){
   document.getElementById("editMemberInput").value = memberNames[memberID];
   document.getElementById("editMemberDiv").getElementsByTagName("button")[0].onclick = function(){pushEditedMember(memberID);};
+  document.getElementById("editMemberDiv").getElementsByTagName("button")[2].onclick = function(){removeMember(memberID);};
   document.getElementById("editMemberPage").classList.remove("hidden");
   document.getElementById("editMemberInput").focus();
-
 }
 
-function pushEditedMember(memberID){
-  const MemberInputData = {
-    "name" : document.getElementById("editMemberInput").value
+function pushEditedMember(memberID, memberActiv = "", updateall=true){
+  name = document.getElementById("editMemberInput").value
+  let MemberInputData = {
+    "name" : name==""? memberNames[memberID]:name
+  }
+  if (memberActiv !=""){
+    MemberInputData["activated"] = memberActiv
   }
   return fetch(apiUrl+"/members/"+memberID,{
     method : "PUT",
@@ -224,7 +220,7 @@ function pushEditedMember(memberID){
   }).then(response =>{
     if (response.status === 200) {
       document.getElementById("editMemberPage").classList.add("hidden");
-      updateInfo();
+      if(updateall){updateAll();}
       return response.json(); // Parse the response JSON
     }else if(response.status === 400){
       throw new Error('Failed to Update member. Please check your input values.')
@@ -234,21 +230,46 @@ function pushEditedMember(memberID){
   }).catch(error => {
     console.error('Error:', error);
   });
+};
+
+function removeMember(memberID, updateall=true){
+  //it removes if the member has no bills. It it has, the member is deactivated
+  return fetch(apiUrl+"/members/"+memberID,{
+    method : "DELETE",
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  }).then(response => {
+      //console.log(response)
+      if (response.status === 200) {
+          return response.json(); // Parse the response JSON
+      }else {
+          throw new Error('Failed to remove the member. Please check your credentials.');
+      }
+  }).then(data =>{
+    if(updateall){
+      document.getElementById("editMemberPage").classList.add("hidden");
+      updateAll();
+    }
+    //document.getElementById('newBillPage').classList.add('hidden');
+  })
 }
+
+
 
 //edit the bills
 function editBill(BillID){
   //console.log(BillID);
   const bill = allbills.filter(bill => {return bill.id===BillID})[0]; //select the bill
-  addBill(edit=true,BillID=bill.id,what = bill.what, much=bill.amount,
-          date=bill.date,who=bill.payer_id,whom=bill.owers.reduce((a,b) => a.concat(b.id),[]),
-          currency=bill.original_currency,external_link=bill.external_link);
+  addBill({edit:true,BillID:bill.id,what : bill.what, much:bill.amount,
+          date:bill.date,who:bill.payer_id,whom:bill.owers.reduce((a,b) => a.concat(b.id),[]),
+          currency:bill.original_currency,external_link:bill.external_link});
 };
 
 let lastwho = ""; //a variable that stores the last person used as the payer
 
 // show the pannel to add a new bill/edit an old one
-function addBill(edit=false,BillID="",what = "", much="", date="",who="",whom="",currency="",external_link=""){
+function addBill({edit = false, BillID = "", what = "", much = "", date = "", who = "", whom = "", currency = "", external_link = ""} = {}) {
   document.getElementById("newBillPage").classList.remove("hidden");
   document.getElementById("bill-when").focus()
   document.getElementById("bill-when").value= (date=="")? new Date().toISOString().split('T')[0] : date //select the provided date and if no, the current date
@@ -264,20 +285,20 @@ function addBill(edit=false,BillID="",what = "", much="", date="",who="",whom=""
   ).forEach(member =>{
     //adding all member to who
     const memberSelect = document.createElement("option");
-    Object.assign(memberSelect,{"textContent":memberNames[member.id], "value": member.id, "id":"who~"+member.id, "disabled": !member.activated});
-    if((edit&(who == member.id))|| member.activated){
+    Object.assign(memberSelect,{"textContent":memberNames[member.id], "value": member.id, "id":"who~"+member.id, "disabled": !memberActivated[member.id]});
+    if((edit&(who == member.id))|| memberActivated[member.id]){
       who_input.appendChild(memberSelect);
     }
     //adding all member to whom
     const memberDiv   = document.createElement("div");
     memberDiv.onclick = function(){SelectforWhom(member.id)}
     const memberInput = document.createElement("input");
-    Object.assign(memberInput,{"type":"checkbox","id":"whom~"+member.id, "name":"whom~"+member.id, "checked":true, "disabled": !member.activated});
+    Object.assign(memberInput,{"type":"checkbox","id":"whom~"+member.id, "name":"whom~"+member.id, "checked":true, "disabled": !memberActivated[member.id]});
     memberInput.onclick = function(){SelectforWhom(member.id)}
     const memberLabel = document.createElement("label");
     memberLabel.onclick = function(){SelectforWhom(member.id)}
     Object.assign(memberLabel,{"htmlFor":"whom~"+member.id, "textContent":memberNames[member.id]});
-    if((edit&whom.includes(member.id))|| member.activated){
+    if((edit&whom.includes(member.id))|| memberActivated[member.id]){
       forWhom.appendChild(memberDiv);
       memberDiv.appendChild(memberInput);
       memberDiv.appendChild(memberLabel);
@@ -320,6 +341,7 @@ function SelectforWhom(SelectAll){
 //push the bill to the server
 let lastbillID = 0
 function pushNewBill(addNew = false){
+  document.getElementById("loadingAnnim").classList.remove("hidden");
   const billInputData = [...document.getElementById('newBillPage').getElementsByTagName('input'),
                          ...document.getElementById('newBillPage').getElementsByTagName('select')].reduce((one,nex)=> {
                            if (nex.type==="checkbox"){
@@ -331,32 +353,48 @@ function pushNewBill(addNew = false){
                            }
                            return one;
                          },{"payed_for":[]})
+  const memberToActivate = billInputData.payed_for.concat(billInputData.payer).filter(id => !memberTrueActivated[id])
+  let activateMember = memberToActivate.reduce((allmempush,memberID)=>{
+    return allmempush.concat(pushEditedMember(memberID, true, false))
+  }, []);
 
-  fetch(apiUrl+"/bills", {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    },
-    body : JSON.stringify(billInputData)
-  }).then(response => {
-      //console.log(response)
-      if (response.status === 201) {
-          return response.json(); // Parse the response JSON
-      }else if(response.status === 400){
+  return Promise.all(activateMember).then(
+    fetch(apiUrl+"/bills", {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify(billInputData)
+    }).then(response => {
+        //console.log(response)
+        if (response.status === 201) {
+            return response.json(); // Parse the response JSON
+        }else if(response.status === 400){
 
-        throw new Error('Failed to Update bills. Please check your input values.')
-      }else {
-          throw new Error('Failed to fetch bills. Please check your credentials.');
-      }
-  }).then(data =>{
-    lastbillID = data;
-    lastwho = billInputData["payer"];
-    updateBills();
-    updateSummary();
-    document.getElementById('newBillPage').classList.add('hidden');
-    if(addNew){addBill()}
-  })
+          throw new Error('Failed to Update bills. Please check your input values.')
+        }else {
+            throw new Error('Failed to fetch bills. Please check your credentials.');
+        }
+    }).then(data =>{
+      lastbillID = data;
+      lastwho = billInputData["payer"];
+    })).then(a =>{
+      activateMember = memberToActivate.reduce((allmempush,memberID)=>{
+        return allmempush.concat(removeMember(memberID, false))
+      }, []);
+      return Promise.all(activateMember).then(a=> {
+        document.getElementById("loadingAnnim").classList.add("hidden");
+        updateAll();
+        document.getElementById('newBillPage').classList.add('hidden');
+        if(addNew){addBill()};
+      })
+    }).catch(error => {
+      document.getElementById("loadingAnnim").classList.add("hidden");
+      activateMember = memberToActivate.reduce((allmempush,memberID)=>{
+        return allmempush.concat(removeMember(memberID, false))
+      }, []);
+    })
 }
 
 //push the edits made for a bill
@@ -372,29 +410,48 @@ function pushEditedBill(billID){
                            }
                            return one;
                          },{"payed_for":[]})
-  return fetch(apiUrl+"/bills/"+billID,{
-    method : "PUT",
-    headers: {
-      'Authorization': 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    },
-    body : JSON.stringify(billInputData)
-  }).then(response => {
-      //console.log(response)
-      if (response.status === 200) {
-          return response.json(); // Parse the response JSON
-      }else if(response.status === 400){
-        throw new Error('Failed to Update bills. Please check your input values.')
-      }else {
-        throw new Error('Failed to Update bills. Please check your credentials.');
-      }
-  }).then(data =>{
-    lastbillID = data;
-    lastwho = billInputData["payer"];
-    updateBills();
-    updateSummary();
-    document.getElementById('newBillPage').classList.add('hidden');
-  })
+
+  const memberToActivate = billInputData.payed_for.concat(billInputData.payer).filter(id => !memberTrueActivated[id])
+  let activateMember = memberToActivate.reduce((allmempush,memberID)=>{
+    return allmempush.concat(pushEditedMember(memberID, true, false))
+  }, []);
+
+  return Promise.all(activateMember).then(
+    fetch(apiUrl+"/bills/"+billID,{
+      method : "PUT",
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify(billInputData)
+    }).then(response => {
+        //console.log(response)
+        if (response.status === 200) {
+            return response.json(); // Parse the response JSON
+        }else if(response.status === 400){
+          throw new Error('Failed to Update bills. Please check your input values.')
+        }else {
+          throw new Error('Failed to Update bills. Please check your credentials.');
+        }
+    }).then(data =>{
+      lastbillID = data;
+      lastwho = billInputData["payer"];
+    })).then(a =>{
+      activateMember = memberToActivate.reduce((allmempush,memberID)=>{
+        return allmempush.concat(removeMember(memberID, false))
+      }, []);
+      return Promise.all(activateMember).then(a=> {
+        document.getElementById("loadingAnnim").classList.add("hidden");
+        updateAll();
+        document.getElementById('newBillPage').classList.add('hidden');
+        if(addNew){addBill()};
+      })
+    }).catch(error => {
+      document.getElementById("loadingAnnim").classList.add("hidden");
+      activateMember = memberToActivate.reduce((allmempush,memberID)=>{
+        return allmempush.concat(removeMember(memberID, false))
+      }, []);
+    })
 }
 
 function removeBill(billID){
@@ -411,8 +468,7 @@ function removeBill(billID){
           throw new Error('Failed to Update bills. Please check your credentials.');
       }
   }).then(data =>{
-    updateBills();
-    updateSummary();
+    updateAll()
     document.getElementById('newBillPage').classList.add('hidden');
   })
 }
@@ -436,25 +492,28 @@ function amountToText(amount, currency){
 
 //the function to update all the page
 function updateAll(){
-  updateInfo().then(t =>{
-    updateBills();
-    updateSummary();
-  })
+  document.getElementById("loadingAnnim").classList.remove("hidden");
+  if((token != null)&&(projectID!= null)){
+    updateInfo().then(t =>{
+      const r1 = updateBills()
+      const r2 = updateSummary();
+      Promise.all([r1, r2]).then(resp =>{
+        console.log("Alldata Updated")
+        document.getElementById("loadingAnnim").classList.add("hidden")
+      });
+    })
+  }else {
+    console.log("your token and/or project ID are not given")
+  }
 }
 
 // Example usage:
-let balances = [
-    ['A', 100],
-    ['B', -50],
-    ['C', -20],
-    ['D',  10],
-    ['E', -40]
-];
+let balances = [['A', 100],['B', -50],['C', -20],['D',  10],['E', -40]];
 
 //import settle from 'deptSettle.js';
 
-const results = settle(balances);
-console.log(results);
+//const results = settle(balances);
+//console.log(results);
 
 
 

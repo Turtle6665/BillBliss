@@ -25,6 +25,11 @@
 <body>
   <!-- Navigation Menu -->
   <nav>
+    <div id="NavigationTitle">
+      <img src="./logo/logo.png">
+      <h1>BillBliss </h1>
+      <button id="updateAll" name="updateAll" onclick="updateAll()">Update</button>
+    </div>
     <ul id="navigationList">
       <li><a href="#info">Informations</a></li>
       <li><a href="#bills">Bills</a></li>
@@ -33,7 +38,7 @@
     <div id="progress-bar"></div>
     <div id="progress-bar-back"></div>
   </nav>
-
+  <div id="loadingAnnim" class="lds-ring hidden"><div></div><div></div><div></div><div></div></div>
   <!-- Project information Pge -->
   <section id="page-container" onscroll='document.getElementById("progress-bar").style.marginLeft = document.getElementById("page-container").scrollLeft/3+"px"'>
     <div id="info-page" class="grid-pages">
@@ -92,6 +97,7 @@
       <br/>
       <button type="button" name="saveEditMember" onclick="pushEditedMember()">Save</button>
       <button type="button" name="cancelEditMember" onclick="document.getElementById('editMemberPage').classList.add('hidden')">Cancel</button>
+      <button type="button" name="deleteEditMember" onclick="removeMember()">Remove</button>
     </div>
   </section>
 
