@@ -156,7 +156,7 @@ function updateSummary(){
   settlementslist.innerHTML = "";
   settlements.forEach(transfer => {
     const settlementdiv = document.createElement("div");
-    Object.assign(settlementdiv, {"classList":"settlementdiv", "onclick":()=>{addBill({what:"payback", much:transfer[1], who:transfer[0],whom:[transfer[2]]})}});
+    Object.assign(settlementdiv, {"classList":"settlementdiv", "onclick":()=>{addBill({what:"Payback", much:transfer[1], who:transfer[0],whom:[transfer[2]]})}});
     const settlementNames = document.createElement("div");
     Object.assign(settlementNames, {"classList":"settlementNames", "textContent":`${memberNames[transfer[0]]} pays ${memberNames[transfer[2]]}`});
     const settlementAmount = document.createElement("div");

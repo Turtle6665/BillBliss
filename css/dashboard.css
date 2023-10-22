@@ -194,9 +194,33 @@ Pages layout
   flex: 1 1 auto;
   display:grid;
   scroll-snap-type: x mandatory;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   grid-template-columns: 100vw 100vw 100vw;
+}
+
+@media only screen and (min-width: 900px){
+  #navigationList, #progress-bar, #progress-bar-back{
+    display: none;
+  }
+  #page-container{
+    grid-template-columns: calc(100vw/3) calc(100vw/3) calc(100vw/3)!important;
+  }
+  .grid-pages{
+    width: calc(100vw/3) !important;
+    border-left: 1px solid var(--couleur3);
+    border-right: 1px solid var(--couleur3);
+  }
+  #addBill{
+    left: calc(50vw/3 - 1.2em/2)!important;
+  }
+  #newBilDiv{
+    max-width: 700px;
+    width : 70vw!important;
+    height: calc(100vh*0.8) !important;
+    border-radius: 0.5em;
+    margin-top: 2em;
+  }
 }
 
 .linktarget{
@@ -262,6 +286,7 @@ Editi member page
 ---------------*/
 #editMemberPage{
   z-index: 10;
+  background-color: rgba(200, 200, 200, 0.5);
   height: 100vh;
   width: 100vw;
   display: block;
@@ -269,7 +294,6 @@ Editi member page
   top: 0;
   left: 0;
   /*padding: auto auto;*/
-  background-color: rgba(200, 200, 200, 0.5);
   text-align: center;
   overflow-y: auto;
 }
@@ -333,7 +357,7 @@ Bills page
   padding-top:0.2em;
 }
 
-#bills-page>h1{
+#bills-page h1{
   border-bottom: 2px solid var(--couleur3);
 }
 
@@ -379,9 +403,14 @@ Bills page
 /*---------
 Summary Page
 ---------*/
+
+#summary-page h2{
+  padding: 0.2em;
+}
+
 .memberBranch{
   padding:  0.2em 0.5em;
-  border-bottom: 1px solid var(--couleur3);
+  border-bottom: 2px solid var(--couleur3);
   text-align: left;
 }
 
@@ -433,28 +462,44 @@ label, input, select{
 }
 
 #newBillPage{
-  width:100vw;
-  height:100vh;
+  width: 100vw;
+  height: 100vh;
   position:absolute;
   top:0;
   right:0;
+  text-align:center;
+  z-index: 10;
+  background-color: rgba(200, 200, 200, 0.5);
+}
+
+#newBilDiv{
+  width: 100vw;
+  height: 100vh;
   z-index:10;
   background-color:#fff;
   text-align:center;
-  padding: 1em;
   overflow-y: auto;
+  display: inline-block;
+  padding: 1em;
+  background-color: #fff;
+  box-shadow:0px 0px 5px 2px grey;
+
 }
 
-#newBillPage > label{
+#newBilDiv > label{
   display: inline-block;
   width: 40%;
   padding: 0.3em 0;
 }
 
-#newBillPage > input, #newBillPage > select{
+#newBilDiv > input, #newBilDiv > select{
   width: 60%;
   padding: 0.25em 0.2em;
   margin: 0.2em 0;
+}
+
+#newBilDiv > h1{
+  padding-bottom: 0.2em;
 }
 
 #forWhomTitle{
@@ -490,5 +535,6 @@ label, input, select{
 }
 
 .settlementdiv{
-  border-bottom: 1px solid var(--couleur3);
+  border-bottom: 2px solid var(--couleur3);
+  cursor: pointer;
 }
