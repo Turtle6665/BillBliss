@@ -1,8 +1,4 @@
-
-// JS for the layout
-
-
-
+//get the tokens and name
 const URLQueryParams = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
 });
@@ -18,6 +14,7 @@ let memberIDs = {};
 let memberNames = {};
 let memberTrueActivated = {}; //members are "TrueActivated" if they are truly activated (= referenced as is on the server)
 let memberActivated = {}; //members are "activated" if they are truly activated or deactivated but a ballance different than 0
+
 function updateInfo(){
   return fetch(apiUrl, {
     method: 'GET',
@@ -438,7 +435,7 @@ function pushEditedBill(billID){
       lastwho = billInputData["payer"];
     })).then(a =>{
       activateMember = memberToActivate.reduce((allmempush,memberID)=>{
-        return allmempush.concat(removeMember(memberID, false))
+        return allmempush;// to reduce latency and some unknown bugs, the users are only reactivated and not redeactivated. old : allmempush.concat(removeMember(memberID, false))
       }, []);
       return Promise.all(activateMember).then(a=> {
         document.getElementById("loadingAnnim").classList.add("hidden");
@@ -507,13 +504,7 @@ function updateAll(){
   }
 }
 
-// Example usage:
-let balances = [['A', 100],['B', -50],['C', -20],['D',  10],['E', -40]];
 
-//import settle from 'deptSettle.js';
-
-//const results = settle(balances);
-//console.log(results);
 
 
 
