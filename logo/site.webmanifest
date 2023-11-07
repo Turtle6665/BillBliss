@@ -3,17 +3,31 @@
     "short_name": "BillBliss",
     "icons": [
         {
-            "src": "/logo/android-chrome-192x192.png",
+            "src": "./android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/logo/android-chrome-512x512.png",
+            "src": "./android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
+    "theme_color": "#adb6f4",
     "background_color": "#ffffff",
-    "display": "standalone"
+    "display": "standalone",
+    "background": {
+      "service_worker": "./../js/service-worker.js"
+    },
+    "id": "PWAforIHM",
+    "old__start_url": "./../dashboard.html",
+    "orientation": "portrait-primary",
+    "display_override": [
+        "standalone",
+        "fullscreen",
+        "minimal-ui",
+        "window-controls-overlay",
+        "browser"
+    ],
+    "description": "A mobile-first, pure JavaScript/CSS/HTML5 approach for IHateMoney frontend"
 }
