@@ -38,7 +38,7 @@
     <div id="progress-bar"></div>
     <div id="progress-bar-back"></div>
   </nav>
-  <div id="loadingAnnim" class="lds-ring hidden"><div></div><div></div><div></div><div></div></div>
+  <div id="loadingAnnim" class="lds-ring"><div></div><div></div><div></div><div></div></div>
   <!-- Project information Pge -->
   <section id="page-container" onscroll='document.getElementById("progress-bar").style.marginLeft = document.getElementById("page-container").scrollLeft/3+"px"'>
     <div id="info-page" class="grid-pages">
@@ -90,6 +90,8 @@
   </section>
 
   <section id="editMemberPage" class="hidden">
+    <div id="editMemberBack" class="ModalBackground" onclick="document.getElementById('editMemberPage').classList.add('hidden')">
+    </div>
     <div id="editMemberDiv">
       <h1>Edit member</h1> <br/>
       <label id="editMemberLabel" for="addMember">Name: </label><input id="editMemberInput" type="text" name="editMember" value="" placeholder="Member name">
@@ -101,6 +103,8 @@
   </section>
 
   <section id="newBillPage" class="hidden">
+    <div id="newBillBack" class="ModalBackground" onclick="document.getElementById('newBillPage').classList.add('hidden')">
+    </div>
     <div id="newBilDiv">
       <h1 class="newBill">New bill</h1>
       <h1 class="editBill hidden">Edit bill</h1>
