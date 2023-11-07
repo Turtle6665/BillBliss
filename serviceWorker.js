@@ -1,5 +1,5 @@
 // The name of the cache your app uses.
-const CACHE_VERSION = "0.0.2";
+const CACHE_VERSION = "0.0.3";
 const CURRENT_CACHES = {
   BillBliss: `BillBliss-cache-v${CACHE_VERSION}`,
 };
@@ -27,10 +27,13 @@ self.addEventListener("activate", (event) => {
 });
 
 async function cacheThenNetwork(event) {
-  event.request.url;
+  let url = new URL(event.request.url)
+  //remove hash and serach from the simple fetch
+  url.hash = "";
+  url.search = "";
   return caches.open(CURRENT_CACHES.BillBliss).then((cache) => {
     return cache
-      .match(event.request)
+      .match(url.toString())
       .then((response) => {
         if (response) {
           // If there is an entry in the cache for event.request,
@@ -44,7 +47,7 @@ async function cacheThenNetwork(event) {
         console.log(
           " No response for %s found in cache. About to fetch " +
             "from network…",
-          event.request.url,
+          url.toString(),
         );
 
         // We call .clone() on the request since we might use it
@@ -55,24 +58,23 @@ async function cacheThenNetwork(event) {
         return fetch(event.request.clone()).then((response) => {
           console.log(
             "  Response for %s from network is: %O",
-            event.request.url,
+            url.toString(),
             response,
           );
-
           if (
             response.status < 400
           ) {
             // This avoids caching responses that we know are errors
             // (i.e. HTTP status code of 4xx or 5xx).
-            console.log("  Caching the response to", event.request.url);
+            console.log("  Caching the response to", url.toString());
             // We call .clone() on the response to save a copy of it
             // to the cache. By doing so, we get to keep the original
             // response object which we will return back to the controlled
             // page.
             // https://developer.mozilla.org/en-US/docs/Web/API/Request/clone
-            cache.put(event.request, response.clone());
+            cache.put(url.toString(), response.clone());
           } else {
-            console.log("  Not caching the response to", event.request.url);
+            console.log("  Not caching the response to", url.toString());
           }
           // Return the original response object, which will be used to
           // fulfill the resource request.
@@ -95,14 +97,10 @@ async function cacheThenNetwork(event) {
 
 
 self.addEventListener("fetch", (event) => {
-  const url = new URL(event.request.url);
-  console.log("fetched: ", url);
-  if(/ihatemoney/.test(url)){
+  console.log("fetched: ", event.request.url);
+  if(/ihatemoney/.test(event.request.url)){
     event.respondWith(fetch(event.request));
   }else{
-    //remove hash and serach from the simple fetch
-    url.hash = "";
-    url.search = "";
     event.respondWith(cacheThenNetwork(event));
   }
 });
