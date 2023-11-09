@@ -549,3 +549,53 @@ label, input, select{
   border-bottom: 2px solid var(--couleur3);
   cursor: pointer;
 }
+
+
+/*------
+ Toasts
+-------*/
+
+
+#ToastsContainer{
+  position:absolute;
+  z-index: 10;
+  right: 0;
+  top: 4.2em;
+  width: 100vh;
+  overflow: visible;
+  direction: rtl;
+  text-align: left;
+}
+
+.toastDiv{
+  z-index: 200;
+  position: relative;
+  width: max-content;
+  direction: ltr;
+  max-width : 100vw;
+  text-align: right;
+  padding : 0.5em;
+  margin: 0.2em;
+  border-radius: 0.5em;
+}
+
+.toastDiv > strong{
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0;
+  text-align : center;
+  cursor : pointer;
+}
+
+.toastDivRed{
+  background-color: rgb(250, 150, 150);
+  color: rgba(200, 10, 10);
+  border: 2px solid rgba(200, 10, 10);
+}
+
+.toastDivGreen{
+  background-color: rgb(200, 250, 200);
+  color: rgba(10, 160, 10);
+  border: 2px solid rgba(10, 160, 10);
+}

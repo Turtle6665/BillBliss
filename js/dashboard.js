@@ -519,5 +519,18 @@ if ('serviceWorker' in navigator) {
 
 
 
+//make a popup/toast
+function ShowToast(text, color){
+  //ShowToast function
+  // text a string that will show up on the toast
+  // color a string for color : `red` (errors,...), `green` (Action performed)
+  color = color.strip()
+  let ToastsContainer = document.getElementById("ToastsContainer");
+  let toastDiv = document.createElement("div");
+  Object.assign(toastDiv, {textContent : text, classList : "toastDiv toastDiv"+color})
+
+}
+
+
 //the main run for all
 updateAll()
