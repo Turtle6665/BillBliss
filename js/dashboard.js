@@ -394,6 +394,7 @@ function pushNewBill(addNew = false){
     })
 }
 
+
 //push the edits made for a bill
 function pushEditedBill(billID){
   const billInputData = [...document.getElementById('newBillPage').getElementsByTagName('input'),
@@ -413,41 +414,56 @@ function pushEditedBill(billID){
     return allmempush.concat(pushEditedMember(memberID, true, false))
   }, []);
 
-  return Promise.all(activateMember).then(
-    fetch(apiUrl+"/bills/"+billID,{
+  return Promise.all(activateMember).then((data) =>{
+    return fetch(apiUrl+"/bills/"+billID,{
       method : "PUT",
       headers: {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json'
       },
       body : JSON.stringify(billInputData)
-    }).then(response => {
+    }).then(async response => {
         //console.log(response)
+        respJson = await response.json();
         if (response.status === 200) {
-            return response.json(); // Parse the response JSON
+          return respJson; // Parse the response JSON
         }else if(response.status === 400){
-          throw new Error('Failed to Update bills. Please check your input values.')
+          for(field in respJson){
+            ShowToast("Failed to update bills. Please check the field '"+field+"'", "Red");
+          };
+          throw new Error("Failed to update bills.")
         }else {
+          ShowToast("Failed to Update bills. Please check your credentials.", "Red");
           throw new Error('Failed to Update bills. Please check your credentials.');
         }
     }).then(data =>{
       lastbillID = data;
       lastwho = billInputData["payer"];
-    })).then(a =>{
+      return true
+    }).catch(error => {
+      console.log(error)
+      return false
+    })}).then(a =>{
+      //console.log(a)
+      if(a===false){
+        return a
+      }
       activateMember = memberToActivate.reduce((allmempush,memberID)=>{
         return allmempush;// to reduce latency and some unknown bugs, the users are only reactivated and not redeactivated. old : allmempush.concat(removeMember(memberID, false))
       }, []);
       return Promise.all(activateMember).then(a=> {
+        console.log("ok", a)
         document.getElementById("loadingAnnim").classList.add("hidden");
         updateAll();
         document.getElementById('newBillPage').classList.add('hidden');
         if(addNew){addBill()};
       })
     }).catch(error => {
-      document.getElementById("loadingAnnim").classList.add("hidden");
-      activateMember = memberToActivate.reduce((allmempush,memberID)=>{
-        return allmempush.concat(removeMember(memberID, false))
-      }, []);
+      console.log(error)
+      //document.getElementById("loadingAnnim").classList.add("hidden");
+      //activateMember = memberToActivate.reduce((allmempush,memberID)=>{
+      //  return allmempush.concat(removeMember(memberID, false))
+      //}, []);
     })
 }
 
@@ -462,6 +478,7 @@ function removeBill(billID){
       if (response.status === 200) {
           return response.json(); // Parse the response JSON
       }else {
+          ShowToast("Failed to remove the bill. Please check your credentials.", "Red");
           throw new Error('Failed to Update bills. Please check your credentials.');
       }
   }).then(data =>{
@@ -500,7 +517,8 @@ function updateAll(){
       });
     })
   }else {
-    console.log("your token and/or project ID are not given")
+    console.log("your token and/or project ID are not given");
+    ShowToast("Your token and/or project ID are not given", "Red");
   }
 }
 
@@ -524,11 +542,14 @@ function ShowToast(text, color){
   //ShowToast function
   // text a string that will show up on the toast
   // color a string for color : `red` (errors,...), `green` (Action performed)
-  color = color.strip()
+  color = color.trim()
   let ToastsContainer = document.getElementById("ToastsContainer");
   let toastDiv = document.createElement("div");
-  Object.assign(toastDiv, {textContent : text, classList : "toastDiv toastDiv"+color})
-
+  Object.assign(toastDiv, {textContent : text, classList : "toastDiv toastDiv"+color});
+  let ToastCross = document.createElement("strong");
+  Object.assign(ToastCross, {textContent : "x"});
+  toastDiv.appendChild(ToastCross);
+  ToastsContainer.appendChild(toastDiv);
 }
 
 
