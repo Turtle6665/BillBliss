@@ -229,6 +229,7 @@ Pages layout
 
 .grid-pages{
   scroll-snap-align:center;
+  scroll-snap-stop: always;
   overflow-y: auto;
   width: 100vw;
   text-align: center;
