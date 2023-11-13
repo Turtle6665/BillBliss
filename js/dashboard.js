@@ -1,3 +1,5 @@
+const sleep = ms => new Promise(res => setTimeout(res, ms));
+
 //get the tokens and name
 const URLQueryParams = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
@@ -588,17 +590,28 @@ async function ShowToast(text, color){
   // color a string for color : `red` (errors,...), `green` (Action performed)
   color = color.trim()
   let ToastsContainer = document.getElementById("ToastsContainer");
-  let toastDiv = document.createElement("div");
-  Object.assign(toastDiv, {textContent : text, classList : "toastDiv toastDiv"+color});
+  let ToastDiv = document.createElement("div");
+  Object.assign(ToastDiv, {textContent : text, classList : "ToastDiv ToastDiv"+color});
   let ToastCross = document.createElement("strong");
-  Object.assign(ToastCross, {textContent : "x"});
-  toastDiv.appendChild(ToastCross);
-  ToastsContainer.appendChild(toastDiv);
+  Object.assign(ToastCross, {textContent : "x", onclick: function(){RemoveToast(ToastDiv)}});
+  ToastDiv.appendChild(ToastCross);
+  ToastsContainer.appendChild(ToastDiv);
+  //console.log("waiting")
+  await sleep(5000);
+  //console.log("waited")
+  do {
+    await sleep(100);
+    //console.log("hoverd");
+  }while(ToastDiv.matches(":hover"))
+  RemoveToast(ToastDiv);
 }
 
-function RemoveToast(toastDiv){
-  toastDiv.classList.add("ToastRemoved")
-  
+//ShowToast("Hello", "Green")
+
+async function RemoveToast(ToastDiv){
+  ToastDiv.classList.add("ToastDivRemoved");
+  await sleep(1000);
+  ToastDiv.remove();
 }
 
 
