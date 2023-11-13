@@ -44,7 +44,9 @@ function updateInfo(){
     memberTrueActivated = {};
     memberActivated = {};
     membersList.innerHTML = '';
-    data.members.forEach(member => {
+    data.members.sort(
+      (a,b)=>{return a.name > b.name}
+    ).forEach(member => {
       memberIDs[member.name] = member.id;
       memberNames[member.id] = member.name;
       memberTrueActivated[member.id] = member.activated
@@ -55,6 +57,9 @@ function updateInfo(){
       Object.assign(img_edit, {"src":"pen.svg", "style":"height:0.8em; display:inline-block; margin:auto auto;"})
       memberDiv.appendChild(img_edit);
       if(memberActivated[member.id]){
+        if(!memberTrueActivated[member.id]){
+          memberDiv.classList.add("deactivated")
+        }
         membersList.appendChild(memberDiv);
       };
     });
@@ -77,6 +82,7 @@ function updateBills(){
       if (response.status === 200) {
           return response.json(); // Parse the response JSON
       } else {
+          ShowToast('Failed to fetch bills. Please check your credentials.', "Red");
           throw new Error('Failed to fetch bills. Please check your credentials.');
       }
   })
@@ -177,16 +183,21 @@ function addMember(){
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(newMemberData)
-  }).then(response => {
+  }).then(async response => {
+    respJson = await response.json();
     if (response.status === 201) {
+      ShowToast('New member added successfully.', "Green")
       console.log('New member added successfully.');
       updateInfo();
       document.getElementById("addMemberInput").value = ""
     } else {
-      console.error('Error adding new member:', response.status);
+      for(field in respJson){
+        ShowToast("Failed to add member. "+field + ": "+respJson[field], "Red");
+      };
+      throw new Error(response);
     }
   }).catch(error => {
-    console.error('Error:', error);
+    console.error('Error adding new member:', error);
   });
 }
 
@@ -195,17 +206,28 @@ function editMember(memberID){
   document.getElementById("editMemberInput").value = memberNames[memberID];
   document.getElementById("editMemberDiv").getElementsByTagName("button")[0].onclick = function(){pushEditedMember(memberID);};
   document.getElementById("editMemberDiv").getElementsByTagName("button")[2].onclick = function(){removeMember(memberID);};
+  document.getElementById("editMemberDiv").getElementsByTagName("button")[3].onclick = function(){pushEditedMember(memberID, true);};
   document.getElementById("editMemberPage").classList.remove("hidden");
+  if(memberTrueActivated[memberID]){
+    document.getElementById("editMemberDiv").getElementsByTagName("button")[2].classList.remove("hidden"); //show the remove button
+    document.getElementById("editMemberDiv").getElementsByTagName("button")[3].classList.add("hidden"); //hide the reactivate button
+  }else{
+    document.getElementById("editMemberDiv").getElementsByTagName("button")[2].classList.add("hidden"); //hide the remove button
+    document.getElementById("editMemberDiv").getElementsByTagName("button")[3].classList.remove("hidden"); //show the reactivate button
+  }
   document.getElementById("editMemberInput").focus();
 }
 
 function pushEditedMember(memberID, memberActiv = "", updateall=true){
+  //if memberActiv is set to true (to reactivate the member), the name is set to be the previus one, and not the one written
   name = document.getElementById("editMemberInput").value
   let MemberInputData = {
-    "name" : name==""? memberNames[memberID]:name
+    "name" : name,
+    "activated" : memberTrueActivated[memberID]
   }
   if (memberActiv !=""){
-    MemberInputData["activated"] = memberActiv
+    MemberInputData["activated"] = memberActiv;
+    MemberInputData["name"] = memberNames[memberID];
   }
   return fetch(apiUrl+"/members/"+memberID,{
     method : "PUT",
@@ -214,12 +236,22 @@ function pushEditedMember(memberID, memberActiv = "", updateall=true){
       'Content-Type': 'application/json'
     },
     body : JSON.stringify(MemberInputData)
-  }).then(response =>{
+  }).then(async response =>{
+    respJson = await response.json();
     if (response.status === 200) {
+      if(memberActiv==true){
+        ShowToast(memberNames[memberID]+" reactivated", "Green")
+      }else {
+        ShowToast(memberNames[memberID]+"\'s informations updated", "Green")
+      }
       document.getElementById("editMemberPage").classList.add("hidden");
       if(updateall){updateAll();}
-      return response.json(); // Parse the response JSON
+      return respJson; // Parse the response JSON
     }else if(response.status === 400){
+      console.log(respJson, response);
+      for(field in respJson){
+        ShowToast("Failed to update member. Please check the field '"+field+"'", "Red");
+      };
       throw new Error('Failed to Update member. Please check your input values.')
     }else{
       throw new Error('Failed to Update Member. Please check your credentials.')
@@ -249,6 +281,8 @@ function removeMember(memberID, updateall=true){
       updateAll();
     }
     //document.getElementById('newBillPage').classList.add('hidden');
+  }).catch((error)=>{
+    ShowToast(error, "Red")
   })
 }
 
@@ -350,35 +384,45 @@ function pushNewBill(addNew = false){
                            }
                            return one;
                          },{"payed_for":[]})
-  const memberToActivate = billInputData.payed_for.concat(billInputData.payer).filter(id => !memberTrueActivated[id])
+  const memberToActivate = [...new Set(billInputData.payed_for.concat(billInputData.payer))].filter(id => !memberTrueActivated[id])
   let activateMember = memberToActivate.reduce((allmempush,memberID)=>{
     return allmempush.concat(pushEditedMember(memberID, true, false))
   }, []);
 
-  return Promise.all(activateMember).then(
-    fetch(apiUrl+"/bills", {
+  return Promise.all(activateMember).then((a)=>{
+    return fetch(apiUrl+"/bills", {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json'
       },
       body : JSON.stringify(billInputData)
-    }).then(response => {
+    }).then(async response => {
         //console.log(response)
+        respJson = await response.clone().json()
         if (response.status === 201) {
-            return response.json(); // Parse the response JSON
+            return ; // Parse the response JSON
         }else if(response.status === 400){
-
+          for(field in respJson){
+            ShowToast("Failed to update bills. Please check the field '"+field+"'", "Red");
+          };
           throw new Error('Failed to Update bills. Please check your input values.')
         }else {
-            throw new Error('Failed to fetch bills. Please check your credentials.');
+          throw new Error('Failed to fetch bills. Please check your credentials.');
         }
     }).then(data =>{
       lastbillID = data;
       lastwho = billInputData["payer"];
-    })).then(a =>{
+    }).catch((error)=>{
+      console.log(error)
+      return false
+    })}).then(a =>{
+      if(a===false){
+        document.getElementById("loadingAnnim").classList.add("hidden");
+        return a
+      }
       activateMember = memberToActivate.reduce((allmempush,memberID)=>{
-        return allmempush.concat(removeMember(memberID, false))
+        return allmempush// allmempush.concat(removeMember(memberID, false))
       }, []);
       return Promise.all(activateMember).then(a=> {
         document.getElementById("loadingAnnim").classList.add("hidden");
@@ -389,7 +433,7 @@ function pushNewBill(addNew = false){
     }).catch(error => {
       document.getElementById("loadingAnnim").classList.add("hidden");
       activateMember = memberToActivate.reduce((allmempush,memberID)=>{
-        return allmempush.concat(removeMember(memberID, false))
+        return allmempush //allmempush.concat(removeMember(memberID, false))
       }, []);
     })
 }
@@ -409,7 +453,7 @@ function pushEditedBill(billID){
                            return one;
                          },{"payed_for":[]})
 
-  const memberToActivate = billInputData.payed_for.concat(billInputData.payer).filter(id => !memberTrueActivated[id])
+  const memberToActivate = [...new Set(billInputData.payed_for.concat(billInputData.payer))].filter(id => (id!="")&!memberTrueActivated[id])
   let activateMember = memberToActivate.reduce((allmempush,memberID)=>{
     return allmempush.concat(pushEditedMember(memberID, true, false))
   }, []);
@@ -446,6 +490,7 @@ function pushEditedBill(billID){
     })}).then(a =>{
       //console.log(a)
       if(a===false){
+        document.getElementById("loadingAnnim").classList.add("hidden");
         return a
       }
       activateMember = memberToActivate.reduce((allmempush,memberID)=>{
@@ -456,7 +501,6 @@ function pushEditedBill(billID){
         document.getElementById("loadingAnnim").classList.add("hidden");
         updateAll();
         document.getElementById('newBillPage').classList.add('hidden');
-        if(addNew){addBill()};
       })
     }).catch(error => {
       console.log(error)
@@ -538,7 +582,7 @@ if ('serviceWorker' in navigator) {
 
 
 //make a popup/toast
-function ShowToast(text, color){
+async function ShowToast(text, color){
   //ShowToast function
   // text a string that will show up on the toast
   // color a string for color : `red` (errors,...), `green` (Action performed)
@@ -551,6 +595,12 @@ function ShowToast(text, color){
   toastDiv.appendChild(ToastCross);
   ToastsContainer.appendChild(toastDiv);
 }
+
+function RemoveToast(toastDiv){
+  toastDiv.classList.add("ToastRemoved")
+  
+}
+
 
 
 //the main run for all
