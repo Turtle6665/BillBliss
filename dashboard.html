@@ -99,6 +99,7 @@
       <button type="button" name="saveEditMember" onclick="pushEditedMember()">Save</button>
       <button type="button" name="cancelEditMember" onclick="document.getElementById('editMemberPage').classList.add('hidden')">Cancel</button>
       <button type="button" name="deleteEditMember" onclick="removeMember()">Remove</button>
+      <button type="button" name="deleteEditMember" onclick="removeMember()">Reactivate</button>
     </div>
   </section>
 
@@ -128,7 +129,8 @@
       <button type="button" name="CancelBill" onclick="document.getElementById('newBillPage').classList.add('hidden')">Cancel</button>
     </div>
   </section>
-
+  <section id="ToastsContainer">
+  </section>
   <script src="js/deptsSettle.js"></script>
   <script src="js/dashboard.js"></script>
 </body>

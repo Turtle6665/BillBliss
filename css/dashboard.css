@@ -153,7 +153,6 @@ Loading animation
   z-index: 100;
   width: 80px;
   height: 80px;
-  z-index: 10;
 }
 .lds-ring div {
   box-sizing: border-box;
@@ -282,6 +281,15 @@ Information page
   display: inline-block;
 }
 
+#membersList > .deactivated::after{
+  content: ' (deactivated)';
+  color : var(--couleur2);
+}
+
+#membersList > div > img::before{
+  content: "hey";
+}
+
 /*---------------
 Editi member page
 ---------------*/
@@ -303,7 +311,7 @@ Editi member page
   display: inline-block;
   border-radius: 0.5em;
   padding: 1em;
-  top: 2em;
+  top: 10em;
   background-color: #fff;
   box-shadow:0px 0px 5px 2px grey;
   z-index:12;
@@ -549,4 +557,76 @@ label, input, select{
 .settlementdiv{
   border-bottom: 2px solid var(--couleur3);
   cursor: pointer;
+}
+
+
+/*------
+ Toasts
+-------*/
+@media only screen and (min-width: 900px){
+  #ToastsContainer{
+      top: 2.6em !important;
+  }
+}
+
+#ToastsContainer{
+  position:absolute;
+  z-index: 10;
+  right: 0;
+  top: 4.2em;
+  width: 0vh;
+  overflow: visible;
+  direction: rtl;
+  text-align: left;
+}
+
+.ToastDiv{
+  z-index: 200;
+  position: relative;
+  width: max-content;
+  max-width : 90vw;
+  direction: ltr;
+  text-align: right;
+  padding : 0.5em;
+  margin: 0.2em;
+  border-radius: 0.5em;
+  border-width: 2px;
+  border-style: solid;
+  animation: ToastShow 0.2s linear 0s forwards;
+}
+
+.ToastDivRemoved{
+  animation: ToastHide 0.5s linear 0s forwards;
+}
+
+@keyframes ToastShow{
+  0% {margin-top: 5vh; opacity: 0;}
+  100% {margin-top:0.2em; opacity: 1;}
+}
+
+@keyframes ToastHide{
+  0% {right:0; opacity: 1;}
+  50% {right:-5vw; opacity: 0;height: fit-content; padding : 0.5em; margin: 0.2em; border-width: 2px;}
+  100%{height: 0; padding : 0;opacity: 0; margin: 0; overflow-y: hidden; border-width: 0px;}
+}
+
+.ToastDiv > strong{
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0;
+  text-align : center;
+  cursor : pointer;
+}
+
+.ToastDivRed{
+  background-color: rgb(250, 150, 150);
+  color: rgba(200, 10, 10);
+  border-color :rgba(200, 10, 10);
+}
+
+.ToastDivGreen{
+  background-color: rgb(200, 250, 200);
+  color: rgba(10, 160, 10);
+  border-color: rgba(10, 160, 10);
 }
