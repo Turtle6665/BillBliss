@@ -242,9 +242,9 @@ function pushEditedMember(memberID, memberActiv = "", updateall=true){
     respJson = await response.json();
     if (response.status === 200) {
       if(memberActiv==true){
-        ShowToast(memberNames[memberID]+" reactivated", "Green")
+        ShowToast(memberNames[memberID]+" reactivated.", "Green")
       }else {
-        ShowToast(memberNames[memberID]+"\'s informations updated", "Green")
+        ShowToast(memberNames[memberID]+"\'s informations updated.", "Green")
       }
       document.getElementById("editMemberPage").classList.add("hidden");
       if(updateall){updateAll();}
@@ -252,7 +252,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall=true){
     }else if(response.status === 400){
       console.log(respJson, response);
       for(field in respJson){
-        ShowToast("Failed to update member. Please check the field '"+field+"'", "Red");
+        ShowToast("Failed to update member. Please check the field '"+field+"'.", "Red");
       };
       throw new Error('Failed to Update member. Please check your input values.')
     }else{
@@ -263,7 +263,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall=true){
   });
 };
 
-function removeMember(memberID, updateall=true){
+function removeMember(memberID,updateall=true){
   //it removes if the member has no bills. It it has, the member is deactivated
   return fetch(apiUrl+"/members/"+memberID,{
     method : "DELETE",
@@ -278,6 +278,7 @@ function removeMember(memberID, updateall=true){
           throw new Error('Failed to remove the member. Please check your credentials.');
       }
   }).then(data =>{
+    ShowToast(memberNames[memberID]+ " deactivated.","Green")
     if(updateall){
       document.getElementById("editMemberPage").classList.add("hidden");
       updateAll();
@@ -428,6 +429,7 @@ function pushNewBill(addNew = false){
       }, []);
       return Promise.all(activateMember).then(a=> {
         document.getElementById("loadingAnnim").classList.add("hidden");
+        ShowToast("New bill added.","Green")
         updateAll();
         document.getElementById('newBillPage').classList.add('hidden');
         if(addNew){addBill()};
@@ -500,6 +502,7 @@ function pushEditedBill(billID){
       }, []);
       return Promise.all(activateMember).then(a=> {
         console.log("ok", a)
+        ShowToast("Bill updated.","Green")
         document.getElementById("loadingAnnim").classList.add("hidden");
         updateAll();
         document.getElementById('newBillPage').classList.add('hidden');
@@ -528,6 +531,7 @@ function removeBill(billID){
           throw new Error('Failed to Update bills. Please check your credentials.');
       }
   }).then(data =>{
+    ShowToast("Bill removed successfully.", "Green");
     updateAll()
     document.getElementById('newBillPage').classList.add('hidden');
   })
@@ -564,7 +568,7 @@ function updateAll(){
     })
   }else {
     console.log("your token and/or project ID are not given");
-    ShowToast("Your token and/or project ID are not given", "Red");
+    ShowToast("Your token and/or project ID are not given.", "Red");
   }
 }
 
