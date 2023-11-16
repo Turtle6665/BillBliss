@@ -1,6 +1,52 @@
+//setup values
+const base_apiUrl = 'https://ihatemoney.org/api/projects/';
+
+//install the service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./serviceWorker.js')
+    .then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }).catch(function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+}
+
+//Some important functions initialisation
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-//get the tokens and name
+//make a popup/toast
+async function ShowToast(text, color){
+  //ShowToast function
+  // text a string that will show up on the toast
+  // color a string for color : `red` (errors,...), `green` (Action performed)
+  color = color.trim()
+  let ToastsContainer = document.getElementById("ToastsContainer");
+  let ToastDiv = document.createElement("div");
+  Object.assign(ToastDiv, {textContent : text, classList : "ToastDiv ToastDiv"+color});
+  let ToastCross = document.createElement("strong");
+  Object.assign(ToastCross, {textContent : "x", onclick: function(){RemoveToast(ToastDiv)}});
+  ToastDiv.appendChild(ToastCross);
+  ToastsContainer.appendChild(ToastDiv);
+  //console.log("waiting")
+  await sleep(5000);
+  //console.log("waited")
+  do {
+    await sleep(100);
+    //console.log("hoverd");
+  }while(ToastDiv.matches(":hover"))
+  RemoveToast(ToastDiv);
+}
+
+async function RemoveToast(ToastDiv){
+  ToastDiv.classList.add("ToastDivRemoved");
+  await sleep(1000);
+  ToastDiv.remove();
+}
+
+
+//Invitation links
 const URLQueryParams = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
 });
@@ -8,7 +54,20 @@ const URLQueryParams = new Proxy(new URLSearchParams(window.location.search), {
 let projectID = URLQueryParams.project;
 let token = URLQueryParams.token;
 
-const apiUrl = 'https://ihatemoney.org/api/projects/'+projectID;
+let ProjectsList = JSON.parse(localStorage.getItem("ProjectsList"));
+if(!(projectID==null)&!(token==null)){
+  //adding the projects token to localStorage
+  if(ProjectsList==null){
+    ProjectsList = {};
+  }
+  ProjectsList[projectID] = {"token":token};
+  localStorage.setItem("ProjectsList", JSON.stringify(ProjectsList));
+  window.location.search = "?project="+projectID
+}else if(!(projectID==null)&(token==null)){
+  token = ProjectsList[projectID]["token"];
+}
+
+let apiUrl = base_apiUrl + projectID
 
 //Get the informations of the project
 let info=null;
@@ -573,50 +632,6 @@ function updateAll(){
 }
 
 
-//install the service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./serviceWorker.js')
-    .then(function(registration) {
-      // Registration was successful
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }).catch(function(err) {
-      // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
-    });
-}
-
-
-
-//make a popup/toast
-async function ShowToast(text, color){
-  //ShowToast function
-  // text a string that will show up on the toast
-  // color a string for color : `red` (errors,...), `green` (Action performed)
-  color = color.trim()
-  let ToastsContainer = document.getElementById("ToastsContainer");
-  let ToastDiv = document.createElement("div");
-  Object.assign(ToastDiv, {textContent : text, classList : "ToastDiv ToastDiv"+color});
-  let ToastCross = document.createElement("strong");
-  Object.assign(ToastCross, {textContent : "x", onclick: function(){RemoveToast(ToastDiv)}});
-  ToastDiv.appendChild(ToastCross);
-  ToastsContainer.appendChild(ToastDiv);
-  //console.log("waiting")
-  await sleep(5000);
-  //console.log("waited")
-  do {
-    await sleep(100);
-    //console.log("hoverd");
-  }while(ToastDiv.matches(":hover"))
-  RemoveToast(ToastDiv);
-}
-
-//ShowToast("Hello", "Green")
-
-async function RemoveToast(ToastDiv){
-  ToastDiv.classList.add("ToastDivRemoved");
-  await sleep(1000);
-  ToastDiv.remove();
-}
 
 
 
