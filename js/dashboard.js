@@ -1,3 +1,6 @@
+//import LS from "./localStorageAsked.js";
+//import settle from "./deptsSettle.js";
+
 //setup values
 const base_apiUrl = 'https://ihatemoney.org/api/projects/';
 
@@ -53,17 +56,20 @@ const URLQueryParams = new Proxy(new URLSearchParams(window.location.search), {
 // Get the value of "project" in eg "https://example.com/?project=some_value"
 let projectID = URLQueryParams.project;
 let token = URLQueryParams.token;
+if(URLQueryParams.localStorage){
+  storage.acceptLocalStorage()
+}
 
-let ProjectsList = JSON.parse(localStorage.getItem("ProjectsList"));
+let ProjectsList = storage.getItem("ProjectsList");
 if(!(projectID==null)&!(token==null)){
   //adding the projects token to localStorage
   if(ProjectsList==null){
     ProjectsList = {};
   }
   ProjectsList[projectID] = {"token":token};
-  localStorage.setItem("ProjectsList", JSON.stringify(ProjectsList));
-  window.location.search = "?project="+projectID
-}else if(!(projectID==null)&(token==null)){
+  storage.setItem("ProjectsList", ProjectsList);
+  //window.location.search = "?project="+projectID
+}else if(!(projectID==null)&(token==null)&!(ProjectsList==null)){
   token = ProjectsList[projectID]["token"];
 }
 
