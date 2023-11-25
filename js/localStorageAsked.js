@@ -56,7 +56,7 @@ class LS{
     }
   }
 
-  getItem(item){
+  getItem(item, getDate=false){
     let data = null
     if(this.old_LS_accepted==true){
       data = localStorage.getItem(item)
@@ -65,17 +65,29 @@ class LS{
     }
     if(data==null){
       return(null)
-    }else{
+    }else if(getDate){
       return(JSON.parse(data))
+    }else{
+      return(JSON.parse(data)["data"])
     }
   }
 
   setItem(item, data, brodcast = true){
-    let jsdata = JSON.stringify(data)
+    if (item == "ProjectsList"){
+      //these are data that should have subdata with time saved in the sub layer
+      Object.keys(data).forEach(projectID => {
+        if (data[projectID]["date"] == null){ //add a date if no date is provided
+          data[projectID]["date"] = Date.now();
+        };
+      });
+    }
+
+    let fulldata = {data:data, date:Date.now()}
+    let jsdata = JSON.stringify(fulldata)
     if(this.old_LS_accepted==true){
-      let data = localStorage.setItem(item, jsdata)
+      localStorage.setItem(item, jsdata);
     }else{
-      let data = sessionStorage.setItem(item, jsdata)
+      sessionStorage.setItem(item, jsdata);
     }
     if (item != "allItems"){
       let allItems = this.getItem("allItems");
@@ -85,7 +97,7 @@ class LS{
                                                 array.indexOf(value) === index
                                               ));
       if(this.old_LS_accepted==false & brodcast){
-        bc.postMessage(["setItem", item, data]);
+        bc.postMessage(["setItem", item, fulldata]);
       }
     }
   }
@@ -109,6 +121,21 @@ class LS{
     }
   }
 
+  removeSubItem(item, subitem, brodcast = true){
+    let data = this.getItem(item);
+    data = Object.keys(data).reduce((alldata, subitemi) => {
+      if(subitemi != subitem){
+        alldata[subitemi] = data[subitemi];
+      }
+      return alldata
+    }, {});
+
+    if(this.old_LS_accepted==false & brodcast){
+      bc.postMessage(["removeSubItem", item, subitem]);
+    }
+    this.setItem(item, data, false);
+  }
+
   removeAllItems(){
     let allItems = this.getItem("allItems");
     allItems.filter((a)=> a!="allItems").forEach((item) => {
@@ -124,7 +151,7 @@ storage = new LS()
 //const bc = new BroadcastChannel("LS_channel");
 
 bc.onmessage = (event) => {
-  console.log(event);
+  //console.log(event);
   let tData = event.data
   if(tData[0]=="denieLocalStorage"){
     let allItemsAndData = tData[1];
@@ -143,18 +170,50 @@ bc.onmessage = (event) => {
     storage.old_LS_accepted = true;
 
   }else if(tData[0]=="setItem"){
-    if((tData[1]=="ProjectsList") &
-       (JSON.stringify(tData[2])!=JSON.stringify(storage.getItem("ProjectsList")))){
+    if(tData[1]=="ProjectsList"){
       //this allows to syncronise the two ProjectsList if they are not identical
-      // only one back and forth maximum ? No if they are 3 tabs, it doesn't work...
-      // [TODO]
-      let data = Object.assign({}, storage.getItem("ProjectsList"), tData[2]);
-      storage.setItem(tData[1],data,true);
+      //only a few back and forth ?
+      let oldProjectList = storage.getItem(tData[1]);
+      if(JSON.stringify(Object.assign({}, oldProjectList, tData[2].data))!=JSON.stringify(oldProjectList) |
+         Object.keys(oldProjectList).length != Object.keys(tData[2].data).length){
+        let allProjectIDs = Object.keys(Object.assign({}, oldProjectList, tData[2].data));
+        let data = allProjectIDs.reduce((ProjectsListData,projectID) => {
+          if(tData[2].data[projectID]==null){
+            ProjectsListData[projectID] = oldProjectList[projectID];
+          }else if(oldProjectList[projectID]==null){
+            ProjectsListData[projectID] = tData[2].data[projectID];
+          }else if(tData[2].data[projectID].date >=oldProjectList[projectID].date){
+            ProjectsListData[projectID] = tData[2].data[projectID];
+          }else{
+            ProjectsListData[projectID] = oldProjectList[projectID];
+          }
+          return ProjectsListData
+        }, {});
+
+        //let data = Object.assign({}, storage.getItem("ProjectsList"), tData[2].data);
+        storage.setItem(tData[1],data,true);
+      }
     }else{
-      storage.setItem(tData[1],tData[2],false);
+      let olddata = storage.getItem(tData[1], true);
+      if(olddata == null){
+        //if no previus data, keep this data
+        storage.setItem(tData[1],tData[2]["data"],false);
+      }else if(tData[2]["date"] >= olddata["date"]){
+        //if the receieved data is younger than the saved one, I update the saved one
+        // the saved date will be the date of saving not the original date
+        storage.setItem(tData[1],tData[2]["data"],false);
+      }else{
+        //if receieved data is older than the saved one, I brodcast the saved one
+        bc.postMessage(["setItem", tData[1], olddata]);
+      }
     }
+
   }else if(tData[0]=="removeItem"){
     storage.removeItem(tData[1],false);
+
+  }else if(tData[0]=="removeSubItem"){
+    storage.removeSubItem(tData[1], tData[2],false);
+
   }else{
     console.log(tData[0], "is not an expected value for the message")
   }
