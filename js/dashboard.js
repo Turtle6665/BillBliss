@@ -69,6 +69,7 @@ if(!(projectID==null)&!(token==null)){
   ProjectsList[projectID] = {"token":token};
   storage.setItem("ProjectsList", ProjectsList);
   //window.location.search = "?project="+projectID
+  history.replaceState("", "", "?project="+projectID);
 }else if(!(projectID==null)&(token==null)&!(ProjectsList==null)){
   token = ProjectsList[projectID]["token"];
 }
@@ -103,6 +104,9 @@ function updateInfo(){
     document.getElementById('projectName').textContent = data.name;
     document.getElementById('contactEmail').textContent = data.contact_email;
     document.getElementById('currency').textContent = data.default_currency;
+    //set the project name in the title
+    document.getElementById("NavigationTitle").getElementsByTagName("H1")[0].textContent=data.name;
+    document.title = "BillBliss | "+data.name
 
     // Create a list of members
     const membersList = document.getElementById('membersList');

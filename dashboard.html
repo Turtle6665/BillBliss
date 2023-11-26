@@ -28,6 +28,11 @@
   <!-- Navigation Menu -->
   <nav>
     <div id="NavigationTitle">
+      <label id="showLeftPanel" for="showLeftPanelCheckbox">
+        <strong class="burgerLayer"></strong>
+        <strong class="burgerLayer"></strong>
+        <strong class="burgerLayer"></strong>
+      </label>
       <img src="./logo/logo.png">
       <h1>BillBliss </h1>
       <button id="updateAll" name="updateAll" onclick="updateAll()">Update</button>
@@ -40,7 +45,29 @@
     <div id="progress-bar"></div>
     <div id="progress-bar-back"></div>
   </nav>
+
+
+  <section id="leftPanelContainer">
+    <input type="checkbox" id="showLeftPanelCheckbox">
+    <label id="leftPanelBackground" class="ModalBackground" for="showLeftPanelCheckbox"></label>
+    <div id="leftPanel">
+      <div class="linktarget hidden"></div>
+      <div id="PanelTitle">
+        <label for="showLeftPanelCheckbox">
+          <strong class="Xside1"></strong>
+          <strong class="Xside2"></strong>
+        </label>
+        <img src="./logo/logo.png" style="height:2em;">
+        <h1>BillBliss</h1>
+      </div>
+      <br/>
+      Hello it's me i'm a lorem Lipsum 
+    </div>
+  </section>
+
   <div id="loadingAnnim" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+
+
   <!-- Project information Pge -->
   <section id="page-container" onscroll='document.getElementById("progress-bar").style.marginLeft = document.getElementById("page-container").scrollLeft/3+"px"'>
     <div id="info-page" class="grid-pages">
