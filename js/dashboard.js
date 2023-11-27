@@ -102,6 +102,9 @@ function updateInfo(){
     // Update the 'information' div with the project data
     // Update individual div elements with project data
     document.getElementById('projectName').textContent = data.name;
+    ProjectsList = storage.getItem("ProjectsList");
+    ProjectsList[projectID]["name"] = data.name;
+    storage.setItem("ProjectsList", ProjectsList);
     document.getElementById('contactEmail').textContent = data.contact_email;
     document.getElementById('currency').textContent = data.default_currency;
     //set the project name in the title
@@ -607,6 +610,21 @@ function removeBill(billID){
 }
 
 
+//adding the project list
+function updateProjectList(){
+  let LeftPanelProjectList = document.getElementById("LeftPanelProjectList");
+  LeftPanelProjectList.innerHTML = "";
+  ProjectsList = storage.getItem("ProjectsList")
+  Object.keys(ProjectsList).forEach(project => {
+    if (project != projectID){
+      projectButton = document.createElement("div");
+      Object.assign(projectButton, {textContent : ProjectsList[project].name, classList: "leftPanelButton", onclick: function(){loadProject(project);}});
+      LeftPanelProjectList.appendChild(projectButton);
+    };
+  });
+
+}
+
 //function to render amoney
 function amountToText(amount, currency){
   function round(v) { //to properly round negative value + round to 10E-2
@@ -626,6 +644,7 @@ function amountToText(amount, currency){
 //the function to update all the page
 function updateAll(){
   document.getElementById("loadingAnnim").classList.remove("hidden");
+  updateProjectList();
   if((token != null)&&(projectID!= null)){
     updateInfo().then(t =>{
       const r1 = updateBills()
@@ -642,6 +661,11 @@ function updateAll(){
 }
 
 
+//function to load a different projet
+function loadProject(project){
+  document.getElementById("showLeftPanelCheckbox").checked = false;
+  window.location.search = "?project="+project;
+}
 
 
 

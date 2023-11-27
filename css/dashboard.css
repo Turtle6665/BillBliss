@@ -75,7 +75,7 @@ Navigation Menu
 
 #NavigationTitle img{
   float: left;
-  height: 100%;
+  width: 2em;
   display: inline-block;
   z-index: 5;
 }
@@ -93,7 +93,7 @@ Navigation Menu
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
-  padding: 0.5em;
+  padding: 6px;
   text-align: center;
   text-decoration: none;
   border-radius: 3px;
@@ -266,6 +266,25 @@ leftPanel layout
   margin : 0.1em 0.2em;
 }
 
+/*project list*/
+.leftPanelButtonRetractibleCheckbox{
+  display: none;
+  visibility: collapse;
+}
+
+
+.leftPanelButtonRetractibleDiv{
+  float: left;
+  clip-path: inset(0 0 100% 0);
+  shape-outside: inset(0 0 100% 0);
+  width:100%;
+  overflow-y: hidden;
+  transition: all 0.2s;
+}
+.leftPanelButtonRetractibleCheckbox:checked ~ .leftPanelButtonRetractibleDiv{
+  clip-path: inset(0 0 0 0);
+  shape-outside: inset(0 0 0 0);
+}
 
 
 /*---------
