@@ -216,14 +216,15 @@ leftPanel layout
 #leftPanel{
   background-color: white;
   visibility: inherit;
-  display: block;
+  display: grid;
+  grid-template-rows: max-content minmax(0, 1fr) max-content;
   position: absolute;
   top : 0;
   left:-100vw;
   z-index: 100;
   height: 100vh;
   width: 100vw;
-  max-width: 500px;
+  max-width: 300px;
   transition : left 0.2s;
 }
 
@@ -280,13 +281,38 @@ leftPanel layout
   width:100%;
   overflow-y: hidden;
   transition: all 0.2s;
+  display: flow-root;
 }
+
+.leftPanelButtonRetractible > .leftPanelButton::after{
+  background-image: url(../assets/vslider.svg);
+  width : 10px;
+  background-size: 100%;
+}
+
 .leftPanelButtonRetractibleCheckbox:checked ~ .leftPanelButtonRetractibleDiv{
   clip-path: inset(0 0 0 0);
   shape-outside: inset(0 0 0 0);
 }
 
+.leftPanelButtonGroupe{
+  overflow-y: auto;
+  margin: 0.4em 0;
+}
 
+.leftPanelButton{
+  padding: 0.4em 0.8em
+}
+
+.leftPanelFooter{
+  background-color: inherit;
+}
+
+/*
+.leftPanelButton::before{
+  content: attr(url(icon));
+}
+*/
 /*---------
 Pages layout
 ---------*/

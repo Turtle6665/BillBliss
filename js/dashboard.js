@@ -70,7 +70,7 @@ if(!(projectID==null)&!(token==null)){
   storage.setItem("ProjectsList", ProjectsList);
   //window.location.search = "?project="+projectID
   history.replaceState("", "", "?project="+projectID);
-}else if(!(projectID==null)&(token==null)&!(ProjectsList==null)){
+}else if(!(projectID==null)&(token==null)&!(ProjectsList[projectID]==null)){
   token = ProjectsList[projectID]["token"];
 }
 
@@ -128,7 +128,7 @@ function updateInfo(){
       const memberDiv = document.createElement('div');
       Object.assign(memberDiv, {"textContent":member.name,"id":member.id, "onclick":function() {editMember(member.id)}, "style":"cursor: pointer;"})
       let img_edit = document.createElement('img');
-      Object.assign(img_edit, {"src":"pen.svg", "style":"height:0.8em; display:inline-block; margin:auto auto;"})
+      Object.assign(img_edit, {"src":"assets/pen.svg", "style":"height:0.8em; display:inline-block; margin:auto auto;"})
       memberDiv.appendChild(img_edit);
       if(memberActivated[member.id]){
         if(!memberTrueActivated[member.id]){
