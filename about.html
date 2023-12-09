@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BillBliss</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+
+  <!-- favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./logo/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./logo/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./logo/favicon-16x16.png">
+  <link rel="manifest" href="./logo/site.webmanifest">
+  <link rel="mask-icon" href="./logo/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="./logo/favicon.ico">
+  <meta name="apple-mobile-web-app-title" content="BillBliss">
+  <meta name="application-name" content="BillBliss">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-config" content="./logo/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- scripts -->
+  <script src="js/deptsSettle.js"></script>
+  <script src="js/localStorageAsked.js"></script>
+  <script src="js/toasts.js"></script>
+  <script defer src="js/about.js"></script>
+</head>
+<body>
+  <!-- Navigation Menu -->
+  <nav>
+    <div id="NavigationTitle">
+      <label id="showLeftPanel" for="showLeftPanelCheckbox">
+        <strong class="burgerLayer"></strong>
+        <strong class="burgerLayer"></strong>
+        <strong class="burgerLayer"></strong>
+      </label>
+      <img src="./logo/logo.png">
+      <h1>BillBliss </h1>
+      <button id="updateAll" name="updateAll" onclick="updateAll()">Update</button>
+    </div>
+  </nav>
+
+
+  <section id="leftPanelContainer">
+    <input type="checkbox" id="showLeftPanelCheckbox">
+    <label id="leftPanelBackground" class="ModalBackground" for="showLeftPanelCheckbox"></label>
+    <div id="leftPanel">
+      <div id="PanelTitle">
+        <label for="showLeftPanelCheckbox">
+          <strong class="Xside1"></strong>
+          <strong class="Xside2"></strong>
+        </label>
+        <img src="./logo/logo.png" style="height:2em;">
+        <h1>BillBliss</h1>
+      </div>
+      <div class="leftPanelButtonGroupe">
+        <label class="ButtonRetractible">
+          <input type="checkbox" class="ButtonRetractibleCheckbox" checked>
+          <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Projects.svg');">
+            Projects
+          </div>
+          <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
+            <div class="leftPanelButton" onclick="window.location.href = './index.html'" style="--iconURL: url('../assets/icons/AddProjects.svg');">
+              Add project
+            </div>
+            <div class="leftPanelButton" onclick="loadProject('demo')">
+              demo
+            </div>
+            <div class="leftPanelButton" onclick="loadProject('demo2')">
+              demo2
+            </div>
+          </div>
+        </label>
+        <div class="leftPanelButton hidden">
+          Button 1
+        </div>
+      </div>
+      <div class="leftPanelButtonGroupe leftPanelFooter">
+        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Settings.svg');" onclick="window.location.href = './settings.html'">
+          Settings
+        </div>
+        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/About.svg');" onclick="window.location.href = './about.html'">
+          About BillBliss
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="AboutSection" class="SinglePage">
+    <h1>About BillBliss</h1>
+
+    <p>BillBliss is a web application designed to streamline shared budget management on any device.
+      It's a client for <a href="https://ihatemoney.org" target="_blank">IHateMoney.org (IHM)</a>.
+      This mobile-optimized web app uses the <a href="https://ihatemoney.org" target="_blank">IHM</a>
+      server for its backend, providing a convenient and user-friendly interface for users on their phones.
+    </p>
+    <p>
+      This project is not associated in any way with IHateMoney, even though we gratefully thank them for providing the public Rest API.
+    </p>
+
+    <h1>Do we store data ?</h1>
+    <p>No, we don't store any of your data. All the changes you do are directly sent to IHM. Both BillBliss and IHM source code are available on GitHub. There you can verify by yourself the absence of data collection.</p>
+
+    <h1>Source code</h1>
+    <p>The source code for
+      <a href="https://github.com/Turtle6665/BillBliss" target="_blank">BillBliss</a> and
+      <a href="https://github.com/spiral-project/ihatemoney" target="_blank">IHateMoney</a> is on GitHub.</p>
+
+  </section>

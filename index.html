@@ -3,55 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shared Budget Management</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>BillBliss</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./logo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./logo/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./logo/favicon-16x16.png">
+    <link rel="manifest" href="./logo/site.webmanifest">
+    <link rel="mask-icon" href="./logo/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="./logo/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="BillBliss">
+    <meta name="application-name" content="BillBliss">
+    <meta name="msapplication-TileColor" content="#ffc40d">
+    <meta name="msapplication-config" content="./logo/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- scripts -->
+    <script src="js/toasts.js"></script>
+    <script src="js/index.js"></script>
 </head>
 <body>
-    The webpage uses the ihatemoney.org api to access there projects. No data is stored in our pages.
+  <section id="Exemple page">
+    The webpage uses the ihatemoney.org api to access there projects. No data is stored on our side.
     <br/>
-    Go to <a href="./dashboard.html?project=demo&token=WyJkZW1vIl0.GGWpACJMuleIMJj9HxbUrEDSSAc"> the demo page</a>.
-    <br/>
-    <div style="display: none; visibility: hidden;">
-      <!-- Navigation Menu -->
-      <nav>
-          <ul>
-              <li><a href="#login">Login</a></li>
-              <li><a href="#bills">Bills</a></li>
-              <li><a href="#current-state">Current State</a></li>
-          </ul>
-      </nav>
+    Go to <a href="./dashboard.html?project=demo&token=WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE"> the demo page</a>.
+  </section>
+  <br/>
 
-      <!-- Login Page -->
-      <section id="login">
-          <h1>Login</h1>
-  		<form id="auth-form">
-  			<label for="project-id">Project ID:</label>
-  			<input type="text" id="project-id" name="project-id" required>
+  <section id="logingFromIHMLink">
+    To access you projects : </br>
+    Copy your <a href="https://ihatemoney.org" target="_blank">ihatemoney.org</a> invitation links:
+    <input type="text" id="IHMinvitationLink" name="IHMinvitationLink">
+    <button onclick="accessByInvitation()"> Join </button>
+  </section>
 
-  			<label for="private-code">Private Code:</label>
-  			<input type="password" id="private-code" name="private-code" required>
+  <div style="display: none; visibility: hidden;">
+    <!-- Navigation Menu -->
+    <nav>
+        <ul>
+            <li><a href="#login">Login</a></li>
+            <li><a href="#bills">Bills</a></li>
+            <li><a href="#current-state">Current State</a></li>
+        </ul>
+    </nav>
 
-  			<button type="button" id="authenticate">Authenticate</button>
-  		</form>
+    <!-- Login Page -->
+    <section id="login">
+        <h1>Login</h1>
+		<form id="auth-form">
+			<label for="project-id">Project ID:</label>
+			<input type="text" id="project-id" name="project-id" required>
 
-      </section>
+			<label for="private-code">Private Code:</label>
+			<input type="password" id="private-code" name="private-code" required>
 
-      <!-- Bills Page -->
-      <section id="bills">
-          <h1>Bills</h1>
-  		<div id="bills_list">
-  			<!-- Add bill entry form here -->
-  			<!-- Display list of bills here -->
-  		</div>
-      </section>
+			<button type="button" id="authenticate">Authenticate</button>
+		</form>
 
-      <!-- Current State Page -->
-      <section id="current-state">
-          <h1>Current State</h1>
-          <!-- Display current state information here -->
-      </section>
+    </section>
 
-      <!-- <script src="js/script.js"></script> -->
-    </div
+    <!-- Bills Page -->
+    <section id="bills">
+        <h1>Bills</h1>
+		<div id="bills_list">
+			<!-- Add bill entry form here -->
+			<!-- Display list of bills here -->
+		</div>
+    </section>
+
+    <!-- Current State Page -->
+    <section id="current-state">
+        <h1>Current State</h1>
+        <!-- Display current state information here -->
+    </section>
+
+    <!-- <script src="js/script.js"></script> -->
+  </div>
 </body>
 </html>

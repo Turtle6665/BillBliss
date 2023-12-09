@@ -13,7 +13,8 @@ BillBliss is a web application designed to streamline shared budget management o
 
 To use BillBliss, you can follow these steps:
 
-1. Create a new shared budget project on the [ihatemoney.org (IHM)](https://ihatemoney.org) interface.
+1. Create a new shared budget project on the [ihatemoney.org (IHM)](https://ihatemoney.org/create) interface.
+Skip this step if you already have a project.
 2. Access your project and create an invitation link on IHM, which should look like this:
    - Example IHM link: [https://ihatemoney.org/demo/join/WyJkZW1vIl0.GGWpACJMuleIMJj9HxbUrEDSSAc](https://ihatemoney.org/demo/join/WyJkZW1vIl0.GGWpACJMuleIMJj9HxbUrEDSSAc)
 3. Convert the IHM link to a BillBliss link by appending it as a parameter to the dashboard URL:

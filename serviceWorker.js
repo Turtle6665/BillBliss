@@ -1,5 +1,5 @@
 // The name of the cache your app uses.
-const CACHE_VERSION = "0.0.6";
+const CACHE_VERSION = "0.1.0";
 const CURRENT_CACHES = {
   BillBliss: `BillBliss-cache-v${CACHE_VERSION}`,
 };
