@@ -41,19 +41,41 @@ Navigation Menu
 ---------*/
 
 #NavigationTitle{
-  display: inline-block;
+  display: grid;
+  grid-template-columns: 2em 2.4em auto min-content;
   width: 100vw;
   position: relative;
   padding: 0.2em 0.5em;
   z-index: 2;
   background-color: var(--couleur1);
   box-shadow:0px 0px 5px 2px grey;
-  height: calc(2.4em);
+  height: 2.4em;
+}
+
+#showLeftPanel{
+  cursor: pointer;
+  height: 100%;
+  padding-top: 0.2em;
+}
+
+#showLeftPanelCheckbox{
+  visibility: hidden;
+  display: none;
+}
+
+.burgerLayer{
+  display: block;
+  width : 80%;
+  height: 4px;
+  border-radius: 2px;
+  background-color: black;
+  float: left;
+  margin: calc((100% - 4px*3 - 0.2em)/4) 0 0 0;
 }
 
 #NavigationTitle img{
   float: left;
-  height: 100%;
+  width: 2em;
   display: inline-block;
   z-index: 5;
 }
@@ -62,6 +84,8 @@ Navigation Menu
   height: 100%;
   margin : 0.1em 0.2em;
   z-index: 5;
+  /*width: max-content;calc(100vw - 0.2em - 2em - (1em + 50px));*/
+  overflow: hidden;
 }
 
 #updateAll{
@@ -69,7 +93,7 @@ Navigation Menu
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
-  padding: 0.5em;
+  padding: 6px;
   text-align: center;
   text-decoration: none;
   border-radius: 3px;
@@ -89,7 +113,7 @@ Navigation Menu
 
 #navigationList{
   display:flex;
-  margin-top: -0.2em;
+  margin-top: 0;/*-0.2em;*/
 }
 
 #navigationList > li{
@@ -185,7 +209,111 @@ Loading animation
 }
 
 
+/*---------
+leftPanel layout
+---------*/
+#leftPanelBackground{visibility: hidden;}
+#leftPanel{
+  background-color: white;
+  visibility: inherit;
+  display: grid;
+  grid-template-rows: max-content minmax(0, 1fr) max-content;
+  position: absolute;
+  top : 0;
+  left:-100vw;
+  z-index: 100;
+  height: 100vh;
+  width: 100vw;
+  max-width: 300px;
+  transition : left 0.2s;
+}
 
+#showLeftPanelCheckbox:checked ~ #leftPanel,
+#showLeftPanelCheckbox:checked ~ #leftPanelBackground{
+  left:0;
+  visibility:visible;
+}
+
+#PanelTitle{
+  display: grid;
+  grid-template-columns: 2em 2.4em auto;
+  background-color: var(--couleur1);
+  box-shadow:0px 0px 5px 2px grey;
+  padding: 0.2em 0.5em;
+
+}
+
+#PanelTitle > label{
+  padding-top: calc(2em/2 - 4px);
+  line-height: 0;
+}
+
+#PanelTitle > label > strong{
+  display: block;
+  width : 100%;
+  height: 5px;
+  border-radius: 4px;
+  background-color: black;
+  padding: 0;
+}
+.Xside1{
+  transform: translate(0, calc(50%*1.1)) rotate(0.125turn);
+}
+.Xside2{
+  transform: translate(0, calc(-50%*1.1)) rotate(-0.125turn);
+}
+
+#PanelTitle > h1{
+  margin : 0.1em 0.2em;
+}
+
+/*project list*/
+
+#LeftPanelProjectList{
+  padding-left: 0.8em;
+}
+
+.ButtonRetractible > .leftPanelButton{
+  background-image: url(../assets/vslider.svg);
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-position: right bottom 50%;
+  background-size: contain;
+}
+.ButtonRetractibleCheckbox:checked ~ .leftPanelButton{
+  background-image: url(../assets/^slider.svg);
+}
+
+.leftPanelButtonGroupe{
+  overflow-y: auto;
+  margin: 0.4em 0;
+}
+
+.leftPanelButton{
+  padding: 0.4em 0.8em;
+  cursor: pointer;
+}
+
+.leftPanelButton::before{
+  content: "‎ ";
+  width: 1.5em;
+  display: inline-block;
+  background-image: var(--iconURL);
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-position: left 0% bottom 50%;
+  background-size: contain;
+}
+
+.leftPanelFooter{
+  background-color: inherit;
+}
+
+/*
+.leftPanelButton::before{
+  content: attr(url(icon));
+}
+*/
 /*---------
 Pages layout
 ---------*/
@@ -286,8 +414,9 @@ Information page
   color : var(--couleur2);
 }
 
-#membersList > div > img::before{
-  content: "hey";
+#membersList > div::before{
+  content: attr(weight);
+  color: var(--couleur2);
 }
 
 /*---------------
@@ -629,4 +758,100 @@ label, input, select{
   background-color: rgb(200, 250, 200);
   color: rgba(10, 160, 10);
   border-color: rgba(10, 160, 10);
+}
+
+
+/*----------
+Single pages
+(about, Settings)
+----------*/
+
+.SinglePage{
+  padding: 1em 1.5em;
+  text-align: center;
+}
+.SinglePage > h1{
+  margin: 0.5em auto;
+  max-width:500px;
+}
+
+.SinglePage p{
+  text-align: justify;
+  margin: 0.5em auto;
+  max-width: 500px;
+}
+
+/*----------
+Retractible
+----------*/
+
+.ButtonRetractibleCheckbox ~ p::after{
+  content: "‎ ";
+  width: 1.5em;
+  display: inline-block;
+  background-image: url(../assets/vslider.svg);
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-position: right bottom 50%;
+  background-size: contain;
+}
+
+.ButtonRetractibleCheckbox:checked ~ p::after{
+  background-image: url(../assets/^slider.svg);
+}
+
+.ButtonRetractibleCheckbox{
+  display: none;
+  visibility: collapse;
+}
+.ButtonRetractibleDiv{
+  float: left;
+  clip-path: inset(0 0 100% 0);
+  shape-outside: inset(0 0 100% 0);
+  width:100%;
+  overflow-y: hidden;
+  transition: all 0.2s;
+  display: flow-root;
+}
+.ButtonRetractibleCheckbox:checked ~ .ButtonRetractibleDiv{
+  clip-path: inset(0 0 0 0);
+  shape-outside: inset(0 0 0 0);
+}
+
+
+/*----------
+  Switch
+----------*/
+
+.switch > input{
+  display: none;
+  visibility: hidden;
+}
+
+.switch > span{
+  display: inline-block;
+  height: 1em;
+  border-radius: 1em;
+  width: calc(2em - 5px);
+  background-color: var(--couleur1);
+  padding: 2.5px;
+}
+
+.switch > span > span{
+  display: inline-block;
+  float: left;
+  height: 100%;
+  width: 50%;
+  border-radius: 100%;
+  background-color: var(--couleur4);
+}
+
+.switch > input:checked ~ span > span{
+  float: right;
+}
+
+.switchFullWidth{
+  display: block;
+  width: 100%;
+  padding: 0.4em;
 }

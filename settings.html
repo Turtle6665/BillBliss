@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BillBliss</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+
+  <!-- favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./logo/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./logo/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./logo/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./logo/favicon-16x16.png">
+  <link rel="manifest" href="./logo/site.webmanifest">
+  <link rel="mask-icon" href="./logo/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="./logo/favicon.ico">
+  <meta name="apple-mobile-web-app-title" content="BillBliss">
+  <meta name="application-name" content="BillBliss">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-config" content="./logo/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- scripts -->
+  <script src="js/deptsSettle.js"></script>
+  <script src="js/localStorageAsked.js"></script>
+  <script src="js/toasts.js"></script>
+  <script defer src="js/settings.js"></script>
+</head>
+<body>
+  <!-- Navigation Menu -->
+  <nav>
+    <div id="NavigationTitle">
+      <label id="showLeftPanel" for="showLeftPanelCheckbox">
+        <strong class="burgerLayer"></strong>
+        <strong class="burgerLayer"></strong>
+        <strong class="burgerLayer"></strong>
+      </label>
+      <img src="./logo/logo.png">
+      <h1>BillBliss </h1>
+      <button id="updateAll" name="updateAll" onclick="updateAll()">Update</button>
+    </div>
+  </nav>
+
+
+  <section id="leftPanelContainer">
+    <input type="checkbox" id="showLeftPanelCheckbox">
+    <label id="leftPanelBackground" class="ModalBackground" for="showLeftPanelCheckbox"></label>
+    <div id="leftPanel">
+      <div id="PanelTitle">
+        <label for="showLeftPanelCheckbox">
+          <strong class="Xside1"></strong>
+          <strong class="Xside2"></strong>
+        </label>
+        <img src="./logo/logo.png" style="height:2em;">
+        <h1>BillBliss</h1>
+      </div>
+      <div class="leftPanelButtonGroupe">
+        <label class="ButtonRetractible">
+          <input type="checkbox" class="ButtonRetractibleCheckbox" checked>
+          <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Projects.svg');">
+            Projects
+          </div>
+          <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
+            <div class="leftPanelButton" onclick="window.location.href = './index.html'" style="--iconURL: url('../assets/icons/AddProjects.svg');">
+              Add project
+            </div>
+            <div class="leftPanelButton" onclick="loadProject('demo')">
+              demo
+            </div>
+            <div class="leftPanelButton" onclick="loadProject('demo2')">
+              demo2
+            </div>
+          </div>
+        </label>
+        <div class="leftPanelButton hidden">
+          Button 1
+        </div>
+      </div>
+      <div class="leftPanelButtonGroupe leftPanelFooter">
+        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Settings.svg');" onclick="window.location.href = './settings.html'">
+          Settings
+        </div>
+        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/About.svg');" onclick="window.location.href = './about.html'">
+          About BillBliss
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="MainSettingSection" class="SinglePage">
+    <h1>Main Settings</h1>
+    <button type="button" name="saveSettings" onclick="saveSettings()">Save</button>
+    <button type="button" name="DiscardSettings" onclick="updateSettings()">Cancel</button>
+
+    <h2 id="localStorageSection">Local storage</h2>
+    <label class="ButtonRetractible">
+      <input type="checkbox" class="ButtonRetractibleCheckbox">
+      <p>Enable local storage for a persistent, personalized budgeting journey. It securely stores settings and project list on your device, ensuring seamless access across sessions.</p>
+      <div class="ButtonRetractibleDiv">
+        <h3>What is Local Storage?</h3>
+        <p>Local storage is like a personal memory bank for your preferences and important data. It allows us to save things like your customized settings, and project lists so you don't have to repeatedly enter your credentials.</p>
+
+        <h3>Why Not Session Storage?</h3>
+        <p>You might be wondering about session storage. Well, it's like a temporary notepad that only works while you're actively using BillBliss. Once you close all your BillBliss tabs, it says goodbye to all the settings and project lists. Local storage, on the other hand, is a long-term friend that sticks around, making sure your important data is always there when you need it.</p>
+        <br/>
+      </div>
+    </label>
+
+    <label id="localStorageSettingSwitch" class="switch switchFullWidth">
+      <input type="checkbox" name="localStorageUse">
+      Session storage
+      <span><span></span></span>
+      Local storage
+    </label>
+  </section>

@@ -20,12 +20,21 @@
   <meta name="msapplication-config" content="./logo/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 
-
+  <!-- scripts -->
+  <script src="js/deptsSettle.js"></script>
+  <script src="js/localStorageAsked.js"></script>
+  <script src="js/toasts.js"></script>
+  <script defer src="js/dashboard.js"></script>
 </head>
 <body>
   <!-- Navigation Menu -->
   <nav>
     <div id="NavigationTitle">
+      <label id="showLeftPanel" for="showLeftPanelCheckbox">
+        <strong class="burgerLayer"></strong>
+        <strong class="burgerLayer"></strong>
+        <strong class="burgerLayer"></strong>
+      </label>
       <img src="./logo/logo.png">
       <h1>BillBliss </h1>
       <button id="updateAll" name="updateAll" onclick="updateAll()">Update</button>
@@ -38,7 +47,56 @@
     <div id="progress-bar"></div>
     <div id="progress-bar-back"></div>
   </nav>
+
+
+  <section id="leftPanelContainer">
+    <input type="checkbox" id="showLeftPanelCheckbox">
+    <label id="leftPanelBackground" class="ModalBackground" for="showLeftPanelCheckbox"></label>
+    <div id="leftPanel">
+      <div id="PanelTitle">
+        <label for="showLeftPanelCheckbox">
+          <strong class="Xside1"></strong>
+          <strong class="Xside2"></strong>
+        </label>
+        <img src="./logo/logo.png" style="height:2em;">
+        <h1>BillBliss</h1>
+      </div>
+      <div class="leftPanelButtonGroupe">
+        <label class="ButtonRetractible">
+          <input type="checkbox" class="ButtonRetractibleCheckbox" checked>
+          <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Projects.svg');">
+            Projects
+          </div>
+          <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
+            <div class="leftPanelButton" onclick="window.location.href = './index.html'" style="--iconURL: url('../assets/icons/AddProjects.svg');">
+              Add project
+            </div>
+            <div class="leftPanelButton" onclick="loadProject('demo')">
+              demo
+            </div>
+            <div class="leftPanelButton" onclick="loadProject('demo2')">
+              demo2
+            </div>
+          </div>
+        </label>
+        <div class="leftPanelButton hidden">
+          Button 1
+        </div>
+      </div>
+      <div class="leftPanelButtonGroupe leftPanelFooter">
+        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Settings.svg');" onclick="window.location.href = './settings.html'">
+          Settings
+        </div>
+        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/About.svg');" onclick="window.location.href = './about.html'">
+          About BillBliss
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div id="loadingAnnim" class="lds-ring"><div></div><div></div><div></div><div></div></div>
+
+
   <!-- Project information Pge -->
   <section id="page-container" onscroll='document.getElementById("progress-bar").style.marginLeft = document.getElementById("page-container").scrollLeft/3+"px"'>
     <div id="info-page" class="grid-pages">
@@ -94,7 +152,9 @@
     </div>
     <div id="editMemberDiv">
       <h1>Edit member</h1> <br/>
-      <label id="editMemberLabel" for="addMember">Name: </label><input id="editMemberInput" type="text" name="editMember" value="" placeholder="Member name">
+      <label id="editMemberLabel" for="editMemberInput">Name: </label><input id="editMemberInput" type="text" name="editMemberInput" value="" placeholder="Member name">
+      <br/>
+      <label id="editMemberWeight" for="editMemberWeight" class="hidden">Weight: </label><input id="editMemberWeight" type="text" name="editMemberWeight" value="" placeholder="Member weight" class="hidden">
       <br/>
       <button type="button" name="saveEditMember" onclick="pushEditedMember()">Save</button>
       <button type="button" name="cancelEditMember" onclick="document.getElementById('editMemberPage').classList.add('hidden')">Cancel</button>
@@ -131,7 +191,5 @@
   </section>
   <section id="ToastsContainer">
   </section>
-  <script src="js/deptsSettle.js"></script>
-  <script src="js/dashboard.js"></script>
 </body>
 </html>

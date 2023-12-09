@@ -1,14 +1,47 @@
-const sleep = ms => new Promise(res => setTimeout(res, ms));
+//import LS from "./localStorageAsked.js";
+//import settle from "./deptsSettle.js";
 
-//get the tokens and name
+//setup values
+const base_apiUrl = 'https://ihatemoney.org/api/projects/';
+
+//install the service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./serviceWorker.js')
+    .then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }).catch(function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+}
+
+//Invitation links
 const URLQueryParams = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
 });
 // Get the value of "project" in eg "https://example.com/?project=some_value"
 let projectID = URLQueryParams.project;
 let token = URLQueryParams.token;
+if(URLQueryParams.localStorage){
+  storage.acceptLocalStorage()
+}
 
-const apiUrl = 'https://ihatemoney.org/api/projects/'+projectID;
+let ProjectsList = storage.getItem("ProjectsList");
+if(!(projectID==null)&!(token==null)){
+  //adding the projects token to localStorage
+  if(ProjectsList==null){
+    ProjectsList = {};
+  }
+  ProjectsList[projectID] = {"token":token};
+  storage.setItem("ProjectsList", ProjectsList);
+  //window.location.search = "?project="+projectID
+  history.replaceState("", "", "?project="+projectID);
+}else if(!(projectID==null)&(token==null)&!(ProjectsList[projectID]==null)){
+  token = ProjectsList[projectID]["token"];
+}
+
+let apiUrl = base_apiUrl + projectID
 
 //Get the informations of the project
 let info=null;
@@ -36,8 +69,14 @@ function updateInfo(){
     // Update the 'information' div with the project data
     // Update individual div elements with project data
     document.getElementById('projectName').textContent = data.name;
+    ProjectsList = storage.getItem("ProjectsList");
+    ProjectsList[projectID]["name"] = data.name;
+    storage.setItem("ProjectsList", ProjectsList);
     document.getElementById('contactEmail').textContent = data.contact_email;
     document.getElementById('currency').textContent = data.default_currency;
+    //set the project name in the title
+    document.getElementById("NavigationTitle").getElementsByTagName("H1")[0].textContent=data.name;
+    document.title = "BillBliss | "+data.name
 
     // Create a list of members
     const membersList = document.getElementById('membersList');
@@ -54,9 +93,11 @@ function updateInfo(){
       memberTrueActivated[member.id] = member.activated
       memberActivated[member.id] = !(!member.activated&&(Math.abs(member.balance)<=0.01));
       const memberDiv = document.createElement('div');
+      let weight= member.weight != 1 ? "("+member.weight+"x) " : ""
       Object.assign(memberDiv, {"textContent":member.name,"id":member.id, "onclick":function() {editMember(member.id)}, "style":"cursor: pointer;"})
+      memberDiv.setAttribute("weight",weight)
       let img_edit = document.createElement('img');
-      Object.assign(img_edit, {"src":"pen.svg", "style":"height:0.8em; display:inline-block; margin:auto auto;"})
+      Object.assign(img_edit, {"src":"assets/pen.svg", "style":"height:0.8em; display:inline-block; margin:auto auto;"})
       memberDiv.appendChild(img_edit);
       if(memberActivated[member.id]){
         if(!memberTrueActivated[member.id]){
@@ -538,6 +579,24 @@ function removeBill(billID){
 }
 
 
+//adding the project list
+function updateProjectList(){
+  let LeftPanelProjectList = document.getElementById("LeftPanelProjectList");
+  LeftPanelProjectList.innerHTML = "";
+  ProjectsList = storage.getItem("ProjectsList")
+  projectButton = document.createElement("div");
+  Object.assign(projectButton, {textContent : "Add project", classList: "leftPanelButton", style: "--iconURL: url('../assets/icons/AddProjects.svg');", onclick: function(){window.location.href = './index.html';}});
+  LeftPanelProjectList.appendChild(projectButton);
+
+  Object.keys(ProjectsList).forEach(project => {
+    if (project != projectID){
+      projectButton = document.createElement("div");
+      Object.assign(projectButton, {textContent : ProjectsList[project].name, classList: "leftPanelButton", onclick: function(){loadProject(project);}});
+      LeftPanelProjectList.appendChild(projectButton);
+    };
+  });
+}
+
 //function to render amoney
 function amountToText(amount, currency){
   function round(v) { //to properly round negative value + round to 10E-2
@@ -557,6 +616,7 @@ function amountToText(amount, currency){
 //the function to update all the page
 function updateAll(){
   document.getElementById("loadingAnnim").classList.remove("hidden");
+  updateProjectList();
   if((token != null)&&(projectID!= null)){
     updateInfo().then(t =>{
       const r1 = updateBills()
@@ -573,49 +633,10 @@ function updateAll(){
 }
 
 
-//install the service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./serviceWorker.js')
-    .then(function(registration) {
-      // Registration was successful
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }).catch(function(err) {
-      // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
-    });
-}
-
-
-
-//make a popup/toast
-async function ShowToast(text, color){
-  //ShowToast function
-  // text a string that will show up on the toast
-  // color a string for color : `red` (errors,...), `green` (Action performed)
-  color = color.trim()
-  let ToastsContainer = document.getElementById("ToastsContainer");
-  let ToastDiv = document.createElement("div");
-  Object.assign(ToastDiv, {textContent : text, classList : "ToastDiv ToastDiv"+color});
-  let ToastCross = document.createElement("strong");
-  Object.assign(ToastCross, {textContent : "x", onclick: function(){RemoveToast(ToastDiv)}});
-  ToastDiv.appendChild(ToastCross);
-  ToastsContainer.appendChild(ToastDiv);
-  //console.log("waiting")
-  await sleep(5000);
-  //console.log("waited")
-  do {
-    await sleep(100);
-    //console.log("hoverd");
-  }while(ToastDiv.matches(":hover"))
-  RemoveToast(ToastDiv);
-}
-
-//ShowToast("Hello", "Green")
-
-async function RemoveToast(ToastDiv){
-  ToastDiv.classList.add("ToastDivRemoved");
-  await sleep(1000);
-  ToastDiv.remove();
+//function to load a different projet
+function loadProject(project){
+  document.getElementById("showLeftPanelCheckbox").checked = false;
+  window.location.search = "?project="+project;
 }
 
 
