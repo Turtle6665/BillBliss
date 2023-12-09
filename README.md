@@ -19,7 +19,7 @@ Skip this step if you already have a project.
    - Example IHM link: [https://ihatemoney.org/demo/join/WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE](https://ihatemoney.org/demo/join/WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE)
 3. Convert the IHM link to a BillBliss link by appending it as a parameter to the dashboard URL:
    - Example BillBliss link: [https://turtle6665.github.io/BillBliss/dashboard.html?project=demo&token=WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE](https://turtle6665.github.io/BillBliss/dashboard.html?project=demo&token=WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE)
-   
+
 Now, you're ready to start managing your shared expenses using BillBliss!
 
 ## Technology Stack
