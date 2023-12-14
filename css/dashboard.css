@@ -23,6 +23,13 @@
   height: 0;
 }
 
+@media (hover: none), (hover: on-demand), (-moz-touch-enabled: 1), (pointer:coarse) and (max-width: 900px){
+  /*make a bigger interface for smartphones and tuched device*/
+	html{
+		font-size: 20px;
+	}
+}
+
 /*---------
 Main layout
 ---------*/
