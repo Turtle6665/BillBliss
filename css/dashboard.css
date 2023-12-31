@@ -26,7 +26,7 @@
 @media (hover: none), (hover: on-demand), (-moz-touch-enabled: 1), (pointer:coarse) and (max-width: 900px){
   /*make a bigger interface for smartphones and tuched device*/
 	html{
-		font-size: 20px;
+		font-size: 18px;
 	}
 }
 
@@ -776,8 +776,9 @@ Single pages
 .SinglePage{
   padding: 1em 1.5em;
   text-align: center;
+  overflow-y: auto;
 }
-.SinglePage > h1{
+.SinglePage h1{
   margin: 0.5em auto;
   max-width:500px;
 }
@@ -786,6 +787,33 @@ Single pages
   text-align: justify;
   margin: 0.5em auto;
   max-width: 500px;
+}
+
+.SinglePageContainer{
+  margin: 0.5em auto;
+  max-width: 500px;
+}
+
+.SinglePageContainer label{
+  display: inline-block;
+  text-align: left;
+  width:100%;
+  margin: 0.2em 0;
+}
+
+.SinglePageContainer button{
+  padding: 0.2em;
+  width: 100%;
+  background-color: var(--couleur5);
+  border-radius: 0.2em;
+  cursor: pointer;
+}
+
+.SinglePageContainer label > input{
+  width: 100%;
+  float: right;
+  margin: 0.1em 0;
+  padding: 0.2em;
 }
 
 /*----------
@@ -815,14 +843,18 @@ Retractible
   float: left;
   clip-path: inset(0 0 100% 0);
   shape-outside: inset(0 0 100% 0);
+  max-height: 0;
   width:100%;
   overflow-y: hidden;
-  transition: all 0.2s;
+  --transitionTime: 0.2s;
+  transition: clip-path var(--transitionTime), shape-outside var(--transitionTime), max-height 0s var(--transitionTime);
   display: flow-root;
 }
 .ButtonRetractibleCheckbox:checked ~ .ButtonRetractibleDiv{
   clip-path: inset(0 0 0 0);
   shape-outside: inset(0 0 0 0);
+  max-height: 10000px;
+  transition: clip-path var(--transitionTime), shape-outside var(--transitionTime), max-height 0s 0s;
 }
 
 

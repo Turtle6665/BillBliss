@@ -416,7 +416,7 @@ function SelectforWhom(SelectAll){
 //push the bill to the server
 let lastbillID = 0
 function pushNewBill(addNew = false){
-  document.getElementById("loadingAnnim").classList.remove("hidden");
+  startLoading();
   const billInputData = [...document.getElementById('newBillPage').getElementsByTagName('input'),
                          ...document.getElementById('newBillPage').getElementsByTagName('select')].reduce((one,nex)=> {
                            if (nex.type==="checkbox"){
@@ -462,21 +462,21 @@ function pushNewBill(addNew = false){
       return false
     })}).then(a =>{
       if(a===false){
-        document.getElementById("loadingAnnim").classList.add("hidden");
+        endLoading();
         return a
       }
       activateMember = memberToActivate.reduce((allmempush,memberID)=>{
         return allmempush// allmempush.concat(removeMember(memberID, false))
       }, []);
       return Promise.all(activateMember).then(a=> {
-        document.getElementById("loadingAnnim").classList.add("hidden");
+        endLoading();
         ShowToast("New bill added.","Green")
         updateAll();
         document.getElementById('newBillPage').classList.add('hidden');
         if(addNew){addBill()};
       })
     }).catch(error => {
-      document.getElementById("loadingAnnim").classList.add("hidden");
+      endLoading();
       activateMember = memberToActivate.reduce((allmempush,memberID)=>{
         return allmempush //allmempush.concat(removeMember(memberID, false))
       }, []);
@@ -535,7 +535,7 @@ function pushEditedBill(billID){
     })}).then(a =>{
       //console.log(a)
       if(a===false){
-        document.getElementById("loadingAnnim").classList.add("hidden");
+        endLoading();
         return a
       }
       activateMember = memberToActivate.reduce((allmempush,memberID)=>{
@@ -544,13 +544,13 @@ function pushEditedBill(billID){
       return Promise.all(activateMember).then(a=> {
         console.log("ok", a)
         ShowToast("Bill updated.","Green")
-        document.getElementById("loadingAnnim").classList.add("hidden");
+        endLoading();
         updateAll();
         document.getElementById('newBillPage').classList.add('hidden');
       })
     }).catch(error => {
       console.log(error)
-      //document.getElementById("loadingAnnim").classList.add("hidden");
+      //endLoading();
       //activateMember = memberToActivate.reduce((allmempush,memberID)=>{
       //  return allmempush.concat(removeMember(memberID, false))
       //}, []);
@@ -585,7 +585,7 @@ function updateProjectList(){
   LeftPanelProjectList.innerHTML = "";
   ProjectsList = storage.getItem("ProjectsList")
   projectButton = document.createElement("div");
-  Object.assign(projectButton, {textContent : "Add project", classList: "leftPanelButton", style: "--iconURL: url('../assets/icons/AddProjects.svg');", onclick: function(){window.location.href = './index.html';}});
+  Object.assign(projectButton, {textContent : "Add project", classList: "leftPanelButton", style: "--iconURL: url('../assets/icons/AddProjects.svg');", onclick: function(){window.location.href = './AddProject.html';}});
   LeftPanelProjectList.appendChild(projectButton);
 
   Object.keys(ProjectsList).forEach(project => {
@@ -615,7 +615,7 @@ function amountToText(amount, currency){
 
 //the function to update all the page
 function updateAll(){
-  document.getElementById("loadingAnnim").classList.remove("hidden");
+  startLoading();
   updateProjectList();
   if((token != null)&&(projectID!= null)){
     updateInfo().then(t =>{
@@ -623,7 +623,7 @@ function updateAll(){
       const r2 = updateSummary();
       Promise.all([r1, r2]).then(resp =>{
         console.log("Alldata Updated")
-        document.getElementById("loadingAnnim").classList.add("hidden")
+        endLoading()
       });
     })
   }else {

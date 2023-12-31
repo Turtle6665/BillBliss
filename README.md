@@ -11,16 +11,20 @@ BillBliss is a web application designed to streamline shared budget management o
 
 ## Getting Started
 
-To use BillBliss, you can follow these steps:
+To use BillBliss, follow these simple steps:
 
-1. Create a new shared budget project on the [ihatemoney.org (IHM)](https://ihatemoney.org/create) interface.
-Skip this step if you already have a project.
-2. Access your project and create an invitation link on IHM, which should look like this:
-   - Example IHM link: [https://ihatemoney.org/demo/join/WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE](https://ihatemoney.org/demo/join/WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE)
-3. Convert the IHM link to a BillBliss link by appending it as a parameter to the dashboard URL:
-   - Example BillBliss link: [https://turtle6665.github.io/BillBliss/dashboard.html?project=demo&token=WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE](https://turtle6665.github.io/BillBliss/dashboard.html?project=demo&token=WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE)
+1. **Create a new shared budget project:**
+   - Visit [ihatemoney.org](https://ihatemoney.org/create) and create a new project. If you already have a project, you can skip this step.
 
-Now, you're ready to start managing your shared expenses using BillBliss!
+2. **Generate an invitation link on IHM:**
+   - Access your project on IHM and create an invitation link.
+   - Example IHM link format: [https://ihatemoney.org/demo/join/PROJECT_TOKEN](https://ihatemoney.org/demo/join/WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE).
+
+3. **Copy the invitation link on BillBliss:**
+   - Go to [BillBliss](https://turtle6665.github.io/BillBlissAddProject.html) and paste the IHM invitation link. Alternatively, you can use your project ID and project code to log in to your project directly.
+
+Now, you're all set to manage your shared expenses using BillBliss!
+
 
 ## Technology Stack
 

@@ -6,7 +6,7 @@ function updateProjectList(){
   LeftPanelProjectList.innerHTML = "";
   ProjectsList = storage.getItem("ProjectsList")
   projectButton = document.createElement("div");
-  Object.assign(projectButton, {textContent : "Add projects", classList: "leftPanelButton", style: "--iconURL: url('../assets/icons/AddProjects.svg');", onclick: function(){window.location.href = './index.html'}});
+  Object.assign(projectButton, {textContent : "Add projects", classList: "leftPanelButton", style: "--iconURL: url('../assets/icons/AddProjects.svg');", onclick: function(){window.location.href = './AddProject.html'}});
   LeftPanelProjectList.appendChild(projectButton);
 
   Object.keys(ProjectsList).forEach(project => {
