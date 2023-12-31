@@ -1,3 +1,6 @@
+// a js file containing toast and loading animations function
+
+
 //Some important functions initialisation
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
@@ -35,4 +38,27 @@ async function RemoveToast(ToastDiv){
   ToastDiv.classList.add("ToastDivRemoved");
   await sleep(1000);
   ToastDiv.remove();
+}
+
+
+function startLoading(){
+  //append loadingAnnim to body if not present
+  if(!document.getElementById("loadingAnnim")){
+    let loadingAnnim = document.createElement("div")
+    Object.assign(loadingAnnim, {id:"loadingAnnim", className:"lds-ring"})
+    loadingAnnim.appendChild(document.createElement("div"))
+    loadingAnnim.appendChild(document.createElement("div"))
+    loadingAnnim.appendChild(document.createElement("div"))
+    loadingAnnim.appendChild(document.createElement("div"))
+    document.body.appendChild(loadingAnnim)
+  }else{
+    let loadingAnnim = document.getElementById("loadingAnnim");
+  }
+  [...document.getElementsByTagName("button")].forEach(i => i.disabled = true);
+  loadingAnnim.classList.remove("hidden");
+}
+
+function endLoading(){
+  [...document.getElementsByTagName("button")].forEach(i => i.disabled = false);
+  document.getElementById("loadingAnnim").classList.add("hidden");
 }

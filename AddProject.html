@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BillBliss</title>
+  <title>BillBliss | Add Project</title>
   <link rel="stylesheet" href="css/dashboard.css">
 
   <!-- favicon -->
@@ -24,7 +24,7 @@
   <script src="js/deptsSettle.js"></script>
   <script src="js/localStorageAsked.js"></script>
   <script src="js/toasts.js"></script>
-  <script defer src="js/settings.js"></script>
+  <script defer src="js/AddProject.js"></script>
 </head>
 <body>
   <!-- Navigation Menu -->
@@ -87,29 +87,33 @@
     </div>
   </section>
 
-  <section id="MainSettingSection" class="SinglePage">
-    <h1>Main Settings</h1>
-    <button type="button" name="saveSettings" onclick="saveSettings()">Save</button>
-    <button type="button" name="DiscardSettings" onclick="updateSettings()">Cancel</button>
+  <section id="AddProjectSection" class="SinglePage">
+    <div class="SinglePageContainer">
+      <h1>Log in to an existing project<h1>
+      <h3>From private code</h2>
+      <label>Project identifier: <input type="text" name="projectID" id="projectID"/></label>
+      <br>
+      <label>Private code: <input type="password" name="projectCode" id="projectCode"/></label>
+      <br>
+      <button type="button" name="LoggInFromCode" onclick="logInByIHMCode()">Log in</button>
+      <br><br>
+      <h3>From IHateMoney invitation links</h2>
+      <label>Invitation link: <input type="link" name="IHMinvitationLink" id="IHMinvitationLink" placeholder="https://ihatemoney.org/demo/join/PROJECT_TOKEN"/></label>
+      <br>
+      <button type="button" name="LogInFromLink" onclick="logInByIHMInvitation()">Log in</button>
+      <br><br>
 
-    <h2 id="localStorageSection">Local storage</h2>
-    <label class="ButtonRetractible">
-      <input type="checkbox" class="ButtonRetractibleCheckbox">
-      <p>Enable local storage for a persistent and personalized budgeting journey. It stores settings and project list on your device, ensuring seamless access across sessions.</p>
-      <div class="ButtonRetractibleDiv">
-        <h3>What is Local Storage?</h3>
-        <p>Local storage is like a personal memory bank for your preferences and important data. It allows us to save things like your customized settings, and project lists so you don't have to repeatedly enter your credentials.</p>
+      <h1>Create a new project</h1>
+      <h5>Not yet implemented</h5>
+      <label>Project name: <input type="text" name="newProjectID" id="newProjectID" disabled/></label>
+      <br>
+      <label>Private code: <input type="password" name="newProjectCode" id="newProjectCode" disabled/></label>
+      <br>
+      <label>Email: <input type="text" name="Email" id="Email" disabled/></label>
+      <br>
+      <button type="button" name="CreateProject" onclick="CreateProject()">Create projects</button>
+      <br><br>
 
-        <h3>Why Not Session Storage?</h3>
-        <p>You might be wondering about session storage. Well, it's like a temporary notepad that only works while you're actively using BillBliss. Once you close all your BillBliss tabs, it says goodbye to all the settings and project lists. Local storage, on the other hand, is a long-term friend that sticks around, making sure your important data is always there when you need it.</p>
-        <br/>
-      </div>
-    </label>
 
-    <label id="localStorageSettingSwitch" class="switch switchFullWidth">
-      <input type="checkbox" name="localStorageUse">
-      Session storage
-      <span><span></span></span>
-      Local storage
-    </label>
+    </div>
   </section>
