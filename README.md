@@ -21,7 +21,7 @@ To use BillBliss, follow these simple steps:
    - Example IHM link format: [https://ihatemoney.org/demo/join/PROJECT_TOKEN](https://ihatemoney.org/demo/join/WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE).
 
 3. **Copy the invitation link on BillBliss:**
-   - Go to [BillBliss](https://turtle6665.github.io/BillBlissAddProject.html) and paste the IHM invitation link. Alternatively, you can use your project ID and project code to log in to your project directly.
+   - Go to [BillBliss](https://turtle6665.github.io/BillBliss/AddProject.html) and paste the IHM invitation link. Alternatively, you can use your project ID and project code to log in to your project directly.
 
 Now, you're all set to manage your shared expenses using BillBliss!
 
