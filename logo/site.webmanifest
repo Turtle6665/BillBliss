@@ -20,7 +20,7 @@
       "service_worker": "./../js/service-worker.js"
     },
     "id": "PWAforIHM",
-    "old__start_url": "./../dashboard.html",
+    "start_url": "./../dashboard.html",
     "orientation": "portrait-primary",
     "display_override": [
         "standalone",
