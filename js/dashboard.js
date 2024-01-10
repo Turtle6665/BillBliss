@@ -28,11 +28,27 @@ if(URLQueryParams.localStorage){
 }
 
 let ProjectsList = storage.getItem("ProjectsList");
+if(projectID==""){ //to fix issues when the project id is set to "" (via ?project=&)
+  projectID = null;
+}
+if(ProjectsList==null){
+  ProjectsList = {};
+}
+if (projectID == null) {
+  console.log("hello", ProjectsList)
+  //if no project selected :
+  if(Object.keys(ProjectsList).length >= 1){
+    //select first project if present
+    projectID = Object.keys(ProjectsList)[0]
+  }else{
+    //swap to project creation page if not
+    window.location.href = "./AddProject.html"
+  }
+
+}
+
 if(!(projectID==null)&!(token==null)){
   //adding the projects token to localStorage
-  if(ProjectsList==null){
-    ProjectsList = {};
-  }
   ProjectsList[projectID] = {"token":token};
   storage.setItem("ProjectsList", ProjectsList);
   //window.location.search = "?project="+projectID
@@ -108,6 +124,7 @@ function updateInfo(){
     });
   })
   .catch(error => {
+    ShowToast(error, "Red")
     console.error('Error:', error);
   });
 }
@@ -587,14 +604,15 @@ function updateProjectList(){
   projectButton = document.createElement("div");
   Object.assign(projectButton, {textContent : "Add project", classList: "leftPanelButton", style: "--iconURL: url('../assets/icons/AddProjects.svg');", onclick: function(){window.location.href = './AddProject.html';}});
   LeftPanelProjectList.appendChild(projectButton);
-
-  Object.keys(ProjectsList).forEach(project => {
-    if (project != projectID){
-      projectButton = document.createElement("div");
-      Object.assign(projectButton, {textContent : ProjectsList[project].name, classList: "leftPanelButton", onclick: function(){loadProject(project);}});
-      LeftPanelProjectList.appendChild(projectButton);
-    };
-  });
+  if(!!ProjectsList){
+    Object.keys(ProjectsList).forEach(project => {
+      if (project != projectID){
+        projectButton = document.createElement("div");
+        Object.assign(projectButton, {textContent : ProjectsList[project].name, classList: "leftPanelButton", onclick: function(){loadProject(project);}});
+        LeftPanelProjectList.appendChild(projectButton);
+      };
+    });
+  }
 }
 
 //function to render amoney

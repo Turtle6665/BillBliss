@@ -11,11 +11,13 @@ function updateProjectList(){
   Object.assign(projectButton, {textContent : "Add projects", classList: "leftPanelButton", style: "--iconURL: url('../assets/icons/AddProjects.svg');", onclick: function(){window.location.href = './AddProject.html';}});
   LeftPanelProjectList.appendChild(projectButton);
 
-  Object.keys(ProjectsList).forEach(project => {
-    projectButton = document.createElement("div");
-    Object.assign(projectButton, {textContent : ProjectsList[project].name, classList: "leftPanelButton", onclick: function(){loadProject(project);}});
-    LeftPanelProjectList.appendChild(projectButton);
-  });
+  if(!!ProjectsList){
+    Object.keys(ProjectsList).forEach(project => {
+      projectButton = document.createElement("div");
+      Object.assign(projectButton, {textContent : ProjectsList[project].name, classList: "leftPanelButton", onclick: function(){loadProject(project);}});
+      LeftPanelProjectList.appendChild(projectButton);
+    });
+  }
 }
 
 //function to load a different projet
@@ -23,9 +25,6 @@ function loadProject(project){
   document.getElementById("showLeftPanelCheckbox").checked = false;
   window.location.href = "./dashboard.html?project="+project;
 }
-
-updateProjectList();
-
 
 //
 // Main page
@@ -93,16 +92,15 @@ function VerifieAuthCode(projectID, ProjectCode){
 async function logInByIHMCode(){
   startLoading()
   let projectIDInput = document.getElementById("projectID");
-  projectIDInput.value = projectIDInput.value.trim(); //remove start and end space
   let projectCodeInput = document.getElementById("projectCode");
 
-  let token = await VerifieAuthCode(projectIDInput.value, projectCodeInput.value)
+  let projectID = projectIDInput.value.trim(); //remove start and end space
+  let token = await VerifieAuthCode(projectID, projectCodeInput.value)
   if(!!token){//is true if token is a non null string
-    let projectID = projectIDInput.value
     projectIDInput.value = "";
     projectCodeInput.value = "";
     endLoading();
-    window.location.href = "./dashboard.html?project="+projectID+"&token="+token;
+    window.location.href = "./dashboard.html?project="+encodeURIComponent(projectID)+"&token="+encodeURIComponent(token);
   }else{
     endLoading();
   }
@@ -145,7 +143,7 @@ async function logInByIHMInvitation(){
   if(await VerifieAuthToken(projectID, projectToken)){
     iHMinvitationLink.value = "";
     endLoading()
-    window.location.href = "./dashboard.html?project="+projectID+"&token="+projectToken;
+    window.location.href = "./dashboard.html?project="+encodeURIComponent(projectID)+"&token="+encodeURIComponent(projectToken);
   }else{
     endLoading()
     ShowToast("Invitation link not valid","Red")
@@ -157,3 +155,8 @@ async function logInByIHMInvitation(){
 function CreateProject(){
   ShowToast("The project creation has not yet been implemented. Please go to IHateMoney to create one before using this interface.","Red")
 }
+
+
+
+
+updateProjectList();
