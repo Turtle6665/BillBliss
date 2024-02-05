@@ -809,9 +809,9 @@ Single pages
   cursor: pointer;
 }
 
-.SinglePageContainer label > input{
+.SinglePageContainer label > input, .SinglePageContainer label > select{
   width: 100%;
-  float: right;
+  float: center;
   margin: 0.1em 0;
   padding: 0.2em;
 }

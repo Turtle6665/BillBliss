@@ -113,10 +113,16 @@
         <label>Private code: <input type="password" name="newProjectCode" id="newProjectCode" required/></label>
         <br>
         <label>Email: <input type="text" name="Email" id="newProjectEmail" required/></label>
-        <div hidden>
-          <label>Project curency: <input type="text" name="curency" id="newProjectCurrency"/></label>
-        </div>
+        <label class="ButtonRetractible">
+          <input type="checkbox" class="ButtonRetractibleCheckbox">
+          <p>Advance options</p>
+          <div class="ButtonRetractibleDiv">
+            <label>Project id: <input type="text" name="ProjectId" id="newProjectId"/></label>
+            <label>Project curency: <select name="curency" id="newProjectCurrency"/></select></label>
+          </div>
+        </label>
         <button type="submit" name="CreateProject" onclick="CreateNewProject()">Create projects</button>
       </form>
     </div>
+    <br><br><br><br>
   </section>

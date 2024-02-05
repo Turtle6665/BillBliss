@@ -155,15 +155,19 @@ async function logInByIHMInvitation(){
 
 //Create projects
 function CreateNewProject(){
-  //ShowToast("The project creation has not yet been implemented. Please go to IHateMoney to create one before using this interface.","Red");
+  //project data fetch
   let projectData = {
     "name" : document.getElementById("newProjectID").value,
     "id" : document.getElementById("newProjectID").value,
     "password" : document.getElementById("newProjectCode").value,
     "contact_email" : document.getElementById("newProjectEmail").value
   }
+  //Advance Options
   if(document.getElementById("newProjectCurrency").value != ""){
     projectData["default_currency"] = document.getElementById("newProjectCurrency").value
+  }
+  if(document.getElementById("newProjectId").value !=""){
+    projectData["id"] = document.getElementById("newProjectId").value
   }
 
   if(Object.values(projectData).some(el=> el=="")){
@@ -202,13 +206,41 @@ function CreateNewProject(){
     ShowToast(error.message,"Red")
     console.error('Error:', error.message);
   })
-
-
-
-
 }
 
 
+//
+// Update curency list
+//
+function updateCurencyList(){
+  return(fetch(apiUrlCurrencies, {method:"GET"})
+    .then(async response => {
+      if (!response.ok){
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(curencyList =>{
+      newProjectCurrencySelect = document.getElementById("newProjectCurrency")
+      newProjectCurrencySelect.innerHTML = "";
+      curencyList.forEach((curency) => {
+        let curencyOption = document.createElement("option");
+        Object.assign(curencyOption, {value:curency, textContent:curency});
+        if(curency == "XXX"){
+          curencyOption.textContent = "No curency";
+          curencyOption.selected = true;
+        }
+        newProjectCurrencySelect.appendChild(curencyOption);
+      });
+
+    })
+    .catch(error => {
+      ShowToast(error.message,"Red")
+      console.error('Error:', error.message);
+    })
+  )
+}
 
 
 updateProjectList();
+updateCurencyList();
