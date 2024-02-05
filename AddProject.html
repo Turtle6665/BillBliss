@@ -90,29 +90,33 @@
     <div class="SinglePageContainer">
       <h1>Log in to an existing project<h1>
       <h3>From private code</h2>
-      <label>Project identifier: <input type="text" name="projectID" id="projectID"/></label>
+      <form onsubmit="event.preventDefault()">
+        <label>Project identifier: <input type="text" name="projectID" id="projectID" required/></label>
+        <br>
+        <label>Private code: <input type="password" name="projectCode" id="projectCode" required/></label>
+        <br>
+        <button type="submit" name="LoggInFromCode" onclick="logInByIHMCode()">Log in</button>
+      </form>
       <br>
-      <label>Private code: <input type="password" name="projectCode" id="projectCode"/></label>
-      <br>
-      <button type="button" name="LoggInFromCode" onclick="logInByIHMCode()">Log in</button>
-      <br><br>
       <h3>From IHateMoney invitation links</h2>
-      <label>Invitation link: <input type="link" name="IHMinvitationLink" id="IHMinvitationLink" placeholder="https://ihatemoney.org/demo/join/PROJECT_TOKEN"/></label>
+      <form onsubmit="event.preventDefault();">
+        <label>Invitation link: <input type="link" name="IHMinvitationLink" id="IHMinvitationLink" placeholder="https://ihatemoney.org/demo/join/PROJECT_TOKEN" required/></label>
+        <br>
+        <button type="submit" name="LogInFromLink" onclick="logInByIHMInvitation()">Log in</button>
+      </form>
       <br>
-      <button type="button" name="LogInFromLink" onclick="logInByIHMInvitation()">Log in</button>
-      <br><br>
 
       <h1>Create a new project</h1>
-      <h5>Not yet implemented</h5>
-      <label>Project name: <input type="text" name="newProjectID" id="newProjectID" disabled/></label>
-      <br>
-      <label>Private code: <input type="password" name="newProjectCode" id="newProjectCode" disabled/></label>
-      <br>
-      <label>Email: <input type="text" name="Email" id="Email" disabled/></label>
-      <br>
-      <button type="button" name="CreateProject" onclick="CreateProject()">Create projects</button>
-      <br><br>
-
-
+      <form onsubmit="event.preventDefault();">
+        <label>Project name: <input type="text" name="newProjectID" id="newProjectID" required/></label>
+        <br>
+        <label>Private code: <input type="password" name="newProjectCode" id="newProjectCode" required/></label>
+        <br>
+        <label>Email: <input type="text" name="Email" id="newProjectEmail" required/></label>
+        <div hidden>
+          <label>Project curency: <input type="text" name="curency" id="newProjectCurrency"/></label>
+        </div>
+        <button type="submit" name="CreateProject" onclick="CreateNewProject()">Create projects</button>
+      </form>
     </div>
   </section>

@@ -1,11 +1,11 @@
 :root {
-  --couleur1: #adb6f4;
-  --couleur2: #bdc4e6;
-  --couleur3: #ced2d7;
-  --couleur4: #dfdfc5;
-  --couleur5: #f1ecb1;
-  --couleurVert : #adfc2e;
-  --couleurRouge: #ff5e47;
+  --color1: #adb6f4;
+  --color2: #bdc4e6;
+  --color3: #ced2d7;
+  --color4: #dfdfc5;
+  --color5: #f1ecb1;
+  --colorGreen : #adfc2e;
+  --colorRed: #ff5e47;
 }
 
 
@@ -54,7 +54,7 @@ Navigation Menu
   position: relative;
   padding: 0.2em 0.5em;
   z-index: 2;
-  background-color: var(--couleur1);
+  background-color: var(--color1);
   box-shadow:0px 0px 5px 2px grey;
   height: 2.4em;
 }
@@ -148,7 +148,7 @@ Navigation Menu
   height: 1.5em;
   top: 2.4em;
   width: calc(100% / 3);
-  background-color: var(--couleur1);
+  background-color: var(--color1);
   border-radius:0 0 0.4em 0.4em;
   z-index:2;
   left: 0;
@@ -159,7 +159,7 @@ Navigation Menu
   height: 4.2em;
   top: -0.3em;
   width: 100%;
-  background-color: var(--couleur5);
+  background-color: var(--color5);
   left: 0;
   animation: marginLeft 0.3s;
   position: absolute;
@@ -176,7 +176,7 @@ Loading animation
   top: calc(50vh - 40px);
 }
 #loadingAnnim div{
-  border-color: var(--couleur1) transparent transparent transparent;
+  border-color: var(--color1) transparent transparent transparent;
 }
 .lds-ring {
   display: inline-block;
@@ -244,7 +244,7 @@ leftPanel layout
 #PanelTitle{
   display: grid;
   grid-template-columns: 2em 2.4em auto;
-  background-color: var(--couleur1);
+  background-color: var(--color1);
   box-shadow:0px 0px 5px 2px grey;
   padding: 0.2em 0.5em;
 
@@ -342,8 +342,8 @@ Pages layout
   }
   .grid-pages{
     width: calc(100vw/3) !important;
-    border-left: 1px solid var(--couleur3);
-    border-right: 1px solid var(--couleur3);
+    border-left: 1px solid var(--color3);
+    border-right: 1px solid var(--color3);
   }
   #addBill{
     left: calc(50vw/3 - 1.2em/2)!important;
@@ -407,8 +407,8 @@ Information page
 
 #membersList > div{
   border-radius: 0.5em;
-  background-color: var(--couleur5);
-  border-style: 1px solid var(--couleur5);
+  background-color: var(--color5);
+  border-style: 1px solid var(--color5);
   box-shadow:0px 0px 5px 2px grey;
   padding:0.5em;
   margin: 0.4em;
@@ -418,12 +418,12 @@ Information page
 
 #membersList > .deactivated::after{
   content: ' (deactivated)';
-  color : var(--couleur2);
+  color : var(--color2);
 }
 
 #membersList > div::before{
   content: attr(weight);
-  color: var(--couleur2);
+  color: var(--color2);
 }
 
 /*---------------
@@ -477,7 +477,7 @@ Bills page
 #billMain{
   height: 100%;
   overflow:auto;
-  background-color: var(--couleur3);
+  background-color: var(--color3);
 }
 
 #billMain>*:not(#bills_endSpacer){
@@ -504,12 +504,12 @@ Bills page
 }
 
 #bills-page h1{
-  border-bottom: 2px solid var(--couleur3);
+  border-bottom: 2px solid var(--color3);
 }
 
 .billdiv{
   overflow: auto;
-  border-bottom: 2px solid var(--couleur3);
+  border-bottom: 2px solid var(--color3);
   background-color: #fff;
   padding: 0.3em 0;
   cursor: pointer;
@@ -527,7 +527,7 @@ Bills page
   left:0;
   width:100%; /*
   height:4vh;
-  background-color: var(--couleur5);
+  background-color: var(--color5);
   z-index:1;*/
 }
 
@@ -543,7 +543,7 @@ Bills page
   padding:0;
   margin: 0 auto;
   cursor: pointer;
-  background-color: var(--couleur1);
+  background-color: var(--color1);
 }
 
 /*---------
@@ -556,7 +556,7 @@ Summary Page
 
 .memberBranch{
   padding:  0.2em 0.5em;
-  border-bottom: 2px solid var(--couleur3);
+  border-bottom: 2px solid var(--color3);
   text-align: left;
 }
 
@@ -577,7 +577,7 @@ Summary Page
   text-align: right;
 }
 .positiveMB .memberLeaf{
-  background-color: var(--couleurVert);
+  background-color: var(--colorGreen);
   border-radius: 0 0.3em 0.3em 0;
 }
 
@@ -585,7 +585,7 @@ Summary Page
   text-align: left;
 }
 .NegativeMB .memberLeaf{
-  background-color: var(--couleurRouge);
+  background-color: var(--colorRed);
   border-radius: 0.3em 0 0 0.3em ;
   direction: rtl;
 }
@@ -671,13 +671,13 @@ label, input, select{
   min-width: calc(50% - 0.1em);
   text-align: left;
   padding: 0.3em;
-  border: 1px solid var(--couleur3);
+  border: 1px solid var(--color3);
   border-radius: 0.3em;
   margin: 0.05em;
   cursor: pointer;
 }
 #bill-forWhom > div:hover{
-  background-color: var(--couleur2)
+  background-color: var(--color2)
 }
 
 #bill-forWhom > div > label{
@@ -691,7 +691,7 @@ label, input, select{
 }
 
 .settlementdiv{
-  border-bottom: 2px solid var(--couleur3);
+  border-bottom: 2px solid var(--color3);
   cursor: pointer;
 }
 
@@ -804,7 +804,7 @@ Single pages
 .SinglePageContainer button{
   padding: 0.2em;
   width: 100%;
-  background-color: var(--couleur5);
+  background-color: var(--color5);
   border-radius: 0.2em;
   cursor: pointer;
 }
@@ -872,7 +872,7 @@ Retractible
   height: 1em;
   border-radius: 1em;
   width: calc(2em - 5px);
-  background-color: var(--couleur1);
+  background-color: var(--color1);
   padding: 2.5px;
 }
 
@@ -882,7 +882,7 @@ Retractible
   height: 100%;
   width: 50%;
   border-radius: 100%;
-  background-color: var(--couleur4);
+  background-color: var(--color4);
 }
 
 .switch > input:checked ~ span > span{
