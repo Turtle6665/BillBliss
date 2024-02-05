@@ -29,14 +29,16 @@ function loadProject(project){
 //
 // Main page
 //
-const apiUrl = 'https://ihatemoney.org/api/projects/'
-
+const apiUrl = 'https://ihatemoney.org/api/'
+const apiUrlProjects = apiUrl + "projects/"
+const apiUrlCreateProject = apiUrl + "projects"
+const apiUrlCurrencies = apiUrl + "currencies"
 
 
 //Verifie Connection informations
 function VerifieAuthToken(projectID, projectToken){
   //return true if token/projectID are correct, false if not.
-  return(fetch(apiUrl+projectID, {
+  return(fetch(apiUrlProjects+projectID, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer `+projectToken,
@@ -61,7 +63,7 @@ function VerifieAuthToken(projectID, projectToken){
 
 function VerifieAuthCode(projectID, ProjectCode){
   //return Bool (false) if not correct or Token if varification successful
-  return(fetch(apiUrl+projectID+"/token",{
+  return(fetch(apiUrlProjects+projectID+"/token",{
     method: 'GET',
     headers: {
       'Authorization': `Basic `+btoa(`${projectID}:${ProjectCode}`),
@@ -152,11 +154,98 @@ async function logInByIHMInvitation(){
 
 
 //Create projects
-function CreateProject(){
-  ShowToast("The project creation has not yet been implemented. Please go to IHateMoney to create one before using this interface.","Red")
+function CreateNewProject(){
+  //project data fetch
+  let projectData = {
+    "name" : document.getElementById("newProjectID").value,
+    "id" : document.getElementById("newProjectID").value,
+    "password" : document.getElementById("newProjectCode").value,
+    "contact_email" : document.getElementById("newProjectEmail").value
+  }
+  //Advance Options
+  if(document.getElementById("newProjectCurrency").value != ""){
+    projectData["default_currency"] = document.getElementById("newProjectCurrency").value
+  }
+  if(document.getElementById("newProjectId").value !=""){
+    projectData["id"] = document.getElementById("newProjectId").value
+  }
+
+  if(Object.values(projectData).some(el=> el=="")){
+    ShowToast("Please, fill all required field.","Red");
+    return false
+  }
+
+  //post to create the project
+  fetch(apiUrlCreateProject,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(projectData)
+  })
+  .then(async response => {
+    let response_json = await response.json()
+    if (!response.ok) {
+      //ShowToast("Failed to create a new project", "Red")
+      if(response.status==400){
+        throw new Error(response_json["id"][0]);
+      }
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response_json;
+  })
+  .then(data => {
+    ShowToast("New project created","Green")
+    if(projectData["id"] != data){
+      ShowToast("The id of your project is "+JSON.stringify(data),"Orange")
+    }
+    // Extract and handle the ID from the response data
+    projectData["id"] = data
+
+    //Login to the project
+    document.getElementById("projectID").value = projectData["id"]
+    document.getElementById("projectCode").value = projectData["password"]
+    logInByIHMCode();
+  })
+  .catch(error => {
+    ShowToast(error.message,"Red")
+    console.error('Error:', error.message);
+  })
 }
 
 
+//
+// Update curency list
+//
+function updateCurencyList(){
+  return(fetch(apiUrlCurrencies, {method:"GET"})
+    .then(async response => {
+      if (!response.ok){
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(curencyList =>{
+      newProjectCurrencySelect = document.getElementById("newProjectCurrency")
+      newProjectCurrencySelect.innerHTML = "";
+      curencyList.forEach((curency) => {
+        let curencyOption = document.createElement("option");
+        Object.assign(curencyOption, {value:curency, textContent:curency});
+        if(curency == "XXX"){
+          curencyOption.textContent = "No curency";
+          curencyOption.selected = true;
+        }
+        newProjectCurrencySelect.appendChild(curencyOption);
+      });
+
+    })
+    .catch(error => {
+      ShowToast(error.message,"Red")
+      console.error('Error:', error.message);
+    })
+  )
+}
 
 
 updateProjectList();
+updateCurencyList();

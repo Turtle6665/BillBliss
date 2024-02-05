@@ -1,8 +1,9 @@
 // The name of the cache your app uses.
-const CACHE_VERSION = "0.1.2";
+const CACHE_VERSION = "0.1.3";
 const CURRENT_CACHES = {
   BillBliss: `BillBliss-cache-v${CACHE_VERSION}`,
 };
+const Testing = false;
 
 self.addEventListener("activate", (event) => {
   // Delete all caches that aren't named in CURRENT_CACHES.
@@ -35,7 +36,7 @@ async function cacheThenNetwork(event) {
     return cache
       .match(url.toString())
       .then((response) => {
-        if (response) {
+        if (response & !Testing) {
           // If there is an entry in the cache for event.request,
           // then response will be defined and we can just return it.
           console.log(" Found response in cache:", response);

@@ -8,7 +8,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 async function ShowToast(text, color){
   //ShowToast function
   // text a string that will show up on the toast
-  // color a string for color : `red` (errors,...), `green` (Action performed)
+  // color a string for color : `red` (errors,...), `green` (Action performed), `Orange` (attention warning)
   color = color.trim()
   //append ToastsContainer to body if not present
   if(!document.getElementById("ToastsContainer")){
