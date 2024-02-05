@@ -197,10 +197,15 @@ function CreateNewProject(){
   .then(data => {
     ShowToast("New project created","Green")
     if(projectData["id"] != data){
-      ShowToast("the id of your project is "+JSON.stringify(data),"Orange")
+      ShowToast("The id of your project is "+JSON.stringify(data),"Orange")
     }
     // Extract and handle the ID from the response data
     projectData["id"] = data
+
+    //Login to the project
+    document.getElementById("projectID").value = projectData["id"]
+    document.getElementById("projectCode").value = projectData["password"]
+    logInByIHMCode();
   })
   .catch(error => {
     ShowToast(error.message,"Red")

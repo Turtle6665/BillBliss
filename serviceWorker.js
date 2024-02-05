@@ -3,7 +3,7 @@ const CACHE_VERSION = "0.1.3";
 const CURRENT_CACHES = {
   BillBliss: `BillBliss-cache-v${CACHE_VERSION}`,
 };
-const Testing = true;
+const Testing = false;
 
 self.addEventListener("activate", (event) => {
   // Delete all caches that aren't named in CURRENT_CACHES.

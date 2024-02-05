@@ -767,6 +767,11 @@ label, input, select{
   border-color: rgba(10, 160, 10);
 }
 
+.ToastDivOrange{
+  background-color: rgb(250, 200, 100);
+  color: rgba(166, 121, 27);
+  border-color: rgba(166, 121, 27);
+}
 
 /*----------
 Single pages
