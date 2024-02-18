@@ -24,6 +24,7 @@
   <script src="js/deptsSettle.js"></script>
   <script src="js/localStorageAsked.js"></script>
   <script src="js/toasts.js"></script>
+  <script src="./assets/js_library/qrcode.min.js"></script>
   <script defer src="js/dashboard.js"></script>
 </head>
 <body>
@@ -62,6 +63,12 @@
         <h1>BillBliss</h1>
       </div>
       <div class="leftPanelButtonGroupe">
+          <div class="leftPanelButton hidden" style="--iconURL: url('../assets/icons/Settings.svg');" onclick="ShowToast('This has not been implemented yet','Red')">
+            Project settings
+          </div>
+          <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Share.svg');" onclick="toShareProject();">
+            Share this project
+          </div>
         <label class="ButtonRetractible">
           <input type="checkbox" class="ButtonRetractibleCheckbox" checked>
           <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Projects.svg');">
@@ -156,6 +163,7 @@
     <div id="editMemberBack" class="ModalBackground" onclick="document.getElementById('editMemberPage').classList.add('hidden')">
     </div>
     <div id="editMemberDiv">
+      <button class="CloseModal" onclick="document.getElementById('editMemberPage').classList.add('hidden')"></button>
       <h1>Edit member</h1> <br/>
       <label id="editMemberLabel" for="editMemberInput">Name: </label><input id="editMemberInput" type="text" name="editMemberInput" value="" placeholder="Member name">
       <br/>
@@ -168,10 +176,11 @@
     </div>
   </section>
 
-  <section id="newBillPage" class="hidden">
+  <section id="newBillPage" class="hidden ModalContainer">
     <div id="newBillBack" class="ModalBackground" onclick="document.getElementById('newBillPage').classList.add('hidden')">
     </div>
-    <div id="newBilDiv">
+    <div id="newBilDiv"  class="Modal">
+      <button class="CloseModal" onclick="document.getElementById('newBillPage').classList.add('hidden')"></button>
       <h1 class="newBill">New bill</h1>
       <h1 class="editBill hidden">Edit bill</h1>
       <label for="bill-when">When?</label><input id="bill-when" type="date" name="bill-date" value=""> <br/>
@@ -194,7 +203,36 @@
       <button type="button" name="CancelBill" onclick="document.getElementById('newBillPage').classList.add('hidden')">Cancel</button>
     </div>
   </section>
-  <section id="ToastsContainer">
+  <section id="shareProject" class="hidden ModalContainer">
+    <div id="shareProjectBack" class="ModalBackground" onclick="document.getElementById('shareProject').classList.add('hidden')">
+    </div>
+    <div id="shareProjectDiv" class="Modal">
+      <button class="CloseModal" onclick="document.getElementById('shareProject').classList.add('hidden')"></button>
+      <h1>Invite people to join this project</h1>
+      <h2>Share an invitation link</h2>
+      <p>
+        The easiest way to invite people is to give them the following invitation link os scan this
+        QRCode. <br>
+        They will be able to access the project, manage participants, add/edit/delete bills.
+        However, they will not have access to important settings such as changing the private code
+        or deleting the whole project.
+      </p>
+      <div id="ShareInvitationLinkDiv">
+        <a href="./dashboard.html?project=">./dashboard.html?project=</a>
+        <br>
+        <svg></svg>
+      </div>
+      <h2>Share Identifier & code</h2>
+      <p>
+        You can share the project identifier and the private code by any communication means. <br>
+        To acces the project, they will have to go to <a href="./AddProject.html">the add project page</a>.
+        Anyone with the private code will have access to the full project, including changing
+        settings such as the private code or project email address, or even deleting the whole
+        project.
+      </p>
+      <p><strong>Identifier: </strong><a id="SharedProjectID"></a></p>
+      <p><strong>Private code:</strong> the private code was defined when you created the project. </p>
+    </div>
   </section>
 </body>
 </html>

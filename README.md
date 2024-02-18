@@ -42,7 +42,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-Thanks to ihatemoney.org for providing the backend support for BillBliss.
+Thanks to :
+- [ihatemoney.org](https://ihatemoney.org) for providing the backend support for BillBliss.
+- datalog for it's MIT licensed [Pure javascript QR Code generator](https://github.com/datalog/qrcode-svg)
+
 
 If you have any questions, feedback, or encounter issues while using BillBliss, please don't hesitate to reach out to us.
 

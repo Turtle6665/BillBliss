@@ -348,7 +348,7 @@ Pages layout
   #addBill{
     left: calc(50vw/3 - 1.2em/2)!important;
   }
-  #newBilDiv{
+  #newBilDiv, .Modal{
     max-width: 700px;
     width : 70vw!important;
     height: calc(100vh*0.8) !important;
@@ -427,7 +427,7 @@ Information page
 }
 
 /*---------------
-Editi member page
+Edit member page
 ---------------*/
 #editMemberPage{
   z-index: 10;
@@ -607,7 +607,7 @@ label, input, select{
   cursor: pointer;
 }
 
-#newBillPage{
+#newBillPage, .ModalContainer{
   width: 100vw;
   height: 100vh;
   position:absolute;
@@ -628,7 +628,7 @@ label, input, select{
   cursor: pointer;
 }
 
-#newBilDiv{
+#newBilDiv, .Modal{
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -695,6 +695,37 @@ label, input, select{
   cursor: pointer;
 }
 
+/*--------------
+  Share Project
+--------------*/
+
+.Modal p{
+  text-align: justify;
+}
+
+.Modal h2{
+  padding: 0.4em;
+}
+
+.CloseModal{
+  width: 2em;
+  height: 2em;
+  position: absolute;
+  top: 0.2em;
+  background: unset;
+  border: unset;
+  right: 0.2em;
+  background-image: url("../assets/x.svg");
+  cursor: pointer;
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-position: right bottom 50%;
+  background-size: contain;
+}
+
+#ShareInvitationLinkDiv > svg{
+  max-width: 100%;
+}
 
 /*------
  Toasts
