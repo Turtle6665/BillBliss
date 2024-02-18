@@ -35,7 +35,6 @@ if(ProjectsList==null){
   ProjectsList = {};
 }
 if (projectID == null) {
-  console.log("hello", ProjectsList)
   //if no project selected :
   if(Object.keys(ProjectsList).length >= 1){
     //select first project if present
@@ -613,6 +612,31 @@ function updateProjectList(){
       };
     });
   }
+}
+
+//go to project invitation page
+function toShareProject(){
+  //show the page
+  document.getElementById("shareProject").classList.remove("hidden");
+  document.getElementById("showLeftPanelCheckbox").checked = false;
+  //update the informations
+
+  //invitation links
+  ShareInvitationLinkDiv = document.getElementById("ShareInvitationLinkDiv");
+  ShareInvitationLinkDiv.innerHTML="";
+  ShareInvitationLink = window.location.origin + window.location.pathname+"?project="+projectID+"&token="+token;
+  sharedLinkA = document.createElement("a");
+  Object.assign(sharedLinkA, {textContent: ShareInvitationLink,  href: ShareInvitationLink});
+  sharedLinkBr = document.createElement("br");
+  SharedQRcode = new QRCode({msg:ShareInvitationLink, pal: ["#000000", "#ffffff"]});
+  ShareInvitationLinkDiv.appendChild(sharedLinkA);
+  ShareInvitationLinkDiv.appendChild(sharedLinkBr);
+  ShareInvitationLinkDiv.appendChild(SharedQRcode);
+
+
+  //invitation ProjectID
+  SharedProjectID = document.getElementById("SharedProjectID");
+  Object.assign(SharedProjectID, {textContent: projectID,  href: window.location.href});
 }
 
 //function to render amoney
