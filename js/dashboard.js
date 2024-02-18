@@ -263,16 +263,16 @@ function addMember(){
 //function to show the edit membertab
 function editMember(memberID){
   document.getElementById("editMemberInput").value = memberNames[memberID];
-  document.getElementById("editMemberDiv").getElementsByTagName("button")[0].onclick = function(){pushEditedMember(memberID);};
-  document.getElementById("editMemberDiv").getElementsByTagName("button")[2].onclick = function(){removeMember(memberID);};
-  document.getElementById("editMemberDiv").getElementsByTagName("button")[3].onclick = function(){pushEditedMember(memberID, true);};
+  document.getElementById("editMemberDiv").getElementsByTagName("button")[1].onclick = function(){pushEditedMember(memberID);};
+  document.getElementById("editMemberDiv").getElementsByTagName("button")[3].onclick = function(){removeMember(memberID);};
+  document.getElementById("editMemberDiv").getElementsByTagName("button")[4].onclick = function(){pushEditedMember(memberID, true);};
   document.getElementById("editMemberPage").classList.remove("hidden");
   if(memberTrueActivated[memberID]){
-    document.getElementById("editMemberDiv").getElementsByTagName("button")[2].classList.remove("hidden"); //show the remove button
-    document.getElementById("editMemberDiv").getElementsByTagName("button")[3].classList.add("hidden"); //hide the reactivate button
+    document.getElementById("editMemberDiv").getElementsByTagName("button")[3].classList.remove("hidden"); //show the remove button
+    document.getElementById("editMemberDiv").getElementsByTagName("button")[4].classList.add("hidden"); //hide the reactivate button
   }else{
-    document.getElementById("editMemberDiv").getElementsByTagName("button")[2].classList.add("hidden"); //hide the remove button
-    document.getElementById("editMemberDiv").getElementsByTagName("button")[3].classList.remove("hidden"); //show the reactivate button
+    document.getElementById("editMemberDiv").getElementsByTagName("button")[3].classList.add("hidden"); //hide the remove button
+    document.getElementById("editMemberDiv").getElementsByTagName("button")[4].classList.remove("hidden"); //show the reactivate button
   }
   document.getElementById("editMemberInput").focus();
 }
