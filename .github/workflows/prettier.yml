@@ -1,4 +1,4 @@
-name: Run Prettier
+name: Run Prettier and LSlinter
 
 on:
   # Trigger the workflow on push or pull request,
@@ -21,6 +21,9 @@ jobs:
         with:
           # Make sure the actual branch is checked out when running on pull requests
           ref: ${{ github.head_ref }}
+
+      - name: Run ESLint
+        uses: stefanoeb/eslint-action@1.0.2
 
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
