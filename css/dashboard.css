@@ -4,10 +4,9 @@
   --color3: #ced2d7;
   --color4: #dfdfc5;
   --color5: #f1ecb1;
-  --colorGreen : #adfc2e;
+  --colorGreen: #adfc2e;
   --colorRed: #ff5e47;
 }
-
 
 * {
   box-sizing: border-box;
@@ -16,38 +15,40 @@
   scroll-behavior: smooth;
 }
 
-.hidden{
+.hidden {
   display: none;
   visibility: hidden;
   width: 0;
   height: 0;
 }
 
-@media (hover: none), (hover: on-demand), (-moz-touch-enabled: 1), (pointer:coarse) and (max-width: 900px){
+@media (hover: none),
+  (hover: on-demand),
+  (-moz-touch-enabled: 1),
+  (pointer: coarse) and (max-width: 900px) {
   /*make a bigger interface for smartphones and tuched device*/
-	html{
-		font-size: 18px;
-	}
+  html {
+    font-size: 18px;
+  }
 }
 
 /*---------
 Main layout
 ---------*/
-body{
+body {
   display: flex;
   flex-flow: column;
-  height:100vh;
+  height: 100vh;
   width: 100vw;
   font-family: Arial, Helvetica, sans-serif;
-  overflow:hidden;
+  overflow: hidden;
 }
-
 
 /*---------
 Navigation Menu
 ---------*/
 
-#NavigationTitle{
+#NavigationTitle {
   display: grid;
   grid-template-columns: 2em 2.4em auto min-content;
   width: 100vw;
@@ -55,49 +56,49 @@ Navigation Menu
   padding: 0.2em 0.5em;
   z-index: 2;
   background-color: var(--color1);
-  box-shadow:0px 0px 5px 2px grey;
+  box-shadow: 0px 0px 5px 2px grey;
   height: 2.4em;
 }
 
-#showLeftPanel{
+#showLeftPanel {
   cursor: pointer;
   height: 100%;
   padding-top: 0.2em;
 }
 
-#showLeftPanelCheckbox{
+#showLeftPanelCheckbox {
   visibility: hidden;
   display: none;
 }
 
-.burgerLayer{
+.burgerLayer {
   display: block;
-  width : 80%;
+  width: 80%;
   height: 4px;
   border-radius: 2px;
   background-color: black;
   float: left;
-  margin: calc((100% - 4px*3 - 0.2em)/4) 0 0 0;
+  margin: calc((100% - 4px * 3 - 0.2em) / 4) 0 0 0;
 }
 
-#NavigationTitle img{
+#NavigationTitle img {
   float: left;
   width: 2em;
   display: inline-block;
   z-index: 5;
 }
-#NavigationTitle h1{
-  float:  left;
+#NavigationTitle h1 {
+  float: left;
   height: 100%;
-  margin : 0.1em 0.2em;
+  margin: 0.1em 0.2em;
   z-index: 5;
   /*width: max-content;calc(100vw - 0.2em - 2em - (1em + 50px));*/
   overflow: hidden;
 }
 
-#updateAll{
+#updateAll {
   float: right;
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 6px;
@@ -110,37 +111,36 @@ Navigation Menu
   cursor: pointer;
 }
 
-#updateAll:hover{
+#updateAll:hover {
   background-color: #59db5e;
 }
 
-#updateAll:active{
+#updateAll:active {
   background-color: #3f9342;
 }
 
-#navigationList{
-  display:flex;
-  margin-top: 0;/*-0.2em;*/
+#navigationList {
+  display: flex;
+  margin-top: 0; /*-0.2em;*/
 }
 
-#navigationList > li{
+#navigationList > li {
   list-style: none;
-  width:100%;
-  text-align:center;
-  z-index:3;
-
+  width: 100%;
+  text-align: center;
+  z-index: 3;
 }
 
-#navigationList a{
+#navigationList a {
   text-decoration: none;
   padding: 0.2em;
-  width:100%;
-  height:100%;
-  display:block;
+  width: 100%;
+  height: 100%;
+  display: block;
   color: black;
 }
 
-#navigationList a:hover{
+#navigationList a:hover {
   font-weight: bold;
 }
 
@@ -149,13 +149,15 @@ Navigation Menu
   top: 2.4em;
   width: calc(100% / 3);
   background-color: var(--color1);
-  border-radius:0 0 0.4em 0.4em;
-  z-index:2;
+  border-radius: 0 0 0.4em 0.4em;
+  z-index: 2;
   left: 0;
   position: absolute;
-  box-shadow:4px 2px 4px -2px grey, -4px 2px 4px -2px grey;
+  box-shadow:
+    4px 2px 4px -2px grey,
+    -4px 2px 4px -2px grey;
 }
-#progress-bar-back{
+#progress-bar-back {
   height: 4.2em;
   top: -0.3em;
   width: 100%;
@@ -163,19 +165,19 @@ Navigation Menu
   left: 0;
   animation: marginLeft 0.3s;
   position: absolute;
-  z-index:1;
-  border-radius:0.4em;
-  box-shadow:0px 0px 5px 2px grey;
+  z-index: 1;
+  border-radius: 0.4em;
+  box-shadow: 0px 0px 5px 2px grey;
 }
 
 /*---------
 Loading animation
 ---------*/
-#loadingAnnim{
+#loadingAnnim {
   left: calc(50vw - 40px);
   top: calc(50vh - 40px);
 }
-#loadingAnnim div{
+#loadingAnnim div {
   border-color: var(--color1) transparent transparent transparent;
 }
 .lds-ring {
@@ -215,93 +217,93 @@ Loading animation
   }
 }
 
-
 /*---------
 leftPanel layout
 ---------*/
-#leftPanelBackground{visibility: hidden;}
-#leftPanel{
+#leftPanelBackground {
+  visibility: hidden;
+}
+#leftPanel {
   background-color: white;
   visibility: inherit;
   display: grid;
   grid-template-rows: max-content minmax(0, 1fr) max-content;
   position: absolute;
-  top : 0;
-  left:-100vw;
+  top: 0;
+  left: -100vw;
   z-index: 100;
   height: 100vh;
   width: 100vw;
   max-width: 300px;
-  transition : left 0.2s;
+  transition: left 0.2s;
 }
 
 #showLeftPanelCheckbox:checked ~ #leftPanel,
-#showLeftPanelCheckbox:checked ~ #leftPanelBackground{
-  left:0;
-  visibility:visible;
+#showLeftPanelCheckbox:checked ~ #leftPanelBackground {
+  left: 0;
+  visibility: visible;
 }
 
-#PanelTitle{
+#PanelTitle {
   display: grid;
   grid-template-columns: 2em 2.4em auto;
   background-color: var(--color1);
-  box-shadow:0px 0px 5px 2px grey;
+  box-shadow: 0px 0px 5px 2px grey;
   padding: 0.2em 0.5em;
-
 }
 
-#PanelTitle > label{
-  padding-top: calc(2em/2 - 4px);
+#PanelTitle > label {
+  padding-top: calc(2em / 2 - 4px);
   line-height: 0;
 }
 
-#PanelTitle > label > strong{
+#PanelTitle > label > strong {
   display: block;
-  width : 100%;
+  width: 100%;
   height: 5px;
   border-radius: 4px;
   background-color: black;
   padding: 0;
 }
-.Xside1{
-  transform: translate(0, calc(50%*1.1)) rotate(0.125turn);
+.Xside1 {
+  transform: translate(0, calc(50% * 1.1)) rotate(0.125turn);
 }
-.Xside2{
-  transform: translate(0, calc(-50%*1.1)) rotate(-0.125turn);
+.Xside2 {
+  transform: translate(0, calc(-50% * 1.1)) rotate(-0.125turn);
 }
 
-#PanelTitle > h1{
-  margin : 0.1em 0.2em;
+#PanelTitle > h1 {
+  margin: 0.1em 0.2em;
 }
 
 /*project list*/
 
-#LeftPanelProjectList{
+#LeftPanelProjectList {
   padding-left: 0.8em;
 }
 
-.ButtonRetractible > .leftPanelButton{
+.ButtonRetractible > .leftPanelButton {
   background-image: url(../assets/vslider.svg);
   background-origin: content-box;
   background-repeat: no-repeat;
   background-position: right bottom 50%;
   background-size: contain;
 }
-.ButtonRetractibleCheckbox:checked ~ .leftPanelButton{
+.ButtonRetractibleCheckbox:checked ~ .leftPanelButton {
   background-image: url(../assets/^slider.svg);
 }
 
-.leftPanelButtonGroupe{
+.leftPanelButtonGroupe {
   overflow-y: auto;
   margin: 0.4em 0;
 }
 
-.leftPanelButton{
+.leftPanelButton {
   padding: 0.4em 0.8em;
   cursor: pointer;
 }
 
-.leftPanelButton::before{
+.leftPanelButton::before {
   content: "‎ ";
   width: 1.5em;
   display: inline-block;
@@ -312,7 +314,7 @@ leftPanel layout
   background-size: contain;
 }
 
-.leftPanelFooter{
+.leftPanelFooter {
   background-color: inherit;
 }
 
@@ -324,45 +326,48 @@ leftPanel layout
 /*---------
 Pages layout
 ---------*/
-#page-container{
+#page-container {
   flex: 1 1 auto;
-  display:grid;
+  display: grid;
   scroll-snap-type: x mandatory;
   overflow-x: auto;
   overflow-y: hidden;
   grid-template-columns: 100vw 100vw 100vw;
 }
 
-@media only screen and (min-width: 900px){
-  #navigationList, #progress-bar, #progress-bar-back{
+@media only screen and (min-width: 900px) {
+  #navigationList,
+  #progress-bar,
+  #progress-bar-back {
     display: none;
   }
-  #page-container{
-    grid-template-columns: calc(100vw/3) calc(100vw/3) calc(100vw/3)!important;
+  #page-container {
+    grid-template-columns: calc(100vw / 3) calc(100vw / 3) calc(100vw / 3) !important;
   }
-  .grid-pages{
-    width: calc(100vw/3) !important;
+  .grid-pages {
+    width: calc(100vw / 3) !important;
     border-left: 1px solid var(--color3);
     border-right: 1px solid var(--color3);
   }
-  #addBill{
-    left: calc(50vw/3 - 1.2em/2)!important;
+  #addBill {
+    left: calc(50vw / 3 - 1.2em / 2) !important;
   }
-  #newBilDiv, .Modal{
+  #newBilDiv,
+  .Modal {
     max-width: 700px;
-    width : 70vw!important;
-    height: calc(100vh*0.8) !important;
+    width: 70vw !important;
+    height: calc(100vh * 0.8) !important;
     border-radius: 0.5em;
     margin-top: 2em;
   }
 }
 
-.linktarget{
+.linktarget {
   height: 0.8em;
 }
 
-.grid-pages{
-  scroll-snap-align:center;
+.grid-pages {
+  scroll-snap-align: center;
   scroll-snap-stop: always;
   overflow-y: auto;
   width: 100vw;
@@ -370,58 +375,57 @@ Pages layout
   position: relative;
 }
 
-
 /*---------
 Information page
 ---------*/
-#info-page > div:not(.linktarget){
+#info-page > div:not(.linktarget) {
   margin: 1em auto;
 }
 
-#projectinfo > div{
+#projectinfo > div {
   width: 80%;
   display: inline;
   margin: 0.2em 0;
 }
 
-#addMemberDiv{
+#addMemberDiv {
   padding: 0.5em;
   margin-bottom: 0.5em;
 }
 
-#addMemberDiv > input, #addMemberDiv > button{
+#addMemberDiv > input,
+#addMemberDiv > button {
   display: inline-block;
-  padding:0.3em;
-  margin : 0;
+  padding: 0.3em;
+  margin: 0;
   height: 2.3em;
 }
 
-#addMemberDiv > input{
+#addMemberDiv > input {
   border-radius: 0.3em 0 0 0.3em;
 }
-#addMemberDiv > button{
+#addMemberDiv > button {
   border-radius: 0 0.3em 0.3em 0;
   width: 2.3em;
 }
 
-
-#membersList > div{
+#membersList > div {
   border-radius: 0.5em;
   background-color: var(--color5);
   border-style: 1px solid var(--color5);
-  box-shadow:0px 0px 5px 2px grey;
-  padding:0.5em;
+  box-shadow: 0px 0px 5px 2px grey;
+  padding: 0.5em;
   margin: 0.4em;
   width: auto;
   display: inline-block;
 }
 
-#membersList > .deactivated::after{
-  content: ' (deactivated)';
-  color : var(--color2);
+#membersList > .deactivated::after {
+  content: " (deactivated)";
+  color: var(--color2);
 }
 
-#membersList > div::before{
+#membersList > div::before {
   content: attr(weight);
   color: var(--color2);
 }
@@ -429,7 +433,7 @@ Information page
 /*---------------
 Edit member page
 ---------------*/
-#editMemberPage{
+#editMemberPage {
   z-index: 10;
   height: 100vh;
   width: 100vw;
@@ -442,23 +446,23 @@ Edit member page
   overflow-y: auto;
 }
 
-#editMemberDiv{
+#editMemberDiv {
   position: relative;
   display: inline-block;
   border-radius: 0.5em;
   padding: 1em;
   top: 10em;
   background-color: #fff;
-  box-shadow:0px 0px 5px 2px grey;
-  z-index:12;
+  box-shadow: 0px 0px 5px 2px grey;
+  z-index: 12;
 }
 
-#editMemberDiv>input{
+#editMemberDiv > input {
   padding: 0.3em;
   border-radius: 0.3em;
 }
 
-#editMemberDiv>button{
+#editMemberDiv > button {
   padding: 0.3em;
   border-radius: 0.3em;
   margin: 0.7em 0.1em 0 0.1em;
@@ -470,44 +474,47 @@ Bills page
 
 /*list of bills*/
 
-#billsList{
+#billsList {
   height: 100%;
 }
 
-#billMain{
+#billMain {
   height: 100%;
-  overflow:auto;
+  overflow: auto;
   background-color: var(--color3);
 }
 
-#billMain>*:not(#bills_endSpacer){
+#billMain > *:not(#bills_endSpacer) {
   background-color: #fff;
 }
 
-.billPayer, .billWhat{
-  float:left;
-  width:70%;
+.billPayer,
+.billWhat {
+  float: left;
+  width: 70%;
   text-align: left;
   padding-left: 0.5em;
 }
 
-.billDate, .billAmount{
-  float:right;
-  width:29%;
+.billDate,
+.billAmount {
+  float: right;
+  width: 29%;
   text-align: right;
   padding-right: 0.5em;
 }
 
-.billPayer, .billDate{
+.billPayer,
+.billDate {
   font-size: 0.8em;
-  padding-top:0.2em;
+  padding-top: 0.2em;
 }
 
-#bills-page h1{
+#bills-page h1 {
   border-bottom: 2px solid var(--color3);
 }
 
-.billdiv{
+.billdiv {
   overflow: auto;
   border-bottom: 2px solid var(--color3);
   background-color: #fff;
@@ -515,32 +522,32 @@ Bills page
   cursor: pointer;
 }
 
-#bills_endSpacer{
+#bills_endSpacer {
   position: relative;
   margin-bottom: 15vh;
 }
 
 /*Bill footer*/
-#billFooter{
-  position:absolute;
+#billFooter {
+  position: absolute;
   bottom: 0;
-  left:0;
-  width:100%; /*
+  left: 0;
+  width: 100%; /*
   height:4vh;
   background-color: var(--color5);
   z-index:1;*/
 }
 
-#addBill{
-  position:absolute;
+#addBill {
+  position: absolute;
   bottom: 2.5vh;
-  left:calc(50vw - 1.2em/2);
+  left: calc(50vw - 1.2em / 2);
   border-radius: 1.2em;
-  font-size:2.5em;
-  box-shadow:0px 0px 5px 2px gray;
+  font-size: 2.5em;
+  box-shadow: 0px 0px 5px 2px gray;
   width: 1.2em;
-  height:1.2em;
-  padding:0;
+  height: 1.2em;
+  padding: 0;
   margin: 0 auto;
   cursor: pointer;
   background-color: var(--color1);
@@ -550,52 +557,54 @@ Bills page
 Summary Page
 ---------*/
 
-#summary-page h2{
+#summary-page h2 {
   padding: 0.2em;
 }
 
-.memberBranch{
-  padding:  0.2em 0.5em;
+.memberBranch {
+  padding: 0.2em 0.5em;
   border-bottom: 2px solid var(--color3);
   text-align: left;
 }
 
-.memberName{
+.memberName {
   width: 50%;
   display: inline-block;
   padding: 0 0.3em;
 }
 
-.memberLeaf{
+.memberLeaf {
   overflow-y: visible;
   width: 50%;
   display: inline-block;
-  padding-block: min(0.3em,50%) min(0.3em,50%);
+  padding-block: min(0.3em, 50%) min(0.3em, 50%);
 }
 
-.positiveMB .memberName, .NegativeMB .memberLeaf{
+.positiveMB .memberName,
+.NegativeMB .memberLeaf {
   text-align: right;
 }
-.positiveMB .memberLeaf{
+.positiveMB .memberLeaf {
   background-color: var(--colorGreen);
   border-radius: 0 0.3em 0.3em 0;
 }
 
-.NegativeMB .memberName, .positiveMB .memberLeaf{
+.NegativeMB .memberName,
+.positiveMB .memberLeaf {
   text-align: left;
 }
-.NegativeMB .memberLeaf{
+.NegativeMB .memberLeaf {
   background-color: var(--colorRed);
-  border-radius: 0.3em 0 0 0.3em ;
+  border-radius: 0.3em 0 0 0.3em;
   direction: rtl;
 }
 
-.NegativeMB .memberLeafContained{
+.NegativeMB .memberLeafContained {
   direction: ltr;
   width: 50vh;
 }
 
-.memberLeafContained{
+.memberLeafContained {
   padding: 0 0.3em;
 }
 
@@ -603,70 +612,75 @@ Summary Page
 Add Bill page
 ----------*/
 
-label, input, select{
+label,
+input,
+select {
   cursor: pointer;
 }
 
-#newBillPage, .ModalContainer{
+#newBillPage,
+.ModalContainer {
   width: 100vw;
   height: 100vh;
-  position:absolute;
-  top:0;
-  right:0;
-  text-align:center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
   z-index: 10;
 }
 
-.ModalBackground{
+.ModalBackground {
   background-color: rgba(200, 200, 200, 0.5);
   width: 100%;
   height: 100%;
-  position:absolute;
-  top:0;
-  right:0;
-  z-index:11;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 11;
   cursor: pointer;
 }
 
-#newBilDiv, .Modal{
+#newBilDiv,
+.Modal {
   position: relative;
   width: 100vw;
   height: 100vh;
-  z-index:12;
-  background-color:#fff;
-  text-align:center;
+  z-index: 12;
+  background-color: #fff;
+  text-align: center;
   overflow-y: auto;
   display: inline-block;
   padding: 1em;
   background-color: #fff;
-  box-shadow:0px 0px 5px 2px grey;
+  box-shadow: 0px 0px 5px 2px grey;
 }
 
-#newBilDiv > label{
+#newBilDiv > label {
   display: inline-block;
   width: 40%;
   padding: 0.3em 0;
 }
 
-#newBilDiv > input, #newBilDiv > select{
+#newBilDiv > input,
+#newBilDiv > select {
   width: 60%;
   padding: 0.25em 0.2em;
   margin: 0.2em 0;
 }
 
-#newBilDiv > h1{
+#newBilDiv > h1 {
   padding-bottom: 0.2em;
 }
 
-#forWhomTitle{
+#forWhomTitle {
   padding: 0.3em 0;
 }
 
-#bill-forWhom{
+#bill-forWhom {
   padding: 0 0.2em;
 }
 
-#bill-forWhom > div{
+#bill-forWhom > div {
   display: inline-block;
   min-width: calc(50% - 0.1em);
   text-align: left;
@@ -676,21 +690,21 @@ label, input, select{
   margin: 0.05em;
   cursor: pointer;
 }
-#bill-forWhom > div:hover{
-  background-color: var(--color2)
+#bill-forWhom > div:hover {
+  background-color: var(--color2);
 }
 
-#bill-forWhom > div > label{
+#bill-forWhom > div > label {
   margin: 0.3em;
 }
 
-#newBillPage button{
+#newBillPage button {
   padding: 0.3em;
   border-radius: 0.3em;
   margin: 0.1em;
 }
 
-.settlementdiv{
+.settlementdiv {
   border-bottom: 2px solid var(--color3);
   cursor: pointer;
 }
@@ -699,15 +713,15 @@ label, input, select{
   Share Project
 --------------*/
 
-.Modal p{
+.Modal p {
   text-align: justify;
 }
 
-.Modal h2{
+.Modal h2 {
   padding: 0.4em;
 }
 
-.CloseModal{
+.CloseModal {
   width: 2em;
   height: 2em;
   position: absolute;
@@ -723,21 +737,21 @@ label, input, select{
   background-size: contain;
 }
 
-#ShareInvitationLinkDiv > svg{
+#ShareInvitationLinkDiv > svg {
   max-width: 100%;
 }
 
 /*------
  Toasts
 -------*/
-@media only screen and (min-width: 900px){
-  #ToastsContainer{
-      top: 2.6em !important;
+@media only screen and (min-width: 900px) {
+  #ToastsContainer {
+    top: 2.6em !important;
   }
 }
 
-#ToastsContainer{
-  position:absolute;
+#ToastsContainer {
+  position: absolute;
   z-index: 10;
   right: 0;
   top: 4.2em;
@@ -747,14 +761,14 @@ label, input, select{
   text-align: left;
 }
 
-.ToastDiv{
+.ToastDiv {
   z-index: 200;
   position: relative;
   width: max-content;
-  max-width : 90vw;
+  max-width: 90vw;
   direction: ltr;
   text-align: right;
-  padding : 0.5em;
+  padding: 0.5em;
   margin: 0.2em;
   border-radius: 0.5em;
   border-width: 2px;
@@ -762,43 +776,66 @@ label, input, select{
   animation: ToastShow 0.2s linear 0s forwards;
 }
 
-.ToastDivRemoved{
+.ToastDivRemoved {
   animation: ToastHide 0.5s linear 0s forwards;
 }
 
-@keyframes ToastShow{
-  0% {margin-top: 5vh; opacity: 0;}
-  100% {margin-top:0.2em; opacity: 1;}
+@keyframes ToastShow {
+  0% {
+    margin-top: 5vh;
+    opacity: 0;
+  }
+  100% {
+    margin-top: 0.2em;
+    opacity: 1;
+  }
 }
 
-@keyframes ToastHide{
-  0% {right:0; opacity: 1;}
-  50% {right:-5vw; opacity: 0;height: fit-content; padding : 0.5em; margin: 0.2em; border-width: 2px;}
-  100%{height: 0; padding : 0;opacity: 0; margin: 0; overflow-y: hidden; border-width: 0px;}
+@keyframes ToastHide {
+  0% {
+    right: 0;
+    opacity: 1;
+  }
+  50% {
+    right: -5vw;
+    opacity: 0;
+    height: fit-content;
+    padding: 0.5em;
+    margin: 0.2em;
+    border-width: 2px;
+  }
+  100% {
+    height: 0;
+    padding: 0;
+    opacity: 0;
+    margin: 0;
+    overflow-y: hidden;
+    border-width: 0px;
+  }
 }
 
-.ToastDiv > strong{
+.ToastDiv > strong {
   display: inline-block;
   width: 1.2em;
   height: 1.2em;
   margin: 0;
-  text-align : center;
-  cursor : pointer;
+  text-align: center;
+  cursor: pointer;
 }
 
-.ToastDivRed{
+.ToastDivRed {
   background-color: rgb(250, 150, 150);
   color: rgba(200, 10, 10);
-  border-color :rgba(200, 10, 10);
+  border-color: rgba(200, 10, 10);
 }
 
-.ToastDivGreen{
+.ToastDivGreen {
   background-color: rgb(200, 250, 200);
   color: rgba(10, 160, 10);
   border-color: rgba(10, 160, 10);
 }
 
-.ToastDivOrange{
+.ToastDivOrange {
   background-color: rgb(250, 200, 100);
   color: rgba(166, 121, 27);
   border-color: rgba(166, 121, 27);
@@ -809,35 +846,35 @@ Single pages
 (about, Settings)
 ----------*/
 
-.SinglePage{
+.SinglePage {
   padding: 1em 1.5em;
   text-align: center;
   overflow-y: auto;
 }
-.SinglePage h1{
+.SinglePage h1 {
   margin: 0.5em auto;
-  max-width:500px;
+  max-width: 500px;
 }
 
-.SinglePage p{
+.SinglePage p {
   text-align: justify;
   margin: 0.5em auto;
   max-width: 500px;
 }
 
-.SinglePageContainer{
+.SinglePageContainer {
   margin: 0.5em auto;
   max-width: 500px;
 }
 
-.SinglePageContainer label{
+.SinglePageContainer label {
   display: inline-block;
   text-align: left;
-  width:100%;
+  width: 100%;
   margin: 0.2em 0;
 }
 
-.SinglePageContainer button{
+.SinglePageContainer button {
   padding: 0.2em;
   width: 100%;
   background-color: var(--color5);
@@ -845,7 +882,8 @@ Single pages
   cursor: pointer;
 }
 
-.SinglePageContainer label > input, .SinglePageContainer label > select{
+.SinglePageContainer label > input,
+.SinglePageContainer label > select {
   width: 100%;
   float: center;
   margin: 0.1em 0;
@@ -856,7 +894,7 @@ Single pages
 Retractible
 ----------*/
 
-.ButtonRetractibleCheckbox ~ p::after{
+.ButtonRetractibleCheckbox ~ p::after {
   content: "‎ ";
   width: 1.5em;
   display: inline-block;
@@ -867,43 +905,48 @@ Retractible
   background-size: contain;
 }
 
-.ButtonRetractibleCheckbox:checked ~ p::after{
+.ButtonRetractibleCheckbox:checked ~ p::after {
   background-image: url(../assets/^slider.svg);
 }
 
-.ButtonRetractibleCheckbox{
+.ButtonRetractibleCheckbox {
   display: none;
   visibility: collapse;
 }
-.ButtonRetractibleDiv{
+.ButtonRetractibleDiv {
   float: left;
   clip-path: inset(0 0 100% 0);
   shape-outside: inset(0 0 100% 0);
   max-height: 0;
-  width:100%;
+  width: 100%;
   overflow-y: hidden;
   --transitionTime: 0.2s;
-  transition: clip-path var(--transitionTime), shape-outside var(--transitionTime), max-height 0s var(--transitionTime);
+  transition:
+    clip-path var(--transitionTime),
+    shape-outside var(--transitionTime),
+    max-height 0s var(--transitionTime);
   display: flow-root;
 }
-.ButtonRetractibleCheckbox:checked ~ .ButtonRetractibleDiv{
+.ButtonRetractibleCheckbox:checked ~ .ButtonRetractibleDiv {
   clip-path: inset(0 0 0 0);
   shape-outside: inset(0 0 0 0);
   max-height: 10000px;
-  transition: clip-path var(--transitionTime), shape-outside var(--transitionTime), max-height 0s 0s;
+  transition:
+    clip-path var(--transitionTime),
+    shape-outside var(--transitionTime),
+    max-height 0s 0s;
 }
-
 
 /*----------
   Switch
 ----------*/
 
-.switch > input{
+.switch > input {
   display: none;
   visibility: hidden;
 }
 
-.switch > span{
+.switch > span {
   display: inline-block;
   height: 1em;
   border-radius: 1em;
@@ -912,7 +955,7 @@ Retractible
   padding: 2.5px;
 }
 
-.switch > span > span{
+.switch > span > span {
   display: inline-block;
   float: left;
   height: 100%;
@@ -921,11 +964,11 @@ Retractible
   background-color: var(--color4);
 }
 
-.switch > input:checked ~ span > span{
+.switch > input:checked ~ span > span {
   float: right;
 }
 
-.switchFullWidth{
+.switchFullWidth {
   display: block;
   width: 100%;
   padding: 0.4em;
