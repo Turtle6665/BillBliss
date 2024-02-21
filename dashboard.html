@@ -1,238 +1,405 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BillBliss</title>
-  <link rel="stylesheet" href="css/dashboard.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BillBliss</title>
+    <link rel="stylesheet" href="css/dashboard.css" />
 
-  <!-- favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="./logo/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./logo/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="./logo/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./logo/favicon-16x16.png">
-  <link rel="manifest" href="./logo/site.webmanifest">
-  <link rel="mask-icon" href="./logo/safari-pinned-tab.svg" color="#5bbad5">
-  <link rel="shortcut icon" href="./logo/favicon.ico">
-  <meta name="apple-mobile-web-app-title" content="BillBliss">
-  <meta name="application-name" content="BillBliss">
-  <meta name="msapplication-TileColor" content="#ffc40d">
-  <meta name="msapplication-config" content="./logo/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
+    <!-- favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./logo/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./logo/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="./logo/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./logo/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./logo/site.webmanifest" />
+    <link rel="mask-icon" href="./logo/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="./logo/favicon.ico" />
+    <meta name="apple-mobile-web-app-title" content="BillBliss" />
+    <meta name="application-name" content="BillBliss" />
+    <meta name="msapplication-TileColor" content="#ffc40d" />
+    <meta name="msapplication-config" content="./logo/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
 
-  <!-- scripts -->
-  <script src="js/deptsSettle.js"></script>
-  <script src="js/localStorageAsked.js"></script>
-  <script src="js/toasts.js"></script>
-  <script src="./assets/js_library/qrcode.min.js"></script>
-  <script defer src="js/dashboard.js"></script>
-</head>
-<body>
-  <!-- Navigation Menu -->
-  <nav>
-    <div id="NavigationTitle">
-      <label id="showLeftPanel" for="showLeftPanelCheckbox">
-        <strong class="burgerLayer"></strong>
-        <strong class="burgerLayer"></strong>
-        <strong class="burgerLayer"></strong>
-      </label>
-      <img src="./logo/logo.png">
-      <h1>BillBliss </h1>
-      <button id="updateAll" name="updateAll" onclick="updateAll()">Update</button>
-    </div>
-    <ul id="navigationList">
-      <li><a href="#info">Informations</a></li>
-      <li><a href="#bills">Bills</a></li>
-      <li><a href="#summary">Summary</a></li>
-    </ul>
-    <div id="progress-bar"></div>
-    <div id="progress-bar-back"></div>
-  </nav>
-
-
-  <section id="leftPanelContainer">
-    <input type="checkbox" id="showLeftPanelCheckbox">
-    <label id="leftPanelBackground" class="ModalBackground" for="showLeftPanelCheckbox"></label>
-    <div id="leftPanel">
-      <div id="PanelTitle">
-        <label for="showLeftPanelCheckbox">
-          <strong class="Xside1"></strong>
-          <strong class="Xside2"></strong>
+    <!-- scripts -->
+    <script src="js/deptsSettle.js"></script>
+    <script src="js/localStorageAsked.js"></script>
+    <script src="js/toasts.js"></script>
+    <script src="./assets/js_library/qrcode.min.js"></script>
+    <script defer src="js/dashboard.js"></script>
+  </head>
+  <body>
+    <!-- Navigation Menu -->
+    <nav>
+      <div id="NavigationTitle">
+        <label id="showLeftPanel" for="showLeftPanelCheckbox">
+          <strong class="burgerLayer"></strong>
+          <strong class="burgerLayer"></strong>
+          <strong class="burgerLayer"></strong>
         </label>
-        <img src="./logo/logo.png" style="height:2em;">
+        <img src="./logo/logo.png" />
         <h1>BillBliss</h1>
+        <button id="updateAll" name="updateAll" onclick="updateAll()">
+          Update
+        </button>
       </div>
-      <div class="leftPanelButtonGroupe">
-          <div class="leftPanelButton hidden" style="--iconURL: url('../assets/icons/Settings.svg');" onclick="ShowToast('This has not been implemented yet','Red')">
+      <ul id="navigationList">
+        <li><a href="#info">Informations</a></li>
+        <li><a href="#bills">Bills</a></li>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+      <div id="progress-bar"></div>
+      <div id="progress-bar-back"></div>
+    </nav>
+
+    <section id="leftPanelContainer">
+      <input type="checkbox" id="showLeftPanelCheckbox" />
+      <label
+        id="leftPanelBackground"
+        class="ModalBackground"
+        for="showLeftPanelCheckbox"
+      ></label>
+      <div id="leftPanel">
+        <div id="PanelTitle">
+          <label for="showLeftPanelCheckbox">
+            <strong class="Xside1"></strong>
+            <strong class="Xside2"></strong>
+          </label>
+          <img src="./logo/logo.png" style="height: 2em" />
+          <h1>BillBliss</h1>
+        </div>
+        <div class="leftPanelButtonGroupe">
+          <div
+            class="leftPanelButton hidden"
+            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
+            onclick="ShowToast('This has not been implemented yet','Red')"
+          >
             Project settings
           </div>
-          <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Share.svg');" onclick="toShareProject();">
+          <div
+            class="leftPanelButton"
+            style="--iconURL: url(&quot;../assets/icons/Share.svg&quot;)"
+            onclick="toShareProject();"
+          >
             Share this project
           </div>
-        <label class="ButtonRetractible">
-          <input type="checkbox" class="ButtonRetractibleCheckbox" checked>
-          <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Projects.svg');">
-            Projects
+          <label class="ButtonRetractible">
+            <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
+            <div
+              class="leftPanelButton"
+              style="--iconURL: url(&quot;../assets/icons/Projects.svg&quot;)"
+            >
+              Projects
+            </div>
+            <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
+              <div
+                class="leftPanelButton"
+                onclick="window.location.href = './AddProject.html'"
+                style="
+                  --iconURL: url(&quot;../assets/icons/AddProjects.svg&quot;);
+                "
+              >
+                Add project
+              </div>
+              <div class="leftPanelButton" onclick="loadProject('demo')">
+                demo
+              </div>
+              <div class="leftPanelButton" onclick="loadProject('demo2')">
+                demo2
+              </div>
+            </div>
+          </label>
+          <div class="leftPanelButton hidden">Button 1</div>
+        </div>
+        <div class="leftPanelButtonGroupe leftPanelFooter">
+          <div
+            class="leftPanelButton"
+            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
+            onclick="window.location.href = './settings.html'"
+          >
+            Settings
           </div>
-          <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
-            <div class="leftPanelButton" onclick="window.location.href = './AddProject.html'" style="--iconURL: url('../assets/icons/AddProjects.svg');">
-              Add project
-            </div>
-            <div class="leftPanelButton" onclick="loadProject('demo')">
-              demo
-            </div>
-            <div class="leftPanelButton" onclick="loadProject('demo2')">
-              demo2
-            </div>
+          <div
+            class="leftPanelButton"
+            style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
+            onclick="window.location.href = './about.html'"
+          >
+            About BillBliss
           </div>
-        </label>
-        <div class="leftPanelButton hidden">
-          Button 1
         </div>
       </div>
-      <div class="leftPanelButtonGroupe leftPanelFooter">
-        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Settings.svg');" onclick="window.location.href = './settings.html'">
-          Settings
+    </section>
+
+    <div id="loadingAnnim" class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <!-- Project information Pge -->
+    <section
+      id="page-container"
+      onscroll='document.getElementById("progress-bar").style.marginLeft = document.getElementById("page-container").scrollLeft/3+"px"'
+    >
+      <div id="info-page" class="grid-pages">
+        <div id="info" class="linktarget"></div>
+        <h2>Informations</h2>
+        <div id="projectinfo">
+          Project name:
+          <div id="projectName"></div>
+          <br />
+          Contact email:
+          <div id="contactEmail"></div>
+          <br />
+          Default currency:
+          <div id="currency"></div>
+          <br />
         </div>
-        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/About.svg');" onclick="window.location.href = './about.html'">
-          About BillBliss
+        <div id="members">
+          <h2>Members</h2>
+          <label id="addMemberLabel" for="addMemberInput">New member:</label>
+          <div id="addMemberDiv">
+            <input
+              id="addMemberInput"
+              type="text"
+              name="addMember"
+              value=""
+              placeholder="Member name"
+            /><button type="button" name="button" onclick="addMember()">
+              +
+            </button>
+          </div>
+          <div id="membersList"></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <div id="loadingAnnim" class="lds-ring">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-
-  <!-- Project information Pge -->
-  <section id="page-container" onscroll='document.getElementById("progress-bar").style.marginLeft = document.getElementById("page-container").scrollLeft/3+"px"'>
-    <div id="info-page" class="grid-pages">
-      <div id="info" class="linktarget"></div>
-      <h2>Informations</h2>
-      <div id="projectinfo">
-        Project name: <div id="projectName"></div> <br/>
-        Contact email: <div id="contactEmail"></div> <br/>
-        Default currency: <div id="currency"></div> <br/>
-      </div>
-      <div id="members">
-        <h2>Members</h2>
-        <label id="addMemberLabel" for="addMemberInput">New member:</label>
-        <div id="addMemberDiv">
-          <input id="addMemberInput" type="text" name="addMember" value="" placeholder="Member name"><button type="button" name="button" onclick="addMember()">+</button>
+      <!-- Bills Page -->
+      <div id="bills-page" class="grid-pages">
+        <div id="billMain">
+          <div id="bills" class="linktarget"></div>
+          <h1>Bills</h1>
+          <div id="bills_list">
+            <!-- Add bill entry form here -->
+            <!-- Display list of bills here -->
+          </div>
+          <div id="bills_endSpacer"></div>
         </div>
-        <div id="membersList"></div>
-      </div>
-
-    </div>
-    <!-- Bills Page -->
-    <div id="bills-page" class="grid-pages">
-      <div id="billMain">
-        <div id="bills" class="linktarget"></div>
-        <h1>Bills</h1>
-        <div id="bills_list">
-          <!-- Add bill entry form here -->
-          <!-- Display list of bills here -->
+        <div id="billFooter">
+          <div id="addBill" onclick="addBill()">+</div>
         </div>
-        <div id="bills_endSpacer"></div>
       </div>
-      <div id="billFooter">
-        <div id="addBill" onclick="addBill()">+</div>
-      </div>
-    </div>
 
-    <!-- Current State Page -->
-    <div id="summary-page" class="grid-pages">
-      <div id="summary" class="linktarget"></div>
-      <h1>Summary</h1>
-      <!-- Display current state information here -->
-      <div id="balance_tree">
+      <!-- Current State Page -->
+      <div id="summary-page" class="grid-pages">
+        <div id="summary" class="linktarget"></div>
+        <h1>Summary</h1>
+        <!-- Display current state information here -->
+        <div id="balance_tree"></div>
+        <h2>Settlement</h2>
+        <div id="settlements_list"></div>
       </div>
-      <h2>Settlement</h2>
-      <div id="settlements_list">
+    </section>
 
+    <section id="editMemberPage" class="hidden">
+      <div
+        id="editMemberBack"
+        class="ModalBackground"
+        onclick="document.getElementById('editMemberPage').classList.add('hidden')"
+      ></div>
+      <div id="editMemberDiv">
+        <button
+          class="CloseModal"
+          onclick="document.getElementById('editMemberPage').classList.add('hidden')"
+        ></button>
+        <h1>Edit member</h1>
+        <br />
+        <label id="editMemberLabel" for="editMemberInput">Name: </label
+        ><input
+          id="editMemberInput"
+          type="text"
+          name="editMemberInput"
+          value=""
+          placeholder="Member name"
+        />
+        <br />
+        <label id="editMemberWeightLabel" for="editMemberWeight" class="hidden"
+          >Weight: </label
+        ><input
+          id="editMemberWeight"
+          type="text"
+          name="editMemberWeight"
+          value=""
+          placeholder="Member weight"
+          class="hidden"
+        />
+        <br />
+        <button
+          type="button"
+          name="saveEditMember"
+          onclick="pushEditedMember()"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          name="cancelEditMember"
+          onclick="document.getElementById('editMemberPage').classList.add('hidden')"
+        >
+          Cancel
+        </button>
+        <button type="button" name="deleteEditMember" onclick="removeMember()">
+          Remove
+        </button>
+        <button type="button" name="deleteEditMember" onclick="removeMember()">
+          Reactivate
+        </button>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="editMemberPage" class="hidden">
-    <div id="editMemberBack" class="ModalBackground" onclick="document.getElementById('editMemberPage').classList.add('hidden')">
-    </div>
-    <div id="editMemberDiv">
-      <button class="CloseModal" onclick="document.getElementById('editMemberPage').classList.add('hidden')"></button>
-      <h1>Edit member</h1> <br/>
-      <label id="editMemberLabel" for="editMemberInput">Name: </label><input id="editMemberInput" type="text" name="editMemberInput" value="" placeholder="Member name">
-      <br/>
-      <label id="editMemberWeightLabel" for="editMemberWeight" class="hidden">Weight: </label><input id="editMemberWeight" type="text" name="editMemberWeight" value="" placeholder="Member weight" class="hidden">
-      <br/>
-      <button type="button" name="saveEditMember" onclick="pushEditedMember()">Save</button>
-      <button type="button" name="cancelEditMember" onclick="document.getElementById('editMemberPage').classList.add('hidden')">Cancel</button>
-      <button type="button" name="deleteEditMember" onclick="removeMember()">Remove</button>
-      <button type="button" name="deleteEditMember" onclick="removeMember()">Reactivate</button>
-    </div>
-  </section>
-
-  <section id="newBillPage" class="hidden ModalContainer">
-    <div id="newBillBack" class="ModalBackground" onclick="document.getElementById('newBillPage').classList.add('hidden')">
-    </div>
-    <div id="newBilDiv"  class="Modal">
-      <button class="CloseModal" onclick="document.getElementById('newBillPage').classList.add('hidden')"></button>
-      <h1 class="newBill">New bill</h1>
-      <h1 class="editBill hidden">Edit bill</h1>
-      <label for="bill-when">When?</label><input id="bill-when" type="date" name="bill-date" value=""> <br/>
-      <label for="bill-what">What?</label><input id="bill-what" type="text" name="bill-what" value=""> <br/>
-      <label for="bill-much">How much?</label><input id="bill-much" type="text" name="bill-amount" value=""> <br/>
-      <label for="bill-who">Who paid?</label><select id="bill-who" class="" name="bill-payer"></select> <br/>
-      <div id="forWhomTitle">
-        For whom?<br/>
-        <button type="button" name="SelectAll" onclick=SelectforWhom(true)>Select all</button>
-        <button type="button" name="SelectNone" onclick=SelectforWhom(false)>Select none</button>
+    <section id="newBillPage" class="hidden ModalContainer">
+      <div
+        id="newBillBack"
+        class="ModalBackground"
+        onclick="document.getElementById('newBillPage').classList.add('hidden')"
+      ></div>
+      <div id="newBilDiv" class="Modal">
+        <button
+          class="CloseModal"
+          onclick="document.getElementById('newBillPage').classList.add('hidden')"
+        ></button>
+        <h1 class="newBill">New bill</h1>
+        <h1 class="editBill hidden">Edit bill</h1>
+        <label for="bill-when">When?</label
+        ><input id="bill-when" type="date" name="bill-date" value="" /> <br />
+        <label for="bill-what">What?</label
+        ><input id="bill-what" type="text" name="bill-what" value="" /> <br />
+        <label for="bill-much">How much?</label
+        ><input id="bill-much" type="text" name="bill-amount" value="" /> <br />
+        <label for="bill-who">Who paid?</label
+        ><select id="bill-who" class="" name="bill-payer"></select>
+        <br />
+        <div id="forWhomTitle">
+          For whom?<br />
+          <button type="button" name="SelectAll" onclick="SelectforWhom(true)">
+            Select all
+          </button>
+          <button
+            type="button"
+            name="SelectNone"
+            onclick="SelectforWhom(false)"
+          >
+            Select none
+          </button>
+        </div>
+        <div id="bill-forWhom">
+          <input type="checkbox" id="3RT2" name="3RT2" /><label for="3RT2"
+            >Scales</label
+          >
+        </div>
+        <!--Currency-->
+        <button
+          type="button"
+          name="Submit"
+          onclick="pushNewBill()"
+          class="newBill"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          name="SubmitAndNew"
+          onclick="pushNewBill(true)"
+          class="newBill"
+        >
+          Submit and add a new one
+        </button>
+        <button
+          id="btn-UpdateBill"
+          type="button"
+          name="UpdateBill"
+          onclick="pushEditedBill()"
+          class="editBill hidden"
+        >
+          Submit
+        </button>
+        <button
+          id="btn-RemoveBill"
+          type="button"
+          name="RemoveBill"
+          onclick="removeBill()"
+          class="editBill hidden"
+        >
+          Delete
+        </button>
+        <button
+          type="button"
+          name="CancelBill"
+          onclick="document.getElementById('newBillPage').classList.add('hidden')"
+        >
+          Cancel
+        </button>
       </div>
-      <div id="bill-forWhom">
-        <input type="checkbox" id="3RT2" name="3RT2"/><label for="3RT2">Scales</label>
+    </section>
+    <section id="shareProject" class="hidden ModalContainer">
+      <div
+        id="shareProjectBack"
+        class="ModalBackground"
+        onclick="document.getElementById('shareProject').classList.add('hidden')"
+      ></div>
+      <div id="shareProjectDiv" class="Modal">
+        <button
+          class="CloseModal"
+          onclick="document.getElementById('shareProject').classList.add('hidden')"
+        ></button>
+        <h1>Invite people to join this project</h1>
+        <h2>Share an invitation link</h2>
+        <p>
+          The easiest way to invite people is to give them the following
+          invitation link or scan this QRCode. <br />
+          They will be able to access the project, manage participants,
+          add/edit/delete bills. However, they will not have access to important
+          settings such as changing the private code or deleting the whole
+          project.
+        </p>
+        <div id="ShareInvitationLinkDiv">
+          <a href="./dashboard.html?project=">./dashboard.html?project=</a>
+          <br />
+          <svg></svg>
+        </div>
+        <h2>Share Identifier & code</h2>
+        <p>
+          You can share the project identifier and the private code by any
+          communication means. <br />
+          To acces the project, they will have to go to
+          <a href="./AddProject.html">the add project page</a>. Anyone with the
+          private code will have access to the full project, including changing
+          settings such as the private code or project email address, or even
+          deleting the whole project.
+        </p>
+        <p><strong>Identifier: </strong><a id="SharedProjectID"></a></p>
+        <p>
+          <strong>Private code:</strong> the private code was defined when you
+          created the project.
+        </p>
       </div>
-      <!--Currency-->
-      <button type="button" name="Submit" onclick="pushNewBill()" class="newBill">Submit</button>
-      <button type="button" name="SubmitAndNew" onclick="pushNewBill(true)" class="newBill">Submit and add a new one</button>
-      <button id="btn-UpdateBill" type="button" name="UpdateBill" onclick="pushEditedBill()" class="editBill hidden">Submit</button>
-      <button id="btn-RemoveBill" type="button" name="RemoveBill" onclick="removeBill()" class="editBill hidden">Delete</button>
-      <button type="button" name="CancelBill" onclick="document.getElementById('newBillPage').classList.add('hidden')">Cancel</button>
-    </div>
-  </section>
-  <section id="shareProject" class="hidden ModalContainer">
-    <div id="shareProjectBack" class="ModalBackground" onclick="document.getElementById('shareProject').classList.add('hidden')">
-    </div>
-    <div id="shareProjectDiv" class="Modal">
-      <button class="CloseModal" onclick="document.getElementById('shareProject').classList.add('hidden')"></button>
-      <h1>Invite people to join this project</h1>
-      <h2>Share an invitation link</h2>
-      <p>
-        The easiest way to invite people is to give them the following invitation link or scan this
-        QRCode. <br>
-        They will be able to access the project, manage participants, add/edit/delete bills.
-        However, they will not have access to important settings such as changing the private code
-        or deleting the whole project.
-      </p>
-      <div id="ShareInvitationLinkDiv">
-        <a href="./dashboard.html?project=">./dashboard.html?project=</a>
-        <br>
-        <svg></svg>
-      </div>
-      <h2>Share Identifier & code</h2>
-      <p>
-        You can share the project identifier and the private code by any communication means. <br>
-        To acces the project, they will have to go to <a href="./AddProject.html">the add project page</a>.
-        Anyone with the private code will have access to the full project, including changing
-        settings such as the private code or project email address, or even deleting the whole
-        project.
-      </p>
-      <p><strong>Identifier: </strong><a id="SharedProjectID"></a></p>
-      <p><strong>Private code:</strong> the private code was defined when you created the project. </p>
-    </div>
-  </section>
-</body>
+    </section>
+  </body>
 </html>

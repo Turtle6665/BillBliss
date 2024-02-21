@@ -14,9 +14,11 @@ BillBliss is a web application designed to streamline shared budget management o
 To use BillBliss, follow these simple steps:
 
 1. **Create a new shared budget project:**
+
    - Visit [ihatemoney.org](https://ihatemoney.org/create) and create a new project. If you already have a project, you can skip this step.
 
 2. **Generate an invitation link on IHM:**
+
    - Access your project on IHM and create an invitation link.
    - Example IHM link format: [https://ihatemoney.org/demo/join/PROJECT_TOKEN](https://ihatemoney.org/demo/join/WyJkZW1vIl0.rbig1PJ6ix7k84G2uGeYExONoWE).
 
@@ -24,7 +26,6 @@ To use BillBliss, follow these simple steps:
    - Go to [BillBliss](https://turtle6665.github.io/BillBliss/AddProject.html) and paste the IHM invitation link. Alternatively, you can use your project ID and project code to log in to your project directly.
 
 Now, you're all set to manage your shared expenses using BillBliss!
-
 
 ## Technology Stack
 
@@ -43,9 +44,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 Thanks to :
+
 - [ihatemoney.org](https://ihatemoney.org) for providing the backend support for BillBliss.
 - datalog for it's MIT licensed [Pure javascript QR Code generator](https://github.com/datalog/qrcode-svg)
-
 
 If you have any questions, feedback, or encounter issues while using BillBliss, please don't hesitate to reach out to us.
 

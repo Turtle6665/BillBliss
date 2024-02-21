@@ -14,7 +14,10 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((cacheNames) =>
       Promise.all(
         cacheNames.map((cacheName) => {
-          if (!expectedCacheNamesSet.has(cacheName) & cacheName.includes("BillBliss")) {
+          if (
+            !expectedCacheNamesSet.has(cacheName) &
+            cacheName.includes("BillBliss")
+          ) {
             // If this cache name isn't present in the set of "expected" cache names
             // and does have "BillBliss" in (see why on https://web.dev/articles/service-worker-lifecycle?)
             // then delete it.
@@ -28,7 +31,7 @@ self.addEventListener("activate", (event) => {
 });
 
 async function cacheThenNetwork(event) {
-  let url = new URL(event.request.url)
+  let url = new URL(event.request.url);
   //remove hash and serach from the simple fetch
   url.hash = "";
   url.search = "";
@@ -62,9 +65,7 @@ async function cacheThenNetwork(event) {
             url.toString(),
             response,
           );
-          if (
-            response.status < 400
-          ) {
+          if (response.status < 400) {
             // This avoids caching responses that we know are errors
             // (i.e. HTTP status code of 4xx or 5xx).
             console.log("  Caching the response to", url.toString());
@@ -93,15 +94,14 @@ async function cacheThenNetwork(event) {
 
         throw error;
       });
-  })
+  });
 }
-
 
 self.addEventListener("fetch", (event) => {
   console.log("fetched: ", event.request.url);
-  if(/ihatemoney/.test(event.request.url)){
+  if (/ihatemoney/.test(event.request.url)) {
     event.respondWith(fetch(event.request));
-  }else{
+  } else {
     event.respondWith(cacheThenNetwork(event));
   }
 });
