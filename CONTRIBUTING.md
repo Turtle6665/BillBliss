@@ -59,4 +59,3 @@ If you encounter bugs, issues, or have feature requests, please feel free to ope
 By contributing to the "BillBliss" project, you agree that your contributions will be licensed under the project's MIT License. Please see the [LICENSE](LICENSE) file for more details.
 
 Thank you for your interest in improving BillBliss!
-

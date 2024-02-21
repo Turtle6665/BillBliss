@@ -1,129 +1,223 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BillBliss | Add Project</title>
-  <link rel="stylesheet" href="css/dashboard.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BillBliss | Add Project</title>
+    <link rel="stylesheet" href="css/dashboard.css" />
 
-  <!-- favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="./logo/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./logo/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="./logo/android-chrome-192x192.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./logo/favicon-16x16.png">
-  <link rel="manifest" href="./logo/site.webmanifest">
-  <link rel="mask-icon" href="./logo/safari-pinned-tab.svg" color="#5bbad5">
-  <link rel="shortcut icon" href="./logo/favicon.ico">
-  <meta name="apple-mobile-web-app-title" content="BillBliss">
-  <meta name="application-name" content="BillBliss">
-  <meta name="msapplication-TileColor" content="#ffc40d">
-  <meta name="msapplication-config" content="./logo/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
+    <!-- favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./logo/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./logo/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="./logo/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./logo/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./logo/site.webmanifest" />
+    <link rel="mask-icon" href="./logo/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="./logo/favicon.ico" />
+    <meta name="apple-mobile-web-app-title" content="BillBliss" />
+    <meta name="application-name" content="BillBliss" />
+    <meta name="msapplication-TileColor" content="#ffc40d" />
+    <meta name="msapplication-config" content="./logo/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
 
-  <!-- scripts -->
-  <script src="js/deptsSettle.js"></script>
-  <script src="js/localStorageAsked.js"></script>
-  <script src="js/toasts.js"></script>
-  <script defer src="js/AddProject.js"></script>
-</head>
-<body>
-  <!-- Navigation Menu -->
-  <nav>
-    <div id="NavigationTitle">
-      <label id="showLeftPanel" for="showLeftPanelCheckbox">
-        <strong class="burgerLayer"></strong>
-        <strong class="burgerLayer"></strong>
-        <strong class="burgerLayer"></strong>
-      </label>
-      <img src="./logo/logo.png">
-      <h1>BillBliss </h1>
-    </div>
-  </nav>
-
-
-  <section id="leftPanelContainer">
-    <input type="checkbox" id="showLeftPanelCheckbox">
-    <label id="leftPanelBackground" class="ModalBackground" for="showLeftPanelCheckbox"></label>
-    <div id="leftPanel">
-      <div id="PanelTitle">
-        <label for="showLeftPanelCheckbox">
-          <strong class="Xside1"></strong>
-          <strong class="Xside2"></strong>
+    <!-- scripts -->
+    <script src="js/deptsSettle.js"></script>
+    <script src="js/localStorageAsked.js"></script>
+    <script src="js/toasts.js"></script>
+    <script defer src="js/AddProject.js"></script>
+  </head>
+  <body>
+    <!-- Navigation Menu -->
+    <nav>
+      <div id="NavigationTitle">
+        <label id="showLeftPanel" for="showLeftPanelCheckbox">
+          <strong class="burgerLayer"></strong>
+          <strong class="burgerLayer"></strong>
+          <strong class="burgerLayer"></strong>
         </label>
-        <img src="./logo/logo.png" style="height:2em;">
+        <img src="./logo/logo.png" />
         <h1>BillBliss</h1>
       </div>
-      <div class="leftPanelButtonGroupe">
-        <label class="ButtonRetractible">
-          <input type="checkbox" class="ButtonRetractibleCheckbox" checked>
-          <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Projects.svg');">
-            Projects
+    </nav>
+
+    <section id="leftPanelContainer">
+      <input type="checkbox" id="showLeftPanelCheckbox" />
+      <label
+        id="leftPanelBackground"
+        class="ModalBackground"
+        for="showLeftPanelCheckbox"
+      ></label>
+      <div id="leftPanel">
+        <div id="PanelTitle">
+          <label for="showLeftPanelCheckbox">
+            <strong class="Xside1"></strong>
+            <strong class="Xside2"></strong>
+          </label>
+          <img src="./logo/logo.png" style="height: 2em" />
+          <h1>BillBliss</h1>
+        </div>
+        <div class="leftPanelButtonGroupe">
+          <label class="ButtonRetractible">
+            <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
+            <div
+              class="leftPanelButton"
+              style="--iconURL: url(&quot;../assets/icons/Projects.svg&quot;)"
+            >
+              Projects
+            </div>
+            <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
+              <div
+                class="leftPanelButton"
+                onclick="window.location.href = './AddProject.html'"
+                style="
+                  --iconURL: url(&quot;../assets/icons/AddProjects.svg&quot;);
+                "
+              >
+                Add project
+              </div>
+              <div class="leftPanelButton" onclick="loadProject('demo')">
+                demo
+              </div>
+              <div class="leftPanelButton" onclick="loadProject('demo2')">
+                demo2
+              </div>
+            </div>
+          </label>
+          <div class="leftPanelButton hidden">Button 1</div>
+        </div>
+        <div class="leftPanelButtonGroupe leftPanelFooter">
+          <div
+            class="leftPanelButton"
+            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
+            onclick="window.location.href = './settings.html'"
+          >
+            Settings
           </div>
-          <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
-            <div class="leftPanelButton" onclick="window.location.href = './AddProject.html'" style="--iconURL: url('../assets/icons/AddProjects.svg');">
-              Add project
-            </div>
-            <div class="leftPanelButton" onclick="loadProject('demo')">
-              demo
-            </div>
-            <div class="leftPanelButton" onclick="loadProject('demo2')">
-              demo2
-            </div>
+          <div
+            class="leftPanelButton"
+            style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
+            onclick="window.location.href = './about.html'"
+          >
+            About BillBliss
           </div>
-        </label>
-        <div class="leftPanelButton hidden">
-          Button 1
         </div>
       </div>
-      <div class="leftPanelButtonGroupe leftPanelFooter">
-        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/Settings.svg');" onclick="window.location.href = './settings.html'">
-          Settings
-        </div>
-        <div class="leftPanelButton" style="--iconURL: url('../assets/icons/About.svg');" onclick="window.location.href = './about.html'">
-          About BillBliss
-        </div>
+    </section>
+
+    <section id="AddProjectSection" class="SinglePage">
+      <div class="SinglePageContainer">
+        <h1>Log in to an existing project</h1>
+        <h3>From private code</h3>
+        <form onsubmit="event.preventDefault()">
+          <label
+            >Project identifier:
+            <input type="text" name="projectID" id="projectID" required
+          /></label>
+          <br />
+          <label
+            >Private code:
+            <input type="password" name="projectCode" id="projectCode" required
+          /></label>
+          <br />
+          <button
+            type="submit"
+            name="LoggInFromCode"
+            onclick="logInByIHMCode()"
+          >
+            Log in
+          </button>
+        </form>
+        <br />
+        <h3>From IHateMoney invitation links</h3>
+        <form onsubmit="event.preventDefault();">
+          <label
+            >Invitation link:
+            <input
+              type="url"
+              name="IHMinvitationLink"
+              id="IHMinvitationLink"
+              placeholder="https://ihatemoney.org/demo/join/PROJECT_TOKEN"
+              required
+          /></label>
+          <br />
+          <button
+            type="submit"
+            name="LogInFromLink"
+            onclick="logInByIHMInvitation()"
+          >
+            Log in
+          </button>
+        </form>
+        <br />
+
+        <h1>Create a new project</h1>
+        <p>
+          This will create a new project on
+          <a href="https://ihatemoney.org/">ihatemoney.org</a>. Upon creation,
+          you will receive an e-mail from their website.
+        </p>
+        <form onsubmit="event.preventDefault();">
+          <label
+            >Project name:
+            <input type="text" name="newProjectID" id="newProjectID" required
+          /></label>
+          <br />
+          <label
+            >Private code:
+            <input
+              type="password"
+              name="newProjectCode"
+              id="newProjectCode"
+              required
+          /></label>
+          <br />
+          <label
+            >Email:
+            <input type="text" name="Email" id="newProjectEmail" required
+          /></label>
+          <label class="ButtonRetractible">
+            <input type="checkbox" class="ButtonRetractibleCheckbox" />
+            <p>Advanced options</p>
+            <div class="ButtonRetractibleDiv">
+              <label
+                >Project id:
+                <input type="text" name="ProjectId" id="newProjectId"
+              /></label>
+              <label
+                >Project curency:
+                <select name="curency" id="newProjectCurrency"></select
+              ></label>
+            </div>
+          </label>
+          <button
+            type="submit"
+            name="CreateProject"
+            onclick="CreateNewProject()"
+          >
+            Create projects
+          </button>
+        </form>
       </div>
-    </div>
-  </section>
-
-  <section id="AddProjectSection" class="SinglePage">
-    <div class="SinglePageContainer">
-      <h1>Log in to an existing project<h1>
-      <h3>From private code</h2>
-      <form onsubmit="event.preventDefault()">
-        <label>Project identifier: <input type="text" name="projectID" id="projectID" required/></label>
-        <br>
-        <label>Private code: <input type="password" name="projectCode" id="projectCode" required/></label>
-        <br>
-        <button type="submit" name="LoggInFromCode" onclick="logInByIHMCode()">Log in</button>
-      </form>
-      <br>
-      <h3>From IHateMoney invitation links</h2>
-      <form onsubmit="event.preventDefault();">
-        <label>Invitation link: <input type="link" name="IHMinvitationLink" id="IHMinvitationLink" placeholder="https://ihatemoney.org/demo/join/PROJECT_TOKEN" required/></label>
-        <br>
-        <button type="submit" name="LogInFromLink" onclick="logInByIHMInvitation()">Log in</button>
-      </form>
-      <br>
-
-      <h1>Create a new project</h1>
-      <p>This will create a new project on <a href="https://ihatemoney.org/">ihatemoney.org</a>. Upon creation, you will receive an e-mail from their website.</p>
-      <form onsubmit="event.preventDefault();">
-        <label>Project name: <input type="text" name="newProjectID" id="newProjectID" required/></label>
-        <br>
-        <label>Private code: <input type="password" name="newProjectCode" id="newProjectCode" required/></label>
-        <br>
-        <label>Email: <input type="text" name="Email" id="newProjectEmail" required/></label>
-        <label class="ButtonRetractible">
-          <input type="checkbox" class="ButtonRetractibleCheckbox">
-          <p>Advanced options</p>
-          <div class="ButtonRetractibleDiv">
-            <label>Project id: <input type="text" name="ProjectId" id="newProjectId"/></label>
-            <label>Project curency: <select name="curency" id="newProjectCurrency"/></select></label>
-          </div>
-        </label>
-        <button type="submit" name="CreateProject" onclick="CreateNewProject()">Create projects</button>
-      </form>
-    </div>
-    <br><br><br><br>
-  </section>
+      <br /><br /><br /><br />
+    </section>
+  </body>
+</html>
