@@ -424,7 +424,10 @@
         ></button>
         <h1>Edit this project</h1>
         <h2>Edit project settings</h2>
-        <form onsubmit="event.preventDefault()" class="wideForms">
+        <strong>
+          Updating your settings will automatically set the currency to "XXX".
+        </strong>
+        <form onsubmit="event.preventDefault(); EditProject()" class="wideForms">
           <label>
             Project name:
             <input
@@ -446,7 +449,7 @@
           </label>
           <br>
           <label>
-            New Project private code:
+            New Project private code: <br>
             <em>If it's empty, the code will not be changed.</em>
             <input
               type="password"
@@ -457,6 +460,7 @@
           <br>
           <label>
             Project currency:
+            <br>
             <select name="currency" id="EditProjectCurrency">
             </select>
           </label>
@@ -475,7 +479,6 @@
           <button
             type="submit"
             name="EditProjectSubmit"
-            onclick="EditProject()"
           >
             Edit project
           </button>
@@ -486,7 +489,7 @@
           This will remove all the data for this project.
           This action is irreversible.
         </strong>
-        <form onsubmit="event.preventDefault()" class="wideForms">
+        <form onsubmit="event.preventDefault(); DeleteProject()" class="wideForms">
           <label>Project private code:
             <input
               type="password"
@@ -499,7 +502,6 @@
           <button
             type="submit"
             name="DeleteProject"
-            onclick="DeleteProject()"
           >
             Delete project
           </button>

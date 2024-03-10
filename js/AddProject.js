@@ -72,34 +72,6 @@ function VerifieAuthToken(projectID, projectToken) {
       return false;
     });
 }
-
-function VerifieAuthCode(projectID, ProjectCode) {
-  //return Bool (false) if not correct or Token if varification successful
-  return fetch(apiUrlProjects + projectID + "/token", {
-    method: "GET",
-    headers: {
-      Authorization: `Basic ` + btoa(`${projectID}:${ProjectCode}`),
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        ShowToast("Failed to verifie your credentials.", "Red");
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // Extract and handle the token from the response data
-      const token = data.token;
-      return token;
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-      return false;
-    });
-}
-
 //Login page
 
 //log in from code

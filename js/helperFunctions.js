@@ -113,3 +113,34 @@ function updateCurrencyList(DOMSelected, selectedCurrency = "XXX") {
       console.error("Error:", error.message);
     });
 }
+
+
+//
+// Verifie code and get login token
+//
+function VerifieAuthCode(projectID, ProjectCode) {
+  //return Bool (false) if not correct or Token if varification successful
+  return fetch(apiUrl + "projects/" + projectID + "/token", {
+    method: "GET",
+    headers: {
+      Authorization: `Basic ` + btoa(`${projectID}:${ProjectCode}`),
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        ShowToast("Failed to verifie your credentials.", "Red");
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Extract and handle the token from the response data
+      const token = data.token;
+      return token;
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+      return false;
+    });
+}

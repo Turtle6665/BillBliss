@@ -914,9 +914,83 @@ function toEditProject() {
   document.getElementById("showLeftPanelCheckbox").checked = false;
   //update the informations
   document.getElementById("EditProjectName").value = info.name;
-  document.getElementById("EditProjectMail").value = info.contact_email
+  document.getElementById("EditProjectMail").value = info.contact_email;
+  document.getElementById("EditProjectCode").value = "";
+  document.getElementById("EditCurrentProjectCode").value ="";
   updateCurrencyList(document.getElementById("EditProjectCurrency"), info.default_currency);
 }
+
+//Edit project settings
+function EditProject() {
+  startLoading();
+  let projectData = {
+    current_password: document.getElementById("EditCurrentProjectCode").value,
+    name: document.getElementById("EditProjectName").value,
+    contact_email: document.getElementById("EditProjectMail").value,
+    logging_preference: info.logging_preference,
+  };
+  let NewProjectCode = document.getElementById("EditProjectCode").value;
+  let isNewToken = false;
+  if (NewProjectCode != "") {
+    projectData["password"] = NewProjectCode;
+    isNewToken = true;
+  }
+  let ProjectCurrency = document.getElementById("EditProjectCurrency").value;
+  if (ProjectCurrency != info.default_currency) {
+    projectData["default_currency"] = ProjectCurrency;
+  }
+  // TODO: a PUT request
+  fetch(apiUrl_Project, {
+    method: "PUT",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(projectData),
+  })
+    .then(async (response) => {
+      let response_json = await response.json();
+      if (!response.ok) {
+        if (response.status == 400) {
+          for (field in response_json){
+            ShowToast(field + ": " + response_json[field], "Red");
+          }
+          throw new Error("Project data has not been updated");
+        }
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response_json;
+    })
+    .then(async (data) => {
+      if (!isNewToken) {
+        ShowToast("Project settings updated", "Green");
+        updateAll();
+        document.getElementById('editProject').classList.add('hidden');
+      } else {
+        // TODO: reset token
+        ShowToast("Project settings updated. Fetching new auth token...", "Green");
+        let token = await VerifieAuthCode(projectID, NewProjectCode);
+        if (!!token) {
+          //is true if token is a non null string
+          endLoading();
+          window.location.href =
+            "./dashboard.html?project=" +
+            encodeURIComponent(projectID) +
+            "&token=" +
+            encodeURIComponent(token);
+          }else {
+            throw new Error(`New token could not be fetch`)
+          }
+      }
+    })
+    .catch((error) => {
+      ShowToast(error.message, "Red");
+      console.error("Error:", error.message);
+      endLoading();
+    });
+}
+
+// TODO: Delete project
 
 //function to render amoney
 function amountToText(amount, currency) {
