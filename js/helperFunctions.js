@@ -81,11 +81,11 @@ function endLoading() {
 //
 // Update curency list
 //
-const apiUrl = "https://ihatemoney.org/api/"
-const apiUrlCurrencies = apiUrl + "currencies";
+
 function updateCurencyList(DOMSelected, selectedCurrency = "XXX") {
   // DOMSelected should be a select dom elements.
   // selectedCurrency is a string.
+  apiUrlCurrencies = apiUrl + "currencies";
 
   return fetch(apiUrlCurrencies, { method: "GET" })
     .then(async (response) => {
@@ -99,8 +99,10 @@ function updateCurencyList(DOMSelected, selectedCurrency = "XXX") {
       curencyList.forEach((curency) => {
         let curencyOption = document.createElement("option");
         Object.assign(curencyOption, { value: curency, textContent: curency });
-        if (curency == selectedCurrency) {
+        if (currency == "XXX") {
           curencyOption.textContent = "No curency";
+        }
+        if (curency == selectedCurrency) {
           curencyOption.selected = true;
         }
         DOMSelected.appendChild(curencyOption);

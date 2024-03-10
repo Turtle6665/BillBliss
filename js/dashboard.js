@@ -913,7 +913,7 @@ function toEditProject() {
   document.getElementById("editProject").classList.remove("hidden");
   document.getElementById("showLeftPanelCheckbox").checked = false;
   //update the informations
-  updateCurencyList(document.getElementById("EditProjectCurrency"));
+  updateCurencyList(document.getElementById("EditProjectCurrency"), info.default_currency);
 }
 
 //function to render amoney
