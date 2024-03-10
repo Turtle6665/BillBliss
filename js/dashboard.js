@@ -2,7 +2,8 @@
 //import settle from "./deptsSettle.js";
 
 //setup values
-let base_apiUrl = "https://ihatemoney.org/api/projects/";
+apiUrl = "https://ihatemoney.org/api/";
+let base_apiUrl = apiUrl + "projects/";
 
 //install the service worker
 if ("serviceWorker" in navigator) {

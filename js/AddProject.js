@@ -42,7 +42,7 @@ function loadProject(project) {
 //
 // Main page
 //
-const apiUrl = "https://ihatemoney.org/api/";
+apiUrl = "https://ihatemoney.org/api/";
 const apiUrlProjects = apiUrl + "projects/";
 const apiUrlCreateProject = apiUrl + "projects";
 
