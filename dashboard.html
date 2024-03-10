@@ -424,7 +424,7 @@
         ></button>
         <h1>Edit this project</h1>
         <h2>Edit project settings</h2>
-        <form onsubmit="event.preventDefault()">
+        <form onsubmit="event.preventDefault()" class="wideForms">
           <label>
             Project name:
             <input
@@ -482,11 +482,11 @@
         </form>
 
         <h2>Delete project</h2>
-        <p><strong>
+        <strong>
           This will remove all the data for this project.
           This action is irreversible.
-        </strong></p>
-        <form onsubmit="event.preventDefault()">
+        </strong>
+        <form onsubmit="event.preventDefault()" class="wideForms">
           <label>Project private code:
             <input
               type="password"
