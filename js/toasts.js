@@ -47,6 +47,11 @@ async function RemoveToast(ToastDiv) {
   ToastDiv.remove();
 }
 
+
+//
+// make the loading animations
+//
+
 function startLoading() {
   //append loadingAnnim to body if not present
   if (!document.getElementById("loadingAnnim")) {
@@ -71,4 +76,38 @@ function endLoading() {
     (i) => (i.disabled = false),
   );
   document.getElementById("loadingAnnim").classList.add("hidden");
+}
+
+//
+// Update curency list
+//
+const apiUrl = "https://ihatemoney.org/api/"
+const apiUrlCurrencies = apiUrl + "currencies";
+function updateCurencyList(DOMSelected, selectedCurrency = "XXX") {
+  // DOMSelected should be a select dom elements.
+  // selectedCurrency is a string.
+
+  return fetch(apiUrlCurrencies, { method: "GET" })
+    .then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((curencyList) => {
+      DOMSelected.innerHTML = "";
+      curencyList.forEach((curency) => {
+        let curencyOption = document.createElement("option");
+        Object.assign(curencyOption, { value: curency, textContent: curency });
+        if (curency == selectedCurrency) {
+          curencyOption.textContent = "No curency";
+          curencyOption.selected = true;
+        }
+        DOMSelected.appendChild(curencyOption);
+      });
+    })
+    .catch((error) => {
+      ShowToast(error.message, "Red");
+      console.error("Error:", error.message);
+    });
 }

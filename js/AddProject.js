@@ -45,7 +45,6 @@ function loadProject(project) {
 const apiUrl = "https://ihatemoney.org/api/";
 const apiUrlProjects = apiUrl + "projects/";
 const apiUrlCreateProject = apiUrl + "projects";
-const apiUrlCurrencies = apiUrl + "currencies";
 
 //Verifie Connection informations
 function VerifieAuthToken(projectID, projectToken) {
@@ -242,35 +241,5 @@ function CreateNewProject() {
     });
 }
 
-//
-// Update curency list
-//
-function updateCurencyList() {
-  return fetch(apiUrlCurrencies, { method: "GET" })
-    .then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((curencyList) => {
-      newProjectCurrencySelect = document.getElementById("newProjectCurrency");
-      newProjectCurrencySelect.innerHTML = "";
-      curencyList.forEach((curency) => {
-        let curencyOption = document.createElement("option");
-        Object.assign(curencyOption, { value: curency, textContent: curency });
-        if (curency == "XXX") {
-          curencyOption.textContent = "No curency";
-          curencyOption.selected = true;
-        }
-        newProjectCurrencySelect.appendChild(curencyOption);
-      });
-    })
-    .catch((error) => {
-      ShowToast(error.message, "Red");
-      console.error("Error:", error.message);
-    });
-}
-
 updateProjectList();
-updateCurencyList();
+updateCurencyList(document.getElementById("newProjectCurrency"), "XXX");

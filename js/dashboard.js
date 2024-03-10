@@ -2,7 +2,7 @@
 //import settle from "./deptsSettle.js";
 
 //setup values
-const base_apiUrl = "https://ihatemoney.org/api/projects/";
+let base_apiUrl = "https://ihatemoney.org/api/projects/";
 
 //install the service worker
 if ("serviceWorker" in navigator) {
@@ -65,7 +65,7 @@ if (!(projectID == null) & !(token == null)) {
   token = ProjectsList[projectID]["token"];
 }
 
-let apiUrl = base_apiUrl + projectID;
+let apiUrl_Project = base_apiUrl + projectID;
 
 //Get the informations of the project
 let info = null;
@@ -75,7 +75,7 @@ let memberTrueActivated = {}; //members are "TrueActivated" if they are truly ac
 let memberActivated = {}; //members are "activated" if they are truly activated or deactivated but a ballance different than 0
 
 function updateInfo() {
-  return fetch(apiUrl, {
+  return fetch(apiUrl_Project, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -158,7 +158,7 @@ function updateInfo() {
 //get the bills
 let allbills = null;
 function updateBills() {
-  return fetch(apiUrl + "/bills", {
+  return fetch(apiUrl_Project + "/bills", {
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -311,7 +311,7 @@ function addMember() {
   const newMemberData = {
     name: document.getElementById("addMemberInput").value,
   };
-  return fetch(apiUrl + "/members", {
+  return fetch(apiUrl_Project + "/members", {
     method: "POST",
     headers: {
       Authorization: "Bearer " + token,
@@ -393,7 +393,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
     MemberInputData["activated"] = memberActiv;
     MemberInputData["name"] = memberNames[memberID];
   }
-  return fetch(apiUrl + "/members/" + memberID, {
+  return fetch(apiUrl_Project + "/members/" + memberID, {
     method: "PUT",
     headers: {
       Authorization: "Bearer " + token,
@@ -441,7 +441,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
 
 function removeMember(memberID, updateall = true) {
   //it removes if the member has no bills. It it has, the member is deactivated
-  return fetch(apiUrl + "/members/" + memberID, {
+  return fetch(apiUrl_Project + "/members/" + memberID, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + token,
@@ -643,7 +643,7 @@ function pushNewBill(addNew = false) {
 
   return Promise.all(activateMember)
     .then((a) => {
-      return fetch(apiUrl + "/bills", {
+      return fetch(apiUrl_Project + "/bills", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + token,
@@ -738,7 +738,7 @@ function pushEditedBill(billID) {
 
   return Promise.all(activateMember)
     .then((data) => {
-      return fetch(apiUrl + "/bills/" + billID, {
+      return fetch(apiUrl_Project + "/bills/" + billID, {
         method: "PUT",
         headers: {
           Authorization: "Bearer " + token,
@@ -808,7 +808,7 @@ function pushEditedBill(billID) {
 }
 
 function removeBill(billID) {
-  return fetch(apiUrl + "/bills/" + billID, {
+  return fetch(apiUrl_Project + "/bills/" + billID, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + token,
@@ -912,7 +912,7 @@ function toEditProject() {
   document.getElementById("editProject").classList.remove("hidden");
   document.getElementById("showLeftPanelCheckbox").checked = false;
   //update the informations
-  
+  updateCurencyList(document.getElementById("EditProjectCurrency"));
 }
 
 //function to render amoney
