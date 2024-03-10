@@ -913,6 +913,8 @@ function toEditProject() {
   document.getElementById("editProject").classList.remove("hidden");
   document.getElementById("showLeftPanelCheckbox").checked = false;
   //update the informations
+  document.getElementById("EditProjectName").value = info.name;
+  document.getElementById("EditProjectMail").value = info.contact_email
   updateCurencyList(document.getElementById("EditProjectCurrency"), info.default_currency);
 }
 
