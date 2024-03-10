@@ -967,7 +967,7 @@ function EditProject() {
         updateAll();
         document.getElementById('editProject').classList.add('hidden');
       } else {
-        // TODO: reset token
+        // Reset Auth token
         ShowToast("Project settings updated. Fetching new auth token...", "Green");
         let token = await VerifieAuthCode(projectID, NewProjectCode);
         if (!!token) {
@@ -979,7 +979,7 @@ function EditProject() {
             "&token=" +
             encodeURIComponent(token);
           }else {
-            throw new Error(`New token could not be fetch`)
+            throw new Error(`New token could not be fetched`)
           }
       }
     })
