@@ -79,10 +79,10 @@ function endLoading() {
 }
 
 //
-// Update curency list
+// Update currency list
 //
 
-function updateCurencyList(DOMSelected, selectedCurrency = "XXX") {
+function updateCurrencyList(DOMSelected, selectedCurrency = "XXX") {
   // DOMSelected should be a select dom elements.
   // selectedCurrency is a string.
   apiUrlCurrencies = apiUrl + "currencies";
@@ -94,18 +94,18 @@ function updateCurencyList(DOMSelected, selectedCurrency = "XXX") {
       }
       return response.json();
     })
-    .then((curencyList) => {
+    .then((currencyList) => {
       DOMSelected.innerHTML = "";
-      curencyList.forEach((curency) => {
-        let curencyOption = document.createElement("option");
-        Object.assign(curencyOption, { value: curency, textContent: curency });
+      currencyList.forEach((currency) => {
+        let currencyOption = document.createElement("option");
+        Object.assign(currencyOption, { value: currency, textContent: currency });
         if (currency == "XXX") {
-          curencyOption.textContent = "No curency";
+          currencyOption.textContent = "No currency";
         }
-        if (curency == selectedCurrency) {
-          curencyOption.selected = true;
+        if (currency == selectedCurrency) {
+          currencyOption.selected = true;
         }
-        DOMSelected.appendChild(curencyOption);
+        DOMSelected.appendChild(currencyOption);
       });
     })
     .catch((error) => {

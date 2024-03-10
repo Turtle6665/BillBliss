@@ -242,4 +242,4 @@ function CreateNewProject() {
 }
 
 updateProjectList();
-updateCurencyList(document.getElementById("newProjectCurrency"), "XXX");
+updateCurrencyList(document.getElementById("newProjectCurrency"), "XXX");
