@@ -101,6 +101,13 @@
           >
             Share this project
           </div>
+          <div
+            class="leftPanelButton"
+            style="--iconURL: url(&quot;../assets/icons/EditProject.svg&quot;)"
+            onclick="toEditProject();"
+          >
+            Edit this project
+          </div>
           <label class="ButtonRetractible">
             <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
             <div
@@ -368,7 +375,8 @@
         <button
           class="CloseModal"
           onclick="document.getElementById('shareProject').classList.add('hidden')"
-        ></button>
+        >
+        </button>
         <h1>Invite people to join this project</h1>
         <h2>Share an invitation link</h2>
         <p>
@@ -399,6 +407,100 @@
           <strong>Private code:</strong> the private code was defined when you
           created the project.
         </p>
+      </div>
+    </section>
+
+    <section id="editProject" class="hidden ModalContainer">
+      <div
+        id="editProjectBack"
+        class="ModalBackground"
+        onclick="document.getElementById('editProject').classList.add('hidden')"
+      >
+      </div>
+      <div id="editProjectDiv" class="Modal">
+        <button
+          class="CloseModal"
+          onclick="document.getElementById('editProject').classList.add('hidden')"
+        ></button>
+        <h1>Edit this project</h1>
+        <h2>Edit project settings</h2>
+        <form onsubmit="event.preventDefault()">
+          <label>
+            Project name:
+            <input
+              type="text"
+              name="EditProjectName"
+              id="EditProjectName"
+              required
+            >
+          </label>
+          <br>
+          <label>
+            Project email:
+            <input
+              type="text"
+              name="EditProjectMail"
+              id="EditProjectMail"
+            >
+          </label>
+          <br>
+          <label>
+            New Project private code:
+            <input
+              type="password"
+              name="EditProjectCode"
+              id="EditProjectCode"
+            >
+          </label>
+          <br>
+          <label>
+            Project curency:
+            <select name="curency" id="EditProjectCurrency">
+            </select>
+          </label>
+          <br>
+          <label>
+            Current Project private code:
+            <input
+              type="password"
+              name="EditCurrentProjectCode"
+              id="EditCurrentProjectCode"
+              required
+            >
+          </label>
+          <br>
+          <button
+            type="submit"
+            name="EditProjectSubmit"
+            onclick="EditProject()"
+          >
+            Edit project
+          </button>
+        </form>
+
+        <h2>Delete project</h2>
+        <p><strong>
+          This will remove all the data for this project.
+          This action is irreversible.
+        </strong></p>
+        <form onsubmit="event.preventDefault()">
+          <label>Project private code:
+            <input
+              type="password"
+              name="DeleteProjectCode"
+              id="DeleteProjectCode"
+              required
+            >
+          </label>
+          <br>
+          <button
+            type="submit"
+            name="DeleteProject"
+            onclick="DeleteProject()"
+          >
+            Delete project
+          </button>
+        </form>
       </div>
     </section>
   </body>

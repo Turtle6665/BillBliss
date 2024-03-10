@@ -906,6 +906,15 @@ function toShareProject() {
   });
 }
 
+//go to edit project page
+function toEditProject() {
+  //show the page
+  document.getElementById("editProject").classList.remove("hidden");
+  document.getElementById("showLeftPanelCheckbox").checked = false;
+  //update the informations
+  
+}
+
 //function to render amoney
 function amountToText(amount, currency) {
   function round(v) {
