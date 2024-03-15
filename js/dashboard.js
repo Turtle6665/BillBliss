@@ -928,6 +928,7 @@ function EditProject() {
     name: document.getElementById("EditProjectName").value,
     contact_email: document.getElementById("EditProjectMail").value,
     logging_preference: info.logging_preference,
+    default_currency: document.getElementById("EditProjectCurrency").value,
   };
   let NewProjectCode = document.getElementById("EditProjectCode").value;
   let isNewToken = false;
@@ -935,11 +936,6 @@ function EditProject() {
     projectData["password"] = NewProjectCode;
     isNewToken = true;
   }
-  let ProjectCurrency = document.getElementById("EditProjectCurrency").value;
-  if (ProjectCurrency != info.default_currency) {
-    projectData["default_currency"] = ProjectCurrency;
-  }
-  // TODO: a PUT request
   fetch(apiUrl_Project, {
     method: "PUT",
     headers: {
