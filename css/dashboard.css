@@ -868,7 +868,7 @@ Single pages
 }
 
 .SinglePageContainer label,
-.wideForms label{
+.wideForms label {
   display: inline-block;
   text-align: left;
   width: 100%;
@@ -876,7 +876,7 @@ Single pages
 }
 
 .SinglePageContainer button,
-.wideForms button{
+.wideForms button {
   padding: 0.2em;
   width: 100%;
   background-color: var(--color5);
@@ -887,8 +887,7 @@ Single pages
 .SinglePageContainer label > input,
 .wideForms label > input,
 .SinglePageContainer label > select,
-.wideForms label > select
- {
+.wideForms label > select {
   width: 100%;
   float: center;
   margin: 0.1em 0;

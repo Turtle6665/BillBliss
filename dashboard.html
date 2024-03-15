@@ -375,8 +375,7 @@
         <button
           class="CloseModal"
           onclick="document.getElementById('shareProject').classList.add('hidden')"
-        >
-        </button>
+        ></button>
         <h1>Invite people to join this project</h1>
         <h2>Share an invitation link</h2>
         <p>
@@ -415,8 +414,7 @@
         id="editProjectBack"
         class="ModalBackground"
         onclick="document.getElementById('editProject').classList.add('hidden')"
-      >
-      </div>
+      ></div>
       <div id="editProjectDiv" class="Modal">
         <button
           class="CloseModal"
@@ -424,7 +422,10 @@
         ></button>
         <h1>Edit this project</h1>
         <h2>Edit project settings</h2>
-        <form onsubmit="event.preventDefault(); EditProject()" class="wideForms">
+        <form
+          onsubmit="event.preventDefault(); EditProject()"
+          class="wideForms"
+        >
           <label>
             Project name:
             <input
@@ -432,9 +433,9 @@
               name="EditProjectName"
               id="EditProjectName"
               required
-            >
+            />
           </label>
-          <br>
+          <br />
           <label>
             Project email:
             <input
@@ -442,27 +443,26 @@
               name="EditProjectMail"
               id="EditProjectMail"
               required
-            >
+            />
           </label>
-          <br>
+          <br />
           <label>
-            New Project private code: <br>
+            New Project private code: <br />
             <em>If it's empty, the code will not be changed.</em>
             <input
               type="password"
               name="EditProjectCode"
               id="EditProjectCode"
-            >
+            />
           </label>
-          <br>
+          <br />
           <label>
             Project currency:
-            <br>
-            <select name="currency" id="EditProjectCurrency">
-            </select>
+            <br />
+            <select name="currency" id="EditProjectCurrency"></select>
           </label>
-          <br>
-          <br>
+          <br />
+          <br />
           <label>
             Current Project private code:
             <input
@@ -470,38 +470,32 @@
               name="EditCurrentProjectCode"
               id="EditCurrentProjectCode"
               required
-            >
+            />
           </label>
-          <br>
-          <button
-            type="submit"
-            name="EditProjectSubmit"
-          >
-            Edit project
-          </button>
+          <br />
+          <button type="submit" name="EditProjectSubmit">Edit project</button>
         </form>
 
         <h2>Delete project</h2>
         <strong>
-          This will remove all the data for this project.
-          This action is irreversible.
+          This will remove all the data for this project. This action is
+          irreversible.
         </strong>
-        <form onsubmit="event.preventDefault(); DeleteProject()" class="wideForms">
-          <label>Project private code:
+        <form
+          onsubmit="event.preventDefault(); DeleteProject()"
+          class="wideForms"
+        >
+          <label
+            >Project private code:
             <input
               type="password"
               name="DeleteProjectCode"
               id="DeleteProjectCode"
               required
-            >
+            />
           </label>
-          <br>
-          <button
-            type="submit"
-            name="DeleteProject"
-          >
-            Delete project
-          </button>
+          <br />
+          <button type="submit" name="DeleteProject">Delete project</button>
         </form>
       </div>
     </section>

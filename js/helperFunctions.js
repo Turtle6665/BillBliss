@@ -47,7 +47,6 @@ async function RemoveToast(ToastDiv) {
   ToastDiv.remove();
 }
 
-
 //
 // make the loading animations
 //
@@ -98,7 +97,10 @@ function updateCurrencyList(DOMSelected, selectedCurrency = "XXX") {
       DOMSelected.innerHTML = "";
       currencyList.forEach((currency) => {
         let currencyOption = document.createElement("option");
-        Object.assign(currencyOption, { value: currency, textContent: currency });
+        Object.assign(currencyOption, {
+          value: currency,
+          textContent: currency,
+        });
         if (currency == "XXX") {
           currencyOption.textContent = "No currency";
         }
@@ -113,7 +115,6 @@ function updateCurrencyList(DOMSelected, selectedCurrency = "XXX") {
       console.error("Error:", error.message);
     });
 }
-
 
 //
 // Verifie code and get login token

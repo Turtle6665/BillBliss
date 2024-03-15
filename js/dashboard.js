@@ -916,8 +916,11 @@ function toEditProject() {
   document.getElementById("EditProjectName").value = info.name;
   document.getElementById("EditProjectMail").value = info.contact_email;
   document.getElementById("EditProjectCode").value = "";
-  document.getElementById("EditCurrentProjectCode").value ="";
-  updateCurrencyList(document.getElementById("EditProjectCurrency"), info.default_currency);
+  document.getElementById("EditCurrentProjectCode").value = "";
+  updateCurrencyList(
+    document.getElementById("EditProjectCurrency"),
+    info.default_currency,
+  );
 }
 
 //Edit project settings
@@ -948,7 +951,7 @@ function EditProject() {
       let response_json = await response.json();
       if (!response.ok) {
         if (response.status == 400) {
-          for (field in response_json){
+          for (field in response_json) {
             ShowToast(field + ": " + response_json[field], "Red");
           }
           throw new Error("Project data has not been updated");
@@ -961,10 +964,13 @@ function EditProject() {
       if (!isNewToken) {
         ShowToast("Project settings updated", "Green");
         updateAll();
-        document.getElementById('editProject').classList.add('hidden');
+        document.getElementById("editProject").classList.add("hidden");
       } else {
         // Reset Auth token
-        ShowToast("Project settings updated. Fetching new auth token...", "Green");
+        ShowToast(
+          "Project settings updated. Fetching new auth token...",
+          "Green",
+        );
         let token = await VerifieAuthCode(projectID, NewProjectCode);
         if (!!token) {
           //is true if token is a non null string
@@ -974,9 +980,9 @@ function EditProject() {
             encodeURIComponent(projectID) +
             "&token=" +
             encodeURIComponent(token);
-          }else {
-            throw new Error(`New token could not be fetched`)
-          }
+        } else {
+          throw new Error(`New token could not be fetched`);
+        }
       }
     })
     .catch((error) => {
