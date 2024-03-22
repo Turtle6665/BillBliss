@@ -232,12 +232,10 @@ bc.onmessage = (event) => {
     storage.removeItem(tData[1], false);
   } else if (tData[0] == "removeSubItem") {
     storage.removeSubItem(tData[1], tData[2], false);
-
-  } else if (tData[0] == "updateProjectList"){
+  } else if (tData[0] == "updateProjectList") {
     // force an update on the project list displayed
     updateProjectList();
-  }
-  else {
+  } else {
     console.log(tData[0], "is not an expected value for the message");
   }
 };

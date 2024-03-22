@@ -915,9 +915,10 @@ function toEditProject() {
   document.getElementById("editProject").classList.remove("hidden");
   document.getElementById("showLeftPanelCheckbox").checked = false;
   // reset the remove form text and functions
-  document.getElementById("RemoveProjectForm")
-    .setAttribute("onsubmit","event.preventDefault(); DeleteProject(false)");
-  document.getElementById("DeleteProjectSubmit").innerText = "Delete project"
+  document
+    .getElementById("RemoveProjectForm")
+    .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(false)");
+  document.getElementById("DeleteProjectSubmit").innerText = "Delete project";
 
   //update the informations
   document.getElementById("EditProjectName").value = info.name;
@@ -1003,59 +1004,65 @@ function EditProject() {
 }
 
 //Delete a project from a disctance server
-function DeleteProject(validated){
+function DeleteProject(validated) {
   // function to delect a project from distance server
   // if validated == false, it asks for a validation
   // if validated == true, it delets the project from the distance server and the local storage
   if (!validated) {
-    ShowToast("Are you sure you want to delete the project?\
+    ShowToast(
+      "Are you sure you want to delete the project?\
                This action can not be undone!",
-      "Orange");
-    document.getElementById("RemoveProjectForm")
-      .setAttribute("onsubmit","event.preventDefault(); DeleteProject(true)");
-    document.getElementById("DeleteProjectSubmit").innerText = "Are you sure ?"
+      "Orange",
+    );
+    document
+      .getElementById("RemoveProjectForm")
+      .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(true)");
+    document.getElementById("DeleteProjectSubmit").innerText = "Are you sure ?";
   } else {
     startLoading();
-    let ProjectCode = document.getElementById("DeleteProjectCode").value
+    let ProjectCode = document.getElementById("DeleteProjectCode").value;
 
     fetch(apiUrl_Project, {
       method: "DELETE",
       headers: {
-        Authorization: `Basic ` + btoa(`${projectID}:${ProjectCode}`)
+        Authorization: `Basic ` + btoa(`${projectID}:${ProjectCode}`),
       },
     })
-    .then(async (response) => {
-      let response_json = await response.json();
-      if (!response.ok) {
-        if (response.status == 401) {
-          throw new Error("Project password is not correct");
+      .then(async (response) => {
+        let response_json = await response.json();
+        if (!response.ok) {
+          if (response.status == 401) {
+            throw new Error("Project password is not correct");
+          }
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response_json;
-    })
-    .then((data) =>{
-      ShowToast("Project successfully removed", "Green");
-      //remove from Storage
-      storage.removeSubItem("ProjectsList", projectID, true);
-      //update the project list on all the other oppened pages (using bc from "localStorageAsked.js"
-      bc.postMessage(["updateProjectList"]);
-      window.location.search = "";
-    })
-    .catch((error) => {
-      // reset the remove form text and functions
-      document.getElementById("RemoveProjectForm")
-        .setAttribute("onsubmit","event.preventDefault(); DeleteProject(false)");
-      document.getElementById("DeleteProjectSubmit").innerText = "Delete project";
-      //show in toast and save in log
-      ShowToast(error.message, "Red");
-      console.error("Error:", error.message);
-      endLoading();
-    });
+        return response_json;
+      })
+      .then((data) => {
+        ShowToast("Project successfully removed", "Green");
+        //remove from Storage
+        storage.removeSubItem("ProjectsList", projectID, true);
+        //update the project list on all the other oppened pages (using bc from "localStorageAsked.js"
+        bc.postMessage(["updateProjectList"]);
+        window.location.search = "";
+      })
+      .catch((error) => {
+        // reset the remove form text and functions
+        document
+          .getElementById("RemoveProjectForm")
+          .setAttribute(
+            "onsubmit",
+            "event.preventDefault(); DeleteProject(false)",
+          );
+        document.getElementById("DeleteProjectSubmit").innerText =
+          "Delete project";
+        //show in toast and save in log
+        ShowToast(error.message, "Red");
+        console.error("Error:", error.message);
+        endLoading();
+      });
   }
 }
-
-
 
 //function to render amoney
 function amountToText(amount, currency) {
