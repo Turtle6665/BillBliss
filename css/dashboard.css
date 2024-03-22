@@ -646,7 +646,6 @@ select {
   width: 100vw;
   height: 100vh;
   z-index: 12;
-  background-color: #fff;
   text-align: center;
   overflow-y: auto;
   display: inline-block;
