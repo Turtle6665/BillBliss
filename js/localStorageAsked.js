@@ -1,5 +1,5 @@
 //allow communications of different tabs when using sessionStorage
-const bc = new BroadcastChannel("LS_channel");
+const bc = new BroadcastChannel("BillBliss_channel");
 //note :
 //Messages should always be a list. The first elements says what is the action
 //and the rest are data depending on the action
@@ -19,6 +19,8 @@ class LS {
     }
     if (this.old_LS_accepted == null) {
       this.old_LS_accepted = false;
+    } else {
+      this.old_LS_accepted = this.old_LS_accepted["data"];
     }
     let allItems = this.getItem("allItems");
     if (allItems == null) {
@@ -164,11 +166,8 @@ class LS {
 
 storage = new LS();
 
-//const bc = new BroadcastChannel("LS_channel");
-
 bc.onmessage = (event) => {
   //console.log(event);
-  let tData = event.data;
   if (tData[0] == "denieLocalStorage") {
     let allItemsAndData = tData[1];
     Object.keys(allItemsAndData).forEach((item) => {
@@ -233,18 +232,12 @@ bc.onmessage = (event) => {
     storage.removeItem(tData[1], false);
   } else if (tData[0] == "removeSubItem") {
     storage.removeSubItem(tData[1], tData[2], false);
-  } else {
+
+  } else if (tData[0] == "updateProjectList"){
+    // force an update on the project list displayed
+    updateProjectList();
+  }
+  else {
     console.log(tData[0], "is not an expected value for the message");
   }
 };
-
-//localStorage.getItem("allItems")
-//storage.getItem("allItems")
-//storage.setItem("Test",{"Hello":"it'sme"})
-//storage.getItem("allItems")
-//storage.acceptLocalStorage()
-//storage.setItem("Test2",{"Hello":"it's me again"})
-//storage.getItem("allItems")
-//storage.getItem("Test2")
-//localStorage.getItem("allItems")
-//storage.removeAllItems()

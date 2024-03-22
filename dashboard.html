@@ -482,7 +482,8 @@
           irreversible.
         </strong>
         <form
-          onsubmit="event.preventDefault(); DeleteProject()"
+          id="RemoveProjectForm"
+          onsubmit="event.preventDefault(); DeleteProject(false);"
           class="wideForms"
         >
           <label
@@ -495,7 +496,13 @@
             />
           </label>
           <br />
-          <button type="submit" name="DeleteProject">Delete project</button>
+          <button
+            type="submit"
+            name="DeleteProjectSubmit"
+            id="DeleteProjectSubmit"
+          >
+            Delete project
+          </button>
         </form>
       </div>
     </section>
