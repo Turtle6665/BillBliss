@@ -42,10 +42,9 @@ function loadProject(project) {
 //
 // Main page
 //
-const apiUrl = "https://ihatemoney.org/api/";
+apiUrl = "https://ihatemoney.org/api/";
 const apiUrlProjects = apiUrl + "projects/";
 const apiUrlCreateProject = apiUrl + "projects";
-const apiUrlCurrencies = apiUrl + "currencies";
 
 //Verifie Connection informations
 function VerifieAuthToken(projectID, projectToken) {
@@ -73,34 +72,6 @@ function VerifieAuthToken(projectID, projectToken) {
       return false;
     });
 }
-
-function VerifieAuthCode(projectID, ProjectCode) {
-  //return Bool (false) if not correct or Token if varification successful
-  return fetch(apiUrlProjects + projectID + "/token", {
-    method: "GET",
-    headers: {
-      Authorization: `Basic ` + btoa(`${projectID}:${ProjectCode}`),
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        ShowToast("Failed to verifie your credentials.", "Red");
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // Extract and handle the token from the response data
-      const token = data.token;
-      return token;
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-      return false;
-    });
-}
-
 //Login page
 
 //log in from code
@@ -242,35 +213,5 @@ function CreateNewProject() {
     });
 }
 
-//
-// Update curency list
-//
-function updateCurencyList() {
-  return fetch(apiUrlCurrencies, { method: "GET" })
-    .then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((curencyList) => {
-      newProjectCurrencySelect = document.getElementById("newProjectCurrency");
-      newProjectCurrencySelect.innerHTML = "";
-      curencyList.forEach((curency) => {
-        let curencyOption = document.createElement("option");
-        Object.assign(curencyOption, { value: curency, textContent: curency });
-        if (curency == "XXX") {
-          curencyOption.textContent = "No curency";
-          curencyOption.selected = true;
-        }
-        newProjectCurrencySelect.appendChild(curencyOption);
-      });
-    })
-    .catch((error) => {
-      ShowToast(error.message, "Red");
-      console.error("Error:", error.message);
-    });
-}
-
 updateProjectList();
-updateCurencyList();
+updateCurrencyList(document.getElementById("newProjectCurrency"), "XXX");
