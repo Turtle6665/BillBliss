@@ -1017,7 +1017,7 @@ function DeleteProject(validated) {
     document
       .getElementById("RemoveProjectForm")
       .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(true)");
-    document.getElementById("DeleteProjectSubmit").innerText = "Are you sure ?";
+    document.getElementById("DeleteProjectSubmit").innerText = "Are you sure?";
   } else {
     startLoading();
     let ProjectCode = document.getElementById("DeleteProjectCode").value;
