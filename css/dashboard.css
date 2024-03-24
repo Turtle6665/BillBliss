@@ -646,6 +646,7 @@ select {
   width: 100vw;
   height: 100vh;
   z-index: 12;
+  background-color: #fff;
   text-align: center;
   overflow-y: auto;
   display: inline-block;
@@ -866,16 +867,14 @@ Single pages
   max-width: 500px;
 }
 
-.SinglePageContainer label,
-.wideForms label {
+.SinglePageContainer label {
   display: inline-block;
   text-align: left;
   width: 100%;
   margin: 0.2em 0;
 }
 
-.SinglePageContainer button,
-.wideForms button {
+.SinglePageContainer button {
   padding: 0.2em;
   width: 100%;
   background-color: var(--color5);
@@ -884,9 +883,7 @@ Single pages
 }
 
 .SinglePageContainer label > input,
-.wideForms label > input,
-.SinglePageContainer label > select,
-.wideForms label > select {
+.SinglePageContainer label > select {
   width: 100%;
   float: center;
   margin: 0.1em 0;
