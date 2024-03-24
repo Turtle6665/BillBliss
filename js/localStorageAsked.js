@@ -19,9 +19,14 @@ class LS {
     }
     if (this.old_LS_accepted == null) {
       this.old_LS_accepted = false;
+    } else if (this.old_LS_accepted == false |
+      this.old_LS_accepted == true) {
+        // set old values type (TRUE/FALSE) to new (JSON with data and timestamp)
+        this.setItem("old_LS_accepted", this.old_LS_accepted, false)
     } else {
       this.old_LS_accepted = this.old_LS_accepted["data"];
     }
+
     let allItems = this.getItem("allItems");
     if (allItems == null) {
       allItems = ["allItems"];
@@ -60,7 +65,7 @@ class LS {
         sessionStorage.removeItem(item);
       });
       this.old_LS_accepted = true;
-      localStorage.setItem("old_LS_accepted", true);
+      this.setItem("old_LS_accepted", true, false);
       bc.postMessage(["acceptLocalStorage"]);
     } else {
       console.log("WARNING: Data is already in localStorage");
@@ -167,7 +172,7 @@ class LS {
 storage = new LS();
 
 bc.onmessage = (event) => {
-  //console.log(event);
+  let tData = event.data;
   if (tData[0] == "denieLocalStorage") {
     let allItemsAndData = tData[1];
     Object.keys(allItemsAndData).forEach((item) => {
