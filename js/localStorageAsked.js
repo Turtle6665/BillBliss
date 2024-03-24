@@ -1,5 +1,5 @@
 //allow communications of different tabs when using sessionStorage
-const bc = new BroadcastChannel("BillBliss_channel");
+const bc = new BroadcastChannel("LS_channel");
 //note :
 //Messages should always be a list. The first elements says what is the action
 //and the rest are data depending on the action
@@ -26,7 +26,6 @@ class LS {
     } else {
       this.old_LS_accepted = this.old_LS_accepted["data"];
     }
-
     let allItems = this.getItem("allItems");
     if (allItems == null) {
       allItems = ["allItems"];
@@ -176,6 +175,8 @@ class LS {
 
 storage = new LS();
 
+//const bc = new BroadcastChannel("LS_channel");
+
 bc.onmessage = (event) => {
   let tData = event.data;
   if (tData[0] == "denieLocalStorage") {
@@ -242,9 +243,6 @@ bc.onmessage = (event) => {
     storage.removeItem(tData[1], false);
   } else if (tData[0] == "removeSubItem") {
     storage.removeSubItem(tData[1], tData[2], false);
-  } else if (tData[0] == "updateProjectList") {
-    // force an update on the project list displayed
-    updateProjectList();
   } else {
     console.log(tData[0], "is not an expected value for the message");
   }
