@@ -19,10 +19,12 @@ class LS {
     }
     if (this.old_LS_accepted == null) {
       this.old_LS_accepted = false;
-    } else if (this.old_LS_accepted == false |
-      this.old_LS_accepted == true) {
-        // set old values type (TRUE/FALSE) to new (JSON with data and timestamp)
-        this.setItem("old_LS_accepted", this.old_LS_accepted, false)
+    } else if (
+      (this.old_LS_accepted == false) |
+      (this.old_LS_accepted == true)
+    ) {
+      // set old values type (TRUE/FALSE) to new (JSON with data and timestamp)
+      this.setItem("old_LS_accepted", this.old_LS_accepted, false);
     } else {
       this.old_LS_accepted = this.old_LS_accepted["data"];
     }
@@ -251,12 +253,12 @@ bc.onmessage = (event) => {
 // add a localStorage prompt
 function askLocalStorage() {
   askLocalStorageSection = document.createElement("section");
-  Object.assign(askLocalStorageSection,
-    {
-      id : "askLocalStorageSection",
-      className : "ModalContainer",
-      style : "height:auto; bottom:0px; top:auto;",
-      innerHTML : " \
+  Object.assign(askLocalStorageSection, {
+    id: "askLocalStorageSection",
+    className: "ModalContainer",
+    style: "height:auto; bottom:0px; top:auto;",
+    innerHTML:
+      " \
         <div class='Modal' style='height:auto !important;'> \
         <button class='CloseModal' \
           onclick=' \
@@ -276,8 +278,7 @@ function askLocalStorage() {
         '>Accept</button> \
         </div> \
       ",
-    }
-  );
+  });
   document.children[0].appendChild(askLocalStorageSection);
 }
 
