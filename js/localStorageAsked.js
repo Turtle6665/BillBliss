@@ -19,15 +19,12 @@ class LS {
     }
     if (this.old_LS_accepted == null) {
       this.old_LS_accepted = false;
-<<<<<<< HEAD
     } else if (
       (this.old_LS_accepted == false) |
       (this.old_LS_accepted == true)
     ) {
       // set old values type (TRUE/FALSE) to new (JSON with data and timestamp)
       this.setItem("old_LS_accepted", this.old_LS_accepted, false);
-=======
->>>>>>> parent of d2a0b12 (Revert "3 lack the ability to edit projects")
     } else {
       this.old_LS_accepted = this.old_LS_accepted["data"];
     }
@@ -181,11 +178,7 @@ class LS {
 storage = new LS();
 
 bc.onmessage = (event) => {
-<<<<<<< HEAD
   let tData = event.data;
-=======
-  //console.log(event);
->>>>>>> parent of d2a0b12 (Revert "3 lack the ability to edit projects")
   if (tData[0] == "denieLocalStorage") {
     let allItemsAndData = tData[1];
     Object.keys(allItemsAndData).forEach((item) => {
@@ -257,7 +250,6 @@ bc.onmessage = (event) => {
     console.log(tData[0], "is not an expected value for the message");
   }
 };
-<<<<<<< HEAD
 
 // add a localStorage prompt
 function askLocalStorage() {
@@ -295,5 +287,3 @@ function askLocalStorage() {
 if (storage.getItem("old_LS_accepted") == null) {
   askLocalStorage();
 }
-=======
->>>>>>> parent of d2a0b12 (Revert "3 lack the ability to edit projects")
