@@ -1,5 +1,5 @@
 //allow communications of different tabs when using sessionStorage
-const bc = new BroadcastChannel("LS_channel");
+const bc = new BroadcastChannel("BillBliss_channel");
 //note :
 //Messages should always be a list. The first elements says what is the action
 //and the rest are data depending on the action
@@ -19,6 +19,14 @@ class LS {
     }
     if (this.old_LS_accepted == null) {
       this.old_LS_accepted = false;
+    } else if (
+      (this.old_LS_accepted == false) |
+      (this.old_LS_accepted == true)
+    ) {
+      // set old values type (TRUE/FALSE) to new (JSON with data and timestamp)
+      this.setItem("old_LS_accepted", this.old_LS_accepted, false);
+    } else {
+      this.old_LS_accepted = this.old_LS_accepted["data"];
     }
     let allItems = this.getItem("allItems");
     if (allItems == null) {
@@ -44,6 +52,11 @@ class LS {
       });
       this.old_LS_accepted = false;
       this.setItem("old_LS_accepted", false, false);
+    } else if (this.getItem("old_LS_accepted") == null) {
+      // in case we denie the localStorage without accepting it before.
+      // -> nothing on the localStorage, we just have to change the values of old_LS_accepted
+      this.old_LS_accepted = false;
+      this.setItem("old_LS_accepted", false, false);
     } else {
       console.log("WARNING: Data is already in sessionStorage");
     }
@@ -58,7 +71,7 @@ class LS {
         sessionStorage.removeItem(item);
       });
       this.old_LS_accepted = true;
-      localStorage.setItem("old_LS_accepted", true);
+      this.setItem("old_LS_accepted", true, false);
       bc.postMessage(["acceptLocalStorage"]);
     } else {
       console.log("WARNING: Data is already in localStorage");
@@ -164,10 +177,7 @@ class LS {
 
 storage = new LS();
 
-//const bc = new BroadcastChannel("LS_channel");
-
 bc.onmessage = (event) => {
-  //console.log(event);
   let tData = event.data;
   if (tData[0] == "denieLocalStorage") {
     let allItemsAndData = tData[1];
@@ -233,18 +243,47 @@ bc.onmessage = (event) => {
     storage.removeItem(tData[1], false);
   } else if (tData[0] == "removeSubItem") {
     storage.removeSubItem(tData[1], tData[2], false);
+  } else if (tData[0] == "updateProjectList") {
+    // force an update on the project list displayed
+    updateProjectList();
   } else {
     console.log(tData[0], "is not an expected value for the message");
   }
 };
 
-//localStorage.getItem("allItems")
-//storage.getItem("allItems")
-//storage.setItem("Test",{"Hello":"it'sme"})
-//storage.getItem("allItems")
-//storage.acceptLocalStorage()
-//storage.setItem("Test2",{"Hello":"it's me again"})
-//storage.getItem("allItems")
-//storage.getItem("Test2")
-//localStorage.getItem("allItems")
-//storage.removeAllItems()
+// add a localStorage prompt
+function askLocalStorage() {
+  askLocalStorageSection = document.createElement("section");
+  Object.assign(askLocalStorageSection, {
+    id: "askLocalStorageSection",
+    className: "ModalContainer",
+    style: "height:auto; bottom:0px; top:auto;",
+    innerHTML:
+      " \
+        <div class='Modal' style='height:auto !important;'> \
+        <button class='CloseModal' \
+          onclick=' \
+            document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \
+            '> \
+        </button> \
+        <h1>Accept local storage usage?</h1> \
+        <p>Local storage is used to store your project credentials. If you denie it, you will \
+          have to re-loggin next time. Learn more on the \
+          <a href='./settings.html'>settings page</a> \
+        </p> <br> \
+        <button onclick='storage.denieLocalStorage(); \
+          document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \
+        '>Denie</button> \
+        <button onclick='storage.acceptLocalStorage(); \
+          document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \
+        '>Accept</button> \
+        </div> \
+      ",
+  });
+  document.children[0].appendChild(askLocalStorageSection);
+}
+
+// Show local storage prompt only if not accepted/denied
+if (storage.getItem("old_LS_accepted") == null) {
+  askLocalStorage();
+}
