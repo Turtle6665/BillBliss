@@ -50,7 +50,7 @@ function saveSettings() {
     !localStorageSettingSwitch.getElementsByTagName("input")[0].checked &
     storage.old_LS_accepted
   ) {
-    storage.denieLocalStorage();
+    storage.denyLocalStorage();
   }
 
   ShowToast("Settings updated", "Green");

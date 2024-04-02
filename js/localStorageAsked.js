@@ -35,11 +35,11 @@ class LS {
     this.setItem("allItems", allItems);
   }
 
-  denieLocalStorage() {
+  denyLocalStorage() {
     if (this.old_LS_accepted == true) {
       let allItems = this.getItem("allItems");
       bc.postMessage([
-        "denieLocalStorage",
+        "denyLocalStorage",
         allItems.reduce((itemList, item) => {
           itemList[item] = localStorage.getItem(item);
           return itemList;
@@ -53,7 +53,7 @@ class LS {
       this.old_LS_accepted = false;
       this.setItem("old_LS_accepted", false, false);
     } else if (this.getItem("old_LS_accepted") == null) {
-      // in case we denie the localStorage without accepting it before.
+      // in case we deny the localStorage without accepting it before.
       // -> nothing on the localStorage, we just have to change the values of old_LS_accepted
       this.old_LS_accepted = false;
       this.setItem("old_LS_accepted", false, false);
@@ -179,7 +179,7 @@ storage = new LS();
 
 bc.onmessage = (event) => {
   let tData = event.data;
-  if (tData[0] == "denieLocalStorage") {
+  if (tData[0] == "denyLocalStorage") {
     let allItemsAndData = tData[1];
     Object.keys(allItemsAndData).forEach((item) => {
       sessionStorage.setItem(item, allItemsAndData[item]);
@@ -247,7 +247,7 @@ bc.onmessage = (event) => {
     // force an update on the project list displayed
     updateProjectList();
   } else {
-    console.log(tData[0], "is not an expected value for the message");
+    console.log(tData[0], "is not an expected value for the brodcast message");
   }
 };
 
@@ -267,13 +267,13 @@ function askLocalStorage() {
             '> \
         </button> \
         <h1>Accept local storage usage?</h1> \
-        <p>Local storage is used to store your project credentials. If you denie it, you will \
+        <p>Local storage is used to store your project credentials. If you deny it, you will \
           have to re-loggin next time. Learn more on the \
-          <a href='./settings.html'>settings page</a> \
+          <a href='./settings.html'>settings page</a>. \
         </p> <br> \
-        <button onclick='storage.denieLocalStorage(); \
+        <button onclick='storage.denyLocalStorage(); \
           document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \
-        '>Denie</button> \
+        '>Deny</button> \
         <button onclick='storage.acceptLocalStorage(); \
           document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \
         '>Accept</button> \
