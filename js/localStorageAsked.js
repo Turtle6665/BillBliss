@@ -198,7 +198,11 @@ bc.onmessage = (event) => {
       //this allows to syncronise the two ProjectsList if they are not identical
       //only a few back and forth ?
       let oldProjectList = storage.getItem(tData[1]);
-      if (
+      if (oldProjectList == null) {
+        // if the window has no data stored, it uses the one given by the brodcast msg
+        let data = tData[2].data
+        storage.setItem(tData[1], data, true);
+      } else if (
         (JSON.stringify(Object.assign({}, oldProjectList, tData[2].data)) !=
           JSON.stringify(oldProjectList)) |
         (Object.keys(oldProjectList).length !=
@@ -246,6 +250,13 @@ bc.onmessage = (event) => {
   } else if (tData[0] == "updateProjectList") {
     // force an update on the project list displayed
     updateProjectList();
+  } else if (tData[0] == "syncProjectList") {
+    // sync the project list between windows if the sessionStorage is used
+    let ProjectList_withDate = storage.getItem("ProjectsList", true);
+    if (!(ProjectList_withDate == null)) {
+      //brodcast the ProjectList wth the date
+      bc.postMessage(["setItem", "ProjectsList", ProjectList_withDate]);
+    }
   } else {
     console.log(tData[0], "is not an expected value for the brodcast message");
   }
@@ -270,6 +281,8 @@ function askLocalStorage() {
         <p>Local storage is used to store your project credentials. If you deny it, you will \
           have to re-loggin next time. Learn more on the \
           <a href='./settings.html'>settings page</a>. \
+          <br>We don't track you nor store any of your data. Learn more on the \
+          <a href='./about.html'>about page</a>.\
         </p> <br> \
         <button onclick='storage.denyLocalStorage(); \
           document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \

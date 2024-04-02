@@ -33,13 +33,10 @@ if (URLQueryParams.localStorage) {
   storage.acceptLocalStorage();
 }
 
-let ProjectsList = storage.getItem("ProjectsList");
+let ProjectsList = storage.getItem("ProjectsList") || {};
 if (projectID == "") {
   //to fix issues when the project id is set to "" (via ?project=&)
   projectID = null;
-}
-if (ProjectsList == null) {
-  ProjectsList = {};
 }
 if (projectID == null) {
   //if no project selected :
@@ -65,6 +62,27 @@ if (!(projectID == null) & !(token == null)) {
   !(ProjectsList[projectID] == null)
 ) {
   token = ProjectsList[projectID]["token"];
+} else if (
+  !(projectID == null) &
+  (token == null) &
+  (ProjectsList[projectID] == null)
+) {
+  // the case when the Storage doesn't have the data, sync accros browser windows
+  bc.postMessage(["syncProjectList"]);
+  async function waitForSyncProjectList() {
+    ProjectsList = storage.getItem("ProjectsList") || {};
+    let i = 0
+    while (!(ProjectsList[projectID])) {
+      i = i + 1
+      await sleep(1000*i^2); //make the sync exponentially longer
+      ProjectsList = storage.getItem("ProjectsList") || {};
+    }
+    token = ProjectsList[projectID]["token"];
+    //reload the page once the sync is performed
+    document.location.href = document.location.href;
+  }
+
+  waitForSyncProjectList();
 }
 
 let apiUrl_Project = base_apiUrl + projectID;

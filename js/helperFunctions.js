@@ -64,14 +64,14 @@ function startLoading() {
   } else {
     let loadingAnnim = document.getElementById("loadingAnnim");
   }
-  [...document.getElementsByTagName("button")].forEach(
+  [...document.body.getElementsByTagName("button")].forEach(
     (i) => (i.disabled = true),
   );
   loadingAnnim.classList.remove("hidden");
 }
 
 function endLoading() {
-  [...document.getElementsByTagName("button")].forEach(
+  [...document.body.getElementsByTagName("button")].forEach(
     (i) => (i.disabled = false),
   );
   document.getElementById("loadingAnnim").classList.add("hidden");
