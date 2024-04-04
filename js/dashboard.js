@@ -71,10 +71,10 @@ if (!(projectID == null) & !(token == null)) {
   bc.postMessage(["syncProjectList"]);
   async function waitForSyncProjectList() {
     ProjectsList = storage.getItem("ProjectsList") || {};
-    let i = 0
-    while (!(ProjectsList[projectID])) {
-      i = i + 1
-      await sleep(1000*i^2); //make the sync exponentially longer
+    let i = 0;
+    while (!ProjectsList[projectID]) {
+      i = i + 1;
+      await sleep((1000 * i) ^ 2); //make the sync exponentially longer
       ProjectsList = storage.getItem("ProjectsList") || {};
     }
     token = ProjectsList[projectID]["token"];

@@ -200,7 +200,7 @@ bc.onmessage = (event) => {
       let oldProjectList = storage.getItem(tData[1]);
       if (oldProjectList == null) {
         // if the window has no data stored, it uses the one given by the brodcast msg
-        let data = tData[2].data
+        let data = tData[2].data;
         storage.setItem(tData[1], data, true);
       } else if (
         (JSON.stringify(Object.assign({}, oldProjectList, tData[2].data)) !=
