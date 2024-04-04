@@ -252,7 +252,8 @@ bc.onmessage = (event) => {
     updateProjectList();
   } else if (tData[0] == "syncSessionsStorages") {
     // sync the data between windows for if the sessionStorage is used
-    storage.getItem("allItems")
+    storage
+      .getItem("allItems")
       .filter((a) => a != "allItems")
       .forEach((item) => {
         let data_withDate = storage.getItem(item, true);
