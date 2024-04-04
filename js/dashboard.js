@@ -68,8 +68,8 @@ if (!(projectID == null) & !(token == null)) {
   (ProjectsList[projectID] == null)
 ) {
   // the case when the Storage doesn't have the data, sync accros browser windows
-  bc.postMessage(["syncProjectList"]);
-  async function waitForSyncProjectList() {
+  bc.postMessage(["syncSessionsStorages"]);
+  async function waitForsyncSessionsStorages() {
     ProjectsList = storage.getItem("ProjectsList") || {};
     let i = 0;
     while (!ProjectsList[projectID]) {
@@ -82,7 +82,7 @@ if (!(projectID == null) & !(token == null)) {
     document.location.href = document.location.href;
   }
 
-  waitForSyncProjectList();
+  waitForsyncSessionsStorages();
 }
 
 let apiUrl_Project = base_apiUrl + projectID;

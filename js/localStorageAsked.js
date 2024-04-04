@@ -250,13 +250,14 @@ bc.onmessage = (event) => {
   } else if (tData[0] == "updateProjectList") {
     // force an update on the project list displayed
     updateProjectList();
-  } else if (tData[0] == "syncProjectList") {
-    // sync the project list between windows if the sessionStorage is used
-    let ProjectList_withDate = storage.getItem("ProjectsList", true);
-    if (!(ProjectList_withDate == null)) {
-      //brodcast the ProjectList wth the date
-      bc.postMessage(["setItem", "ProjectsList", ProjectList_withDate]);
-    }
+  } else if (tData[0] == "syncSessionsStorages") {
+    // sync the data between windows for if the sessionStorage is used
+    storage.getItem("allItems")
+      .filter((a) => a != "allItems")
+      .forEach((item) => {
+        let data_withDate = storage.getItem(item, true);
+        bc.postMessage(["setItem", item, data_withDate]);
+      });
   } else {
     console.log(tData[0], "is not an expected value for the brodcast message");
   }
@@ -299,4 +300,9 @@ function askLocalStorage() {
 // Show local storage prompt only if not accepted/denied
 if (storage.getItem("old_LS_accepted") == null) {
   askLocalStorage();
+}
+
+// sync projectlist on startup if sessionStorage is in use
+if (!storage.getItem("old_LS_accepted")) {
+  bc.postMessage(["syncSessionsStorages"]);
 }
