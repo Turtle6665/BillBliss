@@ -19,6 +19,10 @@ class LS {
     }
     if (this.old_LS_accepted == null) {
       this.old_LS_accepted = false;
+      if (localStorage.getItem("old_LS_accepted") == "null") {
+        // if it has a null set into localStorage, it creates a bug
+        localStorage.removeItem("old_LS_accepted");
+      }
     } else if (
       (this.old_LS_accepted == false) |
       (this.old_LS_accepted == true)
@@ -102,10 +106,12 @@ class LS {
   }
 
   setItem(item, data, brodcast = true) {
-    if (item == "old_LS_accepted") {
-      //remove the ask for localstorage prompt on the page
+    if ((item == "old_LS_accepted") &
+       (!!document.getElementById("askLocalStorageSection"))) {
+      //remove the ask for localstorage prompt on the page if present
       document.getElementById("askLocalStorageSection").classList.add("hidden");
     }
+
     if (item == "ProjectsList") {
       //these are data that should have subdata with time saved in the sub layer
       Object.keys(data).forEach((projectID) => {
@@ -136,6 +142,15 @@ class LS {
       );
       if ((this.old_LS_accepted == false) & brodcast) {
         bc.postMessage(["setItem", item, fulldata]);
+      }
+      //update the setting pages
+      if (document.location.pathname.includes("settings")) {
+        try {
+          updateSettings(false)
+        } catch {
+          // to prevent an error is the setting page is not completly charged
+          null;
+        }
       }
     }
   }
