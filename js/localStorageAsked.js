@@ -106,8 +106,10 @@ class LS {
   }
 
   setItem(item, data, brodcast = true) {
-    if ((item == "old_LS_accepted") &
-       (!!document.getElementById("askLocalStorageSection"))) {
+    if (
+      (item == "old_LS_accepted") &
+      !!document.getElementById("askLocalStorageSection")
+    ) {
       //remove the ask for localstorage prompt on the page if present
       document.getElementById("askLocalStorageSection").classList.add("hidden");
     }
@@ -146,7 +148,7 @@ class LS {
       //update the setting pages
       if (document.location.pathname.includes("settings")) {
         try {
-          updateSettings(false)
+          updateSettings(false);
         } catch {
           // to prevent an error is the setting page is not completly charged
           null;
