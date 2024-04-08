@@ -54,7 +54,14 @@ class LS {
       this.setItem("old_LS_accepted", false, false);
     } else if (this.getItem("old_LS_accepted") == null) {
       // in case we deny the localStorage without accepting it before.
-      // -> nothing on the localStorage, we just have to change the values of old_LS_accepted
+      let allItems = this.getItem("allItems");
+      bc.postMessage([
+        "denyLocalStorage",
+        allItems.reduce((itemList, item) => {
+          itemList[item] = sessionStorage.getItem(item);
+          return itemList;
+        }, {}),
+      ]);
       this.old_LS_accepted = false;
       this.setItem("old_LS_accepted", false, false);
     } else {
@@ -95,6 +102,10 @@ class LS {
   }
 
   setItem(item, data, brodcast = true) {
+    if (item == "old_LS_accepted") {
+      //remove the ask for localstorage prompt on the page
+      document.getElementById("askLocalStorageSection").classList.add("hidden");
+    }
     if (item == "ProjectsList") {
       //these are data that should have subdata with time saved in the sub layer
       Object.keys(data).forEach((projectID) => {
@@ -193,6 +204,7 @@ bc.onmessage = (event) => {
       sessionStorage.removeItem(item);
     });
     storage.old_LS_accepted = true;
+    storage.setItem("old_LS_accepted", true, false);
   } else if (tData[0] == "setItem") {
     if (tData[1] == "ProjectsList") {
       //this allows to syncronise the two ProjectsList if they are not identical
@@ -225,8 +237,6 @@ bc.onmessage = (event) => {
           }
           return ProjectsListData;
         }, {});
-
-        //let data = Object.assign({}, storage.getItem("ProjectsList"), tData[2].data);
         storage.setItem(tData[1], data, true);
       }
     } else {
@@ -286,12 +296,8 @@ function askLocalStorage() {
           <br>We don't track you nor store any of your data. Learn more on the \
           <a href='./about.html'>about page</a>.\
         </p> <br> \
-        <button onclick='storage.denyLocalStorage(); \
-          document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \
-        '>Deny</button> \
-        <button onclick='storage.acceptLocalStorage(); \
-          document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \
-        '>Accept</button> \
+        <button onclick='storage.denyLocalStorage();'>Deny</button> \
+        <button onclick='storage.acceptLocalStorage();'>Accept</button> \
         </div> \
       ",
   });
@@ -303,7 +309,7 @@ if (storage.getItem("old_LS_accepted") == null) {
   askLocalStorage();
 }
 
-// sync projectlist on startup if sessionStorage is in use
+// sync saved data on startup if sessionStorage is in use
 if (!storage.getItem("old_LS_accepted")) {
   bc.postMessage(["syncSessionsStorages"]);
 }
