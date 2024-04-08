@@ -1,5 +1,5 @@
 //allow communications of different tabs when using sessionStorage
-const bc = new BroadcastChannel("LS_channel");
+const bc = new BroadcastChannel("BillBliss_channel");
 //note :
 //Messages should always be a list. The first elements says what is the action
 //and the rest are data depending on the action
@@ -19,6 +19,18 @@ class LS {
     }
     if (this.old_LS_accepted == null) {
       this.old_LS_accepted = false;
+      if (localStorage.getItem("old_LS_accepted") == "null") {
+        // if it has a null set into localStorage, it creates a bug
+        localStorage.removeItem("old_LS_accepted");
+      }
+    } else if (
+      (this.old_LS_accepted == false) |
+      (this.old_LS_accepted == true)
+    ) {
+      // set old values type (TRUE/FALSE) to new (JSON with data and timestamp)
+      this.setItem("old_LS_accepted", this.old_LS_accepted, false);
+    } else {
+      this.old_LS_accepted = this.old_LS_accepted["data"];
     }
     let allItems = this.getItem("allItems");
     if (allItems == null) {
@@ -27,11 +39,11 @@ class LS {
     this.setItem("allItems", allItems);
   }
 
-  denieLocalStorage() {
+  denyLocalStorage() {
     if (this.old_LS_accepted == true) {
       let allItems = this.getItem("allItems");
       bc.postMessage([
-        "denieLocalStorage",
+        "denyLocalStorage",
         allItems.reduce((itemList, item) => {
           itemList[item] = localStorage.getItem(item);
           return itemList;
@@ -42,6 +54,18 @@ class LS {
         sessionStorage.setItem(item, localStorage.getItem(item));
         localStorage.removeItem(item);
       });
+      this.old_LS_accepted = false;
+      this.setItem("old_LS_accepted", false, false);
+    } else if (this.getItem("old_LS_accepted") == null) {
+      // in case we deny the localStorage without accepting it before.
+      let allItems = this.getItem("allItems");
+      bc.postMessage([
+        "denyLocalStorage",
+        allItems.reduce((itemList, item) => {
+          itemList[item] = sessionStorage.getItem(item);
+          return itemList;
+        }, {}),
+      ]);
       this.old_LS_accepted = false;
       this.setItem("old_LS_accepted", false, false);
     } else {
@@ -58,7 +82,7 @@ class LS {
         sessionStorage.removeItem(item);
       });
       this.old_LS_accepted = true;
-      localStorage.setItem("old_LS_accepted", true);
+      this.setItem("old_LS_accepted", true, false);
       bc.postMessage(["acceptLocalStorage"]);
     } else {
       console.log("WARNING: Data is already in localStorage");
@@ -82,6 +106,14 @@ class LS {
   }
 
   setItem(item, data, brodcast = true) {
+    if (
+      (item == "old_LS_accepted") &
+      !!document.getElementById("askLocalStorageSection")
+    ) {
+      //remove the ask for localstorage prompt on the page if present
+      document.getElementById("askLocalStorageSection").classList.add("hidden");
+    }
+
     if (item == "ProjectsList") {
       //these are data that should have subdata with time saved in the sub layer
       Object.keys(data).forEach((projectID) => {
@@ -112,6 +144,15 @@ class LS {
       );
       if ((this.old_LS_accepted == false) & brodcast) {
         bc.postMessage(["setItem", item, fulldata]);
+      }
+      //update the setting pages
+      if (document.location.pathname.includes("settings")) {
+        try {
+          updateSettings(false);
+        } catch {
+          // to prevent an error is the setting page is not completly charged
+          null;
+        }
       }
     }
   }
@@ -164,12 +205,9 @@ class LS {
 
 storage = new LS();
 
-//const bc = new BroadcastChannel("LS_channel");
-
 bc.onmessage = (event) => {
-  //console.log(event);
   let tData = event.data;
-  if (tData[0] == "denieLocalStorage") {
+  if (tData[0] == "denyLocalStorage") {
     let allItemsAndData = tData[1];
     Object.keys(allItemsAndData).forEach((item) => {
       sessionStorage.setItem(item, allItemsAndData[item]);
@@ -183,12 +221,17 @@ bc.onmessage = (event) => {
       sessionStorage.removeItem(item);
     });
     storage.old_LS_accepted = true;
+    storage.setItem("old_LS_accepted", true, false);
   } else if (tData[0] == "setItem") {
     if (tData[1] == "ProjectsList") {
       //this allows to syncronise the two ProjectsList if they are not identical
       //only a few back and forth ?
       let oldProjectList = storage.getItem(tData[1]);
-      if (
+      if (oldProjectList == null) {
+        // if the window has no data stored, it uses the one given by the brodcast msg
+        let data = tData[2].data;
+        storage.setItem(tData[1], data, true);
+      } else if (
         (JSON.stringify(Object.assign({}, oldProjectList, tData[2].data)) !=
           JSON.stringify(oldProjectList)) |
         (Object.keys(oldProjectList).length !=
@@ -211,8 +254,6 @@ bc.onmessage = (event) => {
           }
           return ProjectsListData;
         }, {});
-
-        //let data = Object.assign({}, storage.getItem("ProjectsList"), tData[2].data);
         storage.setItem(tData[1], data, true);
       }
     } else {
@@ -233,18 +274,59 @@ bc.onmessage = (event) => {
     storage.removeItem(tData[1], false);
   } else if (tData[0] == "removeSubItem") {
     storage.removeSubItem(tData[1], tData[2], false);
+  } else if (tData[0] == "updateProjectList") {
+    // force an update on the project list displayed
+    updateProjectList();
+  } else if (tData[0] == "syncSessionsStorages") {
+    // sync the data between windows for if the sessionStorage is used
+    storage
+      .getItem("allItems")
+      .filter((a) => a != "allItems")
+      .forEach((item) => {
+        let data_withDate = storage.getItem(item, true);
+        bc.postMessage(["setItem", item, data_withDate]);
+      });
   } else {
-    console.log(tData[0], "is not an expected value for the message");
+    console.log(tData[0], "is not an expected value for the brodcast message");
   }
 };
 
-//localStorage.getItem("allItems")
-//storage.getItem("allItems")
-//storage.setItem("Test",{"Hello":"it'sme"})
-//storage.getItem("allItems")
-//storage.acceptLocalStorage()
-//storage.setItem("Test2",{"Hello":"it's me again"})
-//storage.getItem("allItems")
-//storage.getItem("Test2")
-//localStorage.getItem("allItems")
-//storage.removeAllItems()
+// add a localStorage prompt
+function askLocalStorage() {
+  askLocalStorageSection = document.createElement("section");
+  Object.assign(askLocalStorageSection, {
+    id: "askLocalStorageSection",
+    className: "ModalContainer",
+    style: "height:auto; bottom:0px; top:auto;",
+    innerHTML:
+      " \
+        <div class='Modal' style='height:auto !important;'> \
+        <button class='CloseModal' \
+          onclick=' \
+            document.getElementById(&quot;askLocalStorageSection&quot;).classList.add(&quot;hidden&quot;) \
+            '> \
+        </button> \
+        <h1>Accept local storage usage?</h1> \
+        <p>Local storage is used to store your project credentials. If you deny it, you will \
+          have to re-loggin next time. Learn more on the \
+          <a href='./settings.html'>settings page</a>. \
+          <br>We don't track you nor store any of your data. Learn more on the \
+          <a href='./about.html'>about page</a>.\
+        </p> <br> \
+        <button onclick='storage.denyLocalStorage();'>Deny</button> \
+        <button onclick='storage.acceptLocalStorage();'>Accept</button> \
+        </div> \
+      ",
+  });
+  document.children[0].appendChild(askLocalStorageSection);
+}
+
+// Show local storage prompt only if not accepted/denied
+if (storage.getItem("old_LS_accepted") == null) {
+  askLocalStorage();
+}
+
+// sync saved data on startup if sessionStorage is in use
+if (!storage.getItem("old_LS_accepted")) {
+  bc.postMessage(["syncSessionsStorages"]);
+}

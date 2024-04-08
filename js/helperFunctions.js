@@ -47,6 +47,10 @@ async function RemoveToast(ToastDiv) {
   ToastDiv.remove();
 }
 
+//
+// make the loading animations
+//
+
 function startLoading() {
   //append loadingAnnim to body if not present
   if (!document.getElementById("loadingAnnim")) {
@@ -60,15 +64,84 @@ function startLoading() {
   } else {
     let loadingAnnim = document.getElementById("loadingAnnim");
   }
-  [...document.getElementsByTagName("button")].forEach(
+  [...document.body.getElementsByTagName("button")].forEach(
     (i) => (i.disabled = true),
   );
   loadingAnnim.classList.remove("hidden");
 }
 
 function endLoading() {
-  [...document.getElementsByTagName("button")].forEach(
+  [...document.body.getElementsByTagName("button")].forEach(
     (i) => (i.disabled = false),
   );
   document.getElementById("loadingAnnim").classList.add("hidden");
+}
+
+//
+// Update currency list
+//
+
+function updateCurrencyList(DOMSelected, selectedCurrency = "XXX") {
+  // DOMSelected should be a select dom elements.
+  // selectedCurrency is a string.
+  apiUrlCurrencies = apiUrl + "currencies";
+
+  return fetch(apiUrlCurrencies, { method: "GET" })
+    .then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((currencyList) => {
+      DOMSelected.innerHTML = "";
+      currencyList.forEach((currency) => {
+        let currencyOption = document.createElement("option");
+        Object.assign(currencyOption, {
+          value: currency,
+          textContent: currency,
+        });
+        if (currency == "XXX") {
+          currencyOption.textContent = "No currency";
+        }
+        if (currency == selectedCurrency) {
+          currencyOption.selected = true;
+        }
+        DOMSelected.appendChild(currencyOption);
+      });
+    })
+    .catch((error) => {
+      ShowToast(error.message, "Red");
+      console.error("Error:", error.message);
+    });
+}
+
+//
+// Verifie code and get login token
+//
+function VerifieAuthCode(projectID, ProjectCode) {
+  //return Bool (false) if not correct or Token if varification successful
+  return fetch(apiUrl + "projects/" + projectID + "/token", {
+    method: "GET",
+    headers: {
+      Authorization: `Basic ` + btoa(`${projectID}:${ProjectCode}`),
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        ShowToast("Failed to verifie your credentials.", "Red");
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Extract and handle the token from the response data
+      const token = data.token;
+      return token;
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+      return false;
+    });
 }

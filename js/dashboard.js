@@ -2,7 +2,8 @@
 //import settle from "./deptsSettle.js";
 
 //setup values
-const base_apiUrl = "https://ihatemoney.org/api/projects/";
+apiUrl = "https://ihatemoney.org/api/";
+let base_apiUrl = apiUrl + "projects/";
 
 //install the service worker
 if ("serviceWorker" in navigator) {
@@ -32,13 +33,10 @@ if (URLQueryParams.localStorage) {
   storage.acceptLocalStorage();
 }
 
-let ProjectsList = storage.getItem("ProjectsList");
+let ProjectsList = storage.getItem("ProjectsList") || {};
 if (projectID == "") {
   //to fix issues when the project id is set to "" (via ?project=&)
   projectID = null;
-}
-if (ProjectsList == null) {
-  ProjectsList = {};
 }
 if (projectID == null) {
   //if no project selected :
@@ -55,6 +53,7 @@ if (!(projectID == null) & !(token == null)) {
   //adding the projects token to localStorage
   ProjectsList[projectID] = { token: token };
   storage.setItem("ProjectsList", ProjectsList);
+  bc.postMessage(["updateProjectList"]);
   //window.location.search = "?project="+projectID
   history.replaceState("", "", "?project=" + projectID);
 } else if (
@@ -63,9 +62,30 @@ if (!(projectID == null) & !(token == null)) {
   !(ProjectsList[projectID] == null)
 ) {
   token = ProjectsList[projectID]["token"];
+} else if (
+  !(projectID == null) &
+  (token == null) &
+  (ProjectsList[projectID] == null)
+) {
+  // the case when the Storage doesn't have the data, sync accros browser windows
+  bc.postMessage(["syncSessionsStorages"]);
+  async function waitForsyncSessionsStorages() {
+    ProjectsList = storage.getItem("ProjectsList") || {};
+    let i = 0;
+    while (!ProjectsList[projectID]) {
+      i = i + 1;
+      await sleep((1000 * i) ^ 2); //make the sync exponentially longer
+      ProjectsList = storage.getItem("ProjectsList") || {};
+    }
+    token = ProjectsList[projectID]["token"];
+    //reload the page once the sync is performed
+    document.location.href = document.location.href;
+  }
+
+  waitForsyncSessionsStorages();
 }
 
-let apiUrl = base_apiUrl + projectID;
+let apiUrl_Project = base_apiUrl + projectID;
 
 //Get the informations of the project
 let info = null;
@@ -75,7 +95,7 @@ let memberTrueActivated = {}; //members are "TrueActivated" if they are truly ac
 let memberActivated = {}; //members are "activated" if they are truly activated or deactivated but a ballance different than 0
 
 function updateInfo() {
-  return fetch(apiUrl, {
+  return fetch(apiUrl_Project, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -98,6 +118,7 @@ function updateInfo() {
       ProjectsList = storage.getItem("ProjectsList");
       ProjectsList[projectID]["name"] = data.name;
       storage.setItem("ProjectsList", ProjectsList);
+      bc.postMessage(["updateProjectList"]);
       document.getElementById("contactEmail").textContent = data.contact_email;
       document.getElementById("currency").textContent = data.default_currency;
       //set the project name in the title
@@ -158,7 +179,7 @@ function updateInfo() {
 //get the bills
 let allbills = null;
 function updateBills() {
-  return fetch(apiUrl + "/bills", {
+  return fetch(apiUrl_Project + "/bills", {
     method: "GET",
     headers: {
       Authorization: "Bearer " + token,
@@ -311,7 +332,7 @@ function addMember() {
   const newMemberData = {
     name: document.getElementById("addMemberInput").value,
   };
-  return fetch(apiUrl + "/members", {
+  return fetch(apiUrl_Project + "/members", {
     method: "POST",
     headers: {
       Authorization: "Bearer " + token,
@@ -393,7 +414,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
     MemberInputData["activated"] = memberActiv;
     MemberInputData["name"] = memberNames[memberID];
   }
-  return fetch(apiUrl + "/members/" + memberID, {
+  return fetch(apiUrl_Project + "/members/" + memberID, {
     method: "PUT",
     headers: {
       Authorization: "Bearer " + token,
@@ -441,7 +462,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
 
 function removeMember(memberID, updateall = true) {
   //it removes if the member has no bills. It it has, the member is deactivated
-  return fetch(apiUrl + "/members/" + memberID, {
+  return fetch(apiUrl_Project + "/members/" + memberID, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + token,
@@ -643,7 +664,7 @@ function pushNewBill(addNew = false) {
 
   return Promise.all(activateMember)
     .then((a) => {
-      return fetch(apiUrl + "/bills", {
+      return fetch(apiUrl_Project + "/bills", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + token,
@@ -738,7 +759,7 @@ function pushEditedBill(billID) {
 
   return Promise.all(activateMember)
     .then((data) => {
-      return fetch(apiUrl + "/bills/" + billID, {
+      return fetch(apiUrl_Project + "/bills/" + billID, {
         method: "PUT",
         headers: {
           Authorization: "Bearer " + token,
@@ -808,7 +829,7 @@ function pushEditedBill(billID) {
 }
 
 function removeBill(billID) {
-  return fetch(apiUrl + "/bills/" + billID, {
+  return fetch(apiUrl_Project + "/bills/" + billID, {
     method: "DELETE",
     headers: {
       Authorization: "Bearer " + token,
@@ -904,6 +925,161 @@ function toShareProject() {
     textContent: projectID,
     href: window.location.href,
   });
+}
+
+//go to edit project page
+function toEditProject() {
+  //show the page
+  document.getElementById("editProject").classList.remove("hidden");
+  document.getElementById("showLeftPanelCheckbox").checked = false;
+  // reset the remove form text and functions
+  document
+    .getElementById("RemoveProjectForm")
+    .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(false)");
+  document.getElementById("DeleteProjectSubmit").innerText = "Delete project";
+
+  //update the informations
+  document.getElementById("EditProjectName").value = info.name;
+  document.getElementById("EditProjectMail").value = info.contact_email;
+  document.getElementById("EditProjectCode").value = "";
+  document.getElementById("EditCurrentProjectCode").value = "";
+  document.getElementById("DeleteProjectCode").value = "";
+  updateCurrencyList(
+    document.getElementById("EditProjectCurrency"),
+    info.default_currency,
+  );
+}
+
+//Edit project settings
+function EditProject() {
+  // function to edit projects based on user inputed values
+  startLoading();
+  let projectData = {
+    current_password: document.getElementById("EditCurrentProjectCode").value,
+    name: document.getElementById("EditProjectName").value,
+    contact_email: document.getElementById("EditProjectMail").value,
+    logging_preference: info.logging_preference,
+    default_currency: document.getElementById("EditProjectCurrency").value,
+  };
+  let NewProjectCode = document.getElementById("EditProjectCode").value;
+  let isNewToken = false;
+  if (NewProjectCode != "") {
+    projectData["password"] = NewProjectCode;
+    isNewToken = true;
+  }
+  fetch(apiUrl_Project, {
+    method: "PUT",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(projectData),
+  })
+    .then(async (response) => {
+      let response_json = await response.json();
+      if (!response.ok) {
+        if (response.status == 400) {
+          for (field in response_json) {
+            ShowToast(field + ": " + response_json[field], "Red");
+          }
+          throw new Error("Project data has not been updated");
+        }
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response_json;
+    })
+    .then(async (data) => {
+      if (!isNewToken) {
+        ShowToast("Project settings updated", "Green");
+        updateAll();
+        document.getElementById("editProject").classList.add("hidden");
+      } else {
+        // Reset Auth token
+        ShowToast(
+          "Project settings updated. Fetching new auth token...",
+          "Green",
+        );
+        let token = await VerifieAuthCode(projectID, NewProjectCode);
+        if (!!token) {
+          //is true if token is a non null string
+          endLoading();
+          window.location.href =
+            "./dashboard.html?project=" +
+            encodeURIComponent(projectID) +
+            "&token=" +
+            encodeURIComponent(token);
+        } else {
+          throw new Error("New token could not be fetched");
+        }
+      }
+    })
+    .catch((error) => {
+      //show toast and save in log
+      ShowToast(error.message, "Red");
+      console.error("Error:", error.message);
+      endLoading();
+    });
+}
+
+//Delete a project from a disctance server
+function DeleteProject(validated) {
+  // function to delect a project from distance server
+  // if validated == false, it asks for a validation
+  // if validated == true, it delets the project from the distance server and the local storage
+  if (!validated) {
+    ShowToast(
+      "Are you sure you want to delete the project?\
+               This action can not be undone!",
+      "Orange",
+    );
+    document
+      .getElementById("RemoveProjectForm")
+      .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(true)");
+    document.getElementById("DeleteProjectSubmit").innerText = "Are you sure?";
+  } else {
+    startLoading();
+    let ProjectCode = document.getElementById("DeleteProjectCode").value;
+
+    fetch(apiUrl_Project, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Basic ` + btoa(`${projectID}:${ProjectCode}`),
+      },
+    })
+      .then(async (response) => {
+        let response_json = await response.json();
+        if (!response.ok) {
+          if (response.status == 401) {
+            throw new Error("Project password is not correct");
+          }
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response_json;
+      })
+      .then((data) => {
+        ShowToast("Project successfully removed", "Green");
+        //remove from Storage
+        storage.removeSubItem("ProjectsList", projectID, true);
+        //update the project list on all the other oppened pages (using bc from "localStorageAsked.js"
+        bc.postMessage(["updateProjectList"]);
+        window.location.search = "";
+      })
+      .catch((error) => {
+        // reset the remove form text and functions
+        document
+          .getElementById("RemoveProjectForm")
+          .setAttribute(
+            "onsubmit",
+            "event.preventDefault(); DeleteProject(false)",
+          );
+        document.getElementById("DeleteProjectSubmit").innerText =
+          "Delete project";
+        //show in toast and save in log
+        ShowToast(error.message, "Red");
+        console.error("Error:", error.message);
+        endLoading();
+      });
+  }
 }
 
 //function to render amoney
