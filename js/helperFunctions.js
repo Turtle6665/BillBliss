@@ -146,9 +146,9 @@ function VerifieAuthCode(projectID, ProjectCode) {
     });
 }
 
-function switchDarkMode(){
+function switchDarkMode() {
   let DarkMode = storage.getItem("DarkMode") || false;
-  if (DarkMode){
+  if (DarkMode) {
     document.documentElement.classList.add("dark");
   } else {
     document.documentElement.classList.remove("dark");

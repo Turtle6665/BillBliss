@@ -2,7 +2,6 @@
   --colorGreen: #9dfe00b0;
   --colorRed: #ff5e47;
 
-
   --primary: #adb6f4;
   --primary-content: #13238f;
   --primary-dark: #808eee;
@@ -29,11 +28,10 @@
   --error-content: #8f1313;
 
   --border-shadow: #969691;
-
 }
 
 @media (prefers-color-scheme: dark) {
-  :root{
+  :root {
     --background: #14161f;
     --foreground: #1f212e;
     --border: #33364d;
@@ -42,7 +40,7 @@
     --copy-light: #d1d3e0;
     --copy-lighter: #9498b8;
 
-    --border-shadow: #0A0A0A;
+    --border-shadow: #0a0a0a;
   }
 }
 
@@ -82,18 +80,19 @@ button:hover,
 input:hover,
 select:hover {
   box-shadow: 2px 2px 8px var(--border);
-  background-color: var(--border)
+  background-color: var(--border);
 }
 
 button:active {
   box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.5);
 }
 
-*:disabled{
+*:disabled {
   opacity: 0.5;
 }
 
-input, select {
+input,
+select {
   color: var(--copy);
   background-color: var(--foreground);
   border-radius: 3px;
@@ -115,7 +114,7 @@ body {
 }
 
 section {
-  color: var(--copy)
+  color: var(--copy);
 }
 
 /*---------
@@ -445,19 +444,21 @@ Pages layout
   padding: 0 0.5em;
 }
 
-.foregroundCard{
-  margin:  0 auto 1em auto;
+.foregroundCard {
+  margin: 0 auto 1em auto;
   padding: 1em;
   max-width: 600px;
-  border-radius: .75em;
+  border-radius: 0.75em;
   border: 1px solid var(--border);
   box-shadow: 0px 0px 5px 2px var(--border-shadow);
   background-color: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {.foregroundCard {
-  border: 2px solid var(--border);
-}}
+@media (prefers-color-scheme: dark) {
+  .foregroundCard {
+    border: 2px solid var(--border);
+  }
+}
 
 /*---------
 Information page
@@ -490,7 +491,7 @@ Information page
   width: 2.3em;
 }
 
-#membersList{
+#membersList {
   display: flex;
   flex-flow: row wrap;
 }
@@ -643,7 +644,7 @@ Summary Page
 }
 
 #balance_tree,
-#settlements_list{
+#settlements_list {
   border-top: 2px solid var(--border);
 }
 
@@ -950,15 +951,17 @@ Single pages
   margin: 0 auto;
   max-width: 700px;
   padding: 1em;
-  border-radius: .75em;
+  border-radius: 0.75em;
   border: 1px solid var(--border);
   box-shadow: 0px 0px 5px 2px var(--border-shadow);
   background-color: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) { .SinglePageContainer {
-border: 2px solid var(--border);
-}}
+@media (prefers-color-scheme: dark) {
+  .SinglePageContainer {
+    border: 2px solid var(--border);
+  }
+}
 
 .SinglePageContainer label,
 .wideForms label {
@@ -999,7 +1002,7 @@ Add Project
 Retractible
 ----------*/
 
-.ButtonRetractible:hover{
+.ButtonRetractible:hover {
   border-radius: 0.5em;
   box-shadow: 2px 2px 8px var(--border);
 }
@@ -1085,13 +1088,13 @@ Retractible
   text-align: center;
 }
 
-.btn-green{
+.btn-green {
   color: var(--success-content);
   background-color: var(--success);
   border-color: var(--success-content);
 }
 
-.btn-red{
+.btn-red {
   color: var(--error-content);
   background-color: var(--error);
   border-color: var(--error-content);
