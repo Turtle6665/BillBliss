@@ -1,11 +1,47 @@
 :root {
-  --color1: #adb6f4;
-  --color2: #bdc4e6;
-  --color3: #ced2d7;
-  --color4: #dfdfc5;
-  --color5: #f1ecb1;
-  --colorGreen: #adfc2e;
+  --colorGreen: #9dfe00b0;
   --colorRed: #ff5e47;
+
+  --primary: #adb6f4;
+  --primary-content: #13238f;
+  --primary-dark: #808eee;
+  --primary-light: #dadefa;
+
+  --secondary: #f5e573;
+  --secondary-content: #625707;
+  --secondary-dark: #f2dc43;
+  --secondary-light: #f8eea3;
+
+  --background: #ededf3;
+  --foreground: #fafbfc;
+  --border: #d9dae5;
+
+  --copy: #1f212e;
+  --copy-light: #52577a;
+  --copy-lighter: #757ba3;
+
+  --success: #adf4ad;
+  --warning: #f4f4ad;
+  --error: #f4adad;
+  --success-content: #138f13;
+  --warning-content: #8f8f13;
+  --error-content: #8f1313;
+
+  --border-shadow: #969691;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #14161f;
+    --foreground: #1f212e;
+    --border: #33364d;
+
+    --copy: #fafbfc;
+    --copy-light: #d1d3e0;
+    --copy-lighter: #9498b8;
+
+    --border-shadow: #0a0a0a;
+  }
 }
 
 * {
@@ -36,6 +72,30 @@ button {
   padding: 0.3em;
   border-radius: 0.3em;
   margin: 0.1em;
+  color: var(--copy);
+  background-color: var(--foreground);
+}
+
+button:hover,
+input:hover,
+select:hover {
+  box-shadow: 2px 2px 8px var(--border);
+  background-color: var(--border);
+}
+
+button:active {
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+*:disabled {
+  opacity: 0.5;
+}
+
+input,
+select {
+  color: var(--copy);
+  background-color: var(--foreground);
+  border-radius: 3px;
 }
 
 /*---------
@@ -43,6 +103,7 @@ Main layout
 ---------*/
 html {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
 }
 body {
   display: flex;
@@ -50,6 +111,10 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+}
+
+section {
+  color: var(--copy);
 }
 
 /*---------
@@ -63,8 +128,8 @@ Navigation Menu
   position: relative;
   padding: 0.2em 0.5em;
   z-index: 2;
-  background-color: var(--color1);
-  box-shadow: 0px 0px 5px 2px grey;
+  background-color: var(--primary);
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
   height: 2.4em;
 }
 
@@ -106,9 +171,9 @@ Navigation Menu
 
 #updateAll {
   float: right;
-  background-color: #4caf50; /* Green */
+  background-color: var(--success); /* Green */
+  color: var(--success-content);
   border: none;
-  color: white;
   padding: 6px;
   text-align: center;
   text-decoration: none;
@@ -117,14 +182,6 @@ Navigation Menu
   font-size: 16px;
   position: relative;
   cursor: pointer;
-}
-
-#updateAll:hover {
-  background-color: #59db5e;
-}
-
-#updateAll:active {
-  background-color: #3f9342;
 }
 
 #navigationList {
@@ -156,26 +213,26 @@ Navigation Menu
   height: 1.5em;
   top: 2.4em;
   width: calc(100% / 3);
-  background-color: var(--color1);
+  background-color: var(--primary);
   border-radius: 0 0 0.4em 0.4em;
   z-index: 2;
   left: 0;
   position: absolute;
   box-shadow:
-    4px 2px 4px -2px grey,
-    -4px 2px 4px -2px grey;
+    4px 2px 4px -2px var(--border-shadow),
+    -4px 2px 4px -2px var(--border-shadow);
 }
 #progress-bar-back {
   height: 4.2em;
   top: -0.3em;
   width: 100%;
-  background-color: var(--color5);
+  background-color: var(--secondary);
   left: 0;
   animation: marginLeft 0.3s;
   position: absolute;
   z-index: 1;
   border-radius: 0.4em;
-  box-shadow: 0px 0px 5px 2px grey;
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
 }
 
 /*---------
@@ -186,7 +243,7 @@ Loading animation
   top: calc(50vh - 40px);
 }
 #loadingAnnim div {
-  border-color: var(--color1) transparent transparent transparent;
+  border-color: var(--primary-dark) transparent transparent transparent;
 }
 .lds-ring {
   display: inline-block;
@@ -202,10 +259,10 @@ Loading animation
   width: 64px;
   height: 64px;
   margin: 8px;
-  border: 8px solid #fff;
+  border: 8px solid var(--foreground);
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
+  border-color: var(--foreground) transparent transparent transparent;
 }
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
@@ -232,7 +289,7 @@ leftPanel layout
   visibility: hidden;
 }
 #leftPanel {
-  background-color: white;
+  background-color: var(--foreground);
   visibility: inherit;
   display: grid;
   grid-template-rows: max-content minmax(0, 1fr) max-content;
@@ -255,8 +312,8 @@ leftPanel layout
 #PanelTitle {
   display: grid;
   grid-template-columns: 2em 2.4em auto;
-  background-color: var(--color1);
-  box-shadow: 0px 0px 5px 2px grey;
+  background-color: var(--primary);
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
   padding: 0.2em 0.5em;
 }
 
@@ -354,8 +411,6 @@ Pages layout
   }
   .grid-pages {
     width: calc(100vw / 3) !important;
-    border-left: 1px solid var(--color3);
-    border-right: 1px solid var(--color3);
   }
   #addBill {
     left: calc(50vw / 3 - 1.2em / 2) !important;
@@ -383,12 +438,31 @@ Pages layout
   position: relative;
 }
 
+#info-page,
+#billMain,
+#summary-page {
+  padding: 0 0.5em;
+}
+
+.foregroundCard {
+  margin: 0 auto 1em auto;
+  padding: 1em;
+  max-width: 600px;
+  border-radius: 0.75em;
+  border: 1px solid var(--border);
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
+  background-color: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  .foregroundCard {
+    border: 2px solid var(--border);
+  }
+}
+
 /*---------
 Information page
 ---------*/
-#info-page > div:not(.linktarget) {
-  margin: 1em auto;
-}
 
 #projectinfo > div {
   width: 80%;
@@ -417,25 +491,32 @@ Information page
   width: 2.3em;
 }
 
+#membersList {
+  display: flex;
+  flex-flow: row wrap;
+}
+
 #membersList > div {
   border-radius: 0.5em;
-  background-color: var(--color5);
-  border-style: 1px solid var(--color5);
-  box-shadow: 0px 0px 5px 2px grey;
+  background-color: var(--primary);
+  border-style: 1px solid var(--primary-content);
+  color: var(--primary-content);
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
   padding: 0.5em;
   margin: 0.4em;
   width: auto;
   display: inline-block;
+  flex-grow: 1;
 }
 
 #membersList > .deactivated::after {
   content: " (deactivated)";
-  color: var(--color2);
+  color: var(--copy-light);
 }
 
 #membersList > div::before {
   content: attr(weight);
-  color: var(--color2);
+  color: var(--copy-light);
 }
 
 /*---------------
@@ -460,8 +541,8 @@ Edit member page
   border-radius: 0.5em;
   padding: 1em;
   top: 10em;
-  background-color: #fff;
-  box-shadow: 0px 0px 5px 2px grey;
+  background-color: var(--foreground);
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
   z-index: 12;
 }
 
@@ -489,11 +570,6 @@ Bills page
 #billMain {
   height: 100%;
   overflow: auto;
-  background-color: var(--color3);
-}
-
-#billMain > *:not(#bills_endSpacer) {
-  background-color: #fff;
 }
 
 .billPayer,
@@ -519,13 +595,13 @@ Bills page
 }
 
 #bills-page h1 {
-  border-bottom: 2px solid var(--color3);
+  border-bottom: 2px solid var(--border);
 }
 
 .billdiv {
   overflow: auto;
-  border-bottom: 2px solid var(--color3);
-  background-color: #fff;
+  border-bottom: 2px solid var(--border);
+  background-color: var(--foreground);
   padding: 0.3em 0;
   cursor: pointer;
 }
@@ -540,10 +616,7 @@ Bills page
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%; /*
-  height:4vh;
-  background-color: var(--color5);
-  z-index:1;*/
+  width: 100%;
 }
 
 #addBill {
@@ -552,13 +625,14 @@ Bills page
   left: calc(50vw - 1.2em / 2);
   border-radius: 1.2em;
   font-size: 2.5em;
-  box-shadow: 0px 0px 5px 2px gray;
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
   width: 1.2em;
   height: 1.2em;
   padding: 0;
   margin: 0 auto;
+  border: none;
   cursor: pointer;
-  background-color: var(--color1);
+  background-color: var(--primary);
 }
 
 /*---------
@@ -569,9 +643,14 @@ Summary Page
   padding: 0.2em;
 }
 
+#balance_tree,
+#settlements_list {
+  border-top: 2px solid var(--border);
+}
+
 .memberBranch {
   padding: 0.2em 0.5em;
-  border-bottom: 2px solid var(--color3);
+  border-bottom: 2px solid var(--border);
   text-align: left;
 }
 
@@ -638,7 +717,7 @@ select {
 }
 
 .ModalBackground {
-  background-color: rgba(200, 200, 200, 0.5);
+  background-color: rgba(10, 10, 10, 0.5);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -658,8 +737,8 @@ select {
   overflow-y: auto;
   display: inline-block;
   padding: 1em;
-  background-color: #fff;
-  box-shadow: 0px 0px 5px 2px grey;
+  background-color: var(--foreground);
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
 }
 
 #newBilDiv > label {
@@ -684,21 +763,22 @@ select {
 }
 
 #bill-forWhom {
-  padding: 0 0.2em;
+  padding: 0 0.2em 0.2em 0.2em;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.3em;
 }
 
 #bill-forWhom > div {
-  display: inline-block;
-  min-width: calc(50% - 0.1em);
   text-align: left;
   padding: 0.3em;
-  border: 1px solid var(--color3);
+  border: 1px solid var(--border);
   border-radius: 0.3em;
   margin: 0.05em;
   cursor: pointer;
 }
 #bill-forWhom > div:hover {
-  background-color: var(--color2);
+  background-color: var(--primary-light);
 }
 
 #bill-forWhom > div > label {
@@ -712,7 +792,7 @@ select {
 }
 
 .settlementdiv {
-  border-bottom: 2px solid var(--color3);
+  border-bottom: 2px solid var(--border);
   cursor: pointer;
 }
 
@@ -831,21 +911,21 @@ select {
 }
 
 .ToastDivRed {
-  background-color: rgb(250, 150, 150);
-  color: rgba(200, 10, 10);
-  border-color: rgba(200, 10, 10);
+  background-color: var(--error);
+  color: var(--error-content);
+  border-color: var(--error-content);
 }
 
 .ToastDivGreen {
-  background-color: rgb(200, 250, 200);
-  color: rgba(10, 160, 10);
-  border-color: rgba(10, 160, 10);
+  background-color: var(--success);
+  color: var(--success-content);
+  border-color: var(--success-content);
 }
 
 .ToastDivOrange {
-  background-color: rgb(250, 200, 100);
-  color: rgba(166, 121, 27);
-  border-color: rgba(166, 121, 27);
+  background-color: var(--warning);
+  color: var(--warning-content);
+  border-color: var(--warning-content);
 }
 
 /*----------
@@ -860,24 +940,32 @@ Single pages
 }
 .SinglePage h1 {
   margin: 0.5em auto;
-  max-width: 500px;
 }
 
 .SinglePage p {
   text-align: justify;
   margin: 0.5em auto;
-  max-width: 500px;
 }
 
 .SinglePageContainer {
-  margin: 0.5em auto;
-  max-width: 500px;
+  margin: 0 auto;
+  max-width: 700px;
+  padding: 1em;
+  border-radius: 0.75em;
+  border: 1px solid var(--border);
+  box-shadow: 0px 0px 5px 2px var(--border-shadow);
+  background-color: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  .SinglePageContainer {
+    border: 2px solid var(--border);
+  }
 }
 
 .SinglePageContainer label,
 .wideForms label {
   display: inline-block;
-  text-align: left;
   width: 100%;
   margin: 0.2em 0;
 }
@@ -886,7 +974,8 @@ Single pages
 .wideForms button {
   padding: 0.2em;
   width: 100%;
-  background-color: var(--color5);
+  background-color: var(--secondary);
+  color: var(--secondary-content);
   border-radius: 0.2em;
   cursor: pointer;
 }
@@ -896,14 +985,27 @@ Single pages
 .SinglePageContainer label > select,
 .wideForms label > select {
   width: 100%;
-  float: center;
+  float: left;
   margin: 0.1em 0;
   padding: 0.2em;
 }
 
 /*----------
+Add Project
+----------*/
+
+#AddProjectSection label {
+  text-align: left;
+}
+
+/*----------
 Retractible
 ----------*/
+
+.ButtonRetractible:hover {
+  border-radius: 0.5em;
+  box-shadow: 2px 2px 8px var(--border);
+}
 
 .ButtonRetractibleCheckbox ~ p::after {
   content: "‎ ";
@@ -962,7 +1064,7 @@ Retractible
   height: 1em;
   border-radius: 1em;
   width: calc(2em - 5px);
-  background-color: var(--color1);
+  background-color: var(--primary);
   padding: 2.5px;
 }
 
@@ -972,7 +1074,7 @@ Retractible
   height: 100%;
   width: 50%;
   border-radius: 100%;
-  background-color: var(--color4);
+  background-color: var(--border);
 }
 
 .switch > input:checked ~ span > span {
@@ -983,4 +1085,17 @@ Retractible
   display: block;
   width: 100%;
   padding: 0.4em;
+  text-align: center;
+}
+
+.btn-green {
+  color: var(--success-content);
+  background-color: var(--success);
+  border-color: var(--success-content);
+}
+
+.btn-red {
+  color: var(--error-content);
+  background-color: var(--error);
+  border-color: var(--error-content);
 }
