@@ -1,4 +1,4 @@
-// a js file containing toast and loading animations function
+// a js file containing toast, loading animations function and darkmode managment
 
 //Some important functions initialisation
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -145,3 +145,14 @@ function VerifieAuthCode(projectID, ProjectCode) {
       return false;
     });
 }
+
+function switchDarkMode(){
+  let DarkMode = storage.getItem("DarkMode") || false;
+  if (DarkMode){
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}
+
+switchDarkMode();
