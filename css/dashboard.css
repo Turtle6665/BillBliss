@@ -32,16 +32,18 @@
 
 }
 
-.dark{
-  --background: #14161f;
-  --foreground: #1f212e;
-  --border: #33364d;
+@media (prefers-color-scheme: dark) {
+  :root{
+    --background: #14161f;
+    --foreground: #1f212e;
+    --border: #33364d;
 
-  --copy: #fafbfc;
-  --copy-light: #d1d3e0;
-  --copy-lighter: #9498b8;
+    --copy: #fafbfc;
+    --copy-light: #d1d3e0;
+    --copy-lighter: #9498b8;
 
-  --border-shadow: #0A0A0A;
+    --border-shadow: #0A0A0A;
+  }
 }
 
 * {
@@ -453,9 +455,9 @@ Pages layout
   background-color: var(--foreground);
 }
 
-.dark .foregroundCard {
+@media (prefers-color-scheme: dark) {.foregroundCard {
   border: 2px solid var(--border);
-}
+}}
 
 /*---------
 Information page
@@ -954,9 +956,9 @@ Single pages
   background-color: var(--foreground);
 }
 
-.dark .SinglePageContainer {
+@media (prefers-color-scheme: dark) { .SinglePageContainer {
 border: 2px solid var(--border);
-}
+}}
 
 .SinglePageContainer label,
 .wideForms label {
