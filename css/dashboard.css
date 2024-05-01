@@ -418,6 +418,39 @@ Pages layout
   }
 }
 
+@media print {
+  #navigationList,
+  #leftPanelContainer,
+  #progress-bar,
+  #progress-bar-back,
+  #updateAll,
+  #bills_endSpacer,
+  #billFooter {
+    display: none !important;
+  }
+  :root{
+    --background: transparent;
+    --foreground: transparent;
+  }
+  body{
+    height: auto;
+    overflow-y: auto;
+  }
+  #page-container {
+    display: block;
+    overflow-y: auto;
+  }
+  .billdivm,
+  .memberBranch,
+  .settlementdiv{
+    break-inside: avoid !important;
+  }
+  .memberLeaf{
+    border: 1px solid var(--border);
+    box-sizing: border-box;
+  }
+}
+
 .linktarget {
   height: 0.8em;
 }
