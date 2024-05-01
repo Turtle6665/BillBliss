@@ -3,7 +3,8 @@
   --colorRed: #ff5e47;
 
   --primary: #adb6f4;
-  --primary-content: #13238f;
+  --primary-content: #061682;
+  --primary-content-light: #26338e;
   --primary-content-dark: #000000;
   --primary-dark: #808eee;
   --primary-light: #dadefa;
@@ -25,9 +26,9 @@
   --success: #adf4ad;
   --warning: #f4f4ad;
   --error: #f4adad;
-  --success-content: #138f13;
-  --warning-content: #8f8f13;
-  --error-content: #8f1313;
+  --success-content: #0A520A;
+  --warning-content: #4C4C0B;
+  --error-content: #650D0D;
 
   --border-shadow: #969691;
 }
@@ -380,11 +381,6 @@ leftPanel layout
   background-color: inherit;
 }
 
-/*
-.leftPanelButton::before{
-  content: attr(url(icon));
-}
-*/
 /*---------
 Pages layout
 ---------*/
@@ -508,12 +504,12 @@ Information page
 
 #membersList > .deactivated::after {
   content: " (deactivated)";
-  color: var(--copy-light);
+  color: var(--primary-content-light);
 }
 
 #membersList > div::before {
   content: attr(weight);
-  color: var(--copy-light);
+  color: var(--primary-content-light);
 }
 
 /*---------------
