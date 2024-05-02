@@ -139,8 +139,13 @@ Navigation Menu
 }
 
 #showLeftPanelCheckbox {
-  visibility: hidden;
-  display: none;
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 }
 
 .burgerLayer {
@@ -300,10 +305,18 @@ leftPanel layout
   transition: left 0.2s;
 }
 
-#showLeftPanelCheckbox:checked ~ #leftPanel,
-#showLeftPanelCheckbox:checked ~ #leftPanelBackground {
+#showLeftPanelCheckbox:checked ~ #leftPanel{
+  transition: left 0.2s;
   left: 0;
+}
+
+#showLeftPanelCheckbox:checked ~ #leftPanelBackground {
   visibility: visible;
+}
+
+#showLeftPanelCheckbox:focus ~ #leftPanel #PanelTitle label {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline: 2px auto Highlight;
 }
 
 #PanelTitle {
@@ -356,14 +369,24 @@ leftPanel layout
   background-image: url(../assets/^slider.svg);
 }
 
+.ButtonRetractibleCheckbox:focus ~ div {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline: 5px auto Highlight;
+}
+
 .leftPanelButtonGroupe {
   overflow-y: auto;
   margin: 0.4em 0;
+  padding: 0 0.2em;
 }
 
 .leftPanelButton {
-  padding: 0.4em 0.8em;
+  padding: 0.3em 0.6em;
   cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border: none;
+  margin: 0.1em 0;
 }
 
 .leftPanelButton::before {
@@ -375,6 +398,7 @@ leftPanel layout
   background-repeat: no-repeat;
   background-position: left 0% bottom 50%;
   background-size: contain;
+
 }
 
 .leftPanelFooter {
@@ -1049,8 +1073,13 @@ Retractible
 }
 
 .ButtonRetractibleCheckbox {
-  display: none;
-  visibility: collapse;
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 }
 .ButtonRetractibleDiv {
   float: left;
@@ -1077,8 +1106,13 @@ Retractible
 ----------*/
 
 .switch > input {
-  display: none;
-  visibility: hidden;
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 }
 
 .switch > span {
@@ -1088,6 +1122,11 @@ Retractible
   width: calc(2em - 5px);
   background-color: var(--primary);
   padding: 2.5px;
+}
+
+.switch > input:focus ~ span {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline: 2px auto Highlight;
 }
 
 .switch > span > span {

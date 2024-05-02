@@ -44,6 +44,7 @@
     <script src="js/localStorageAsked.js"></script>
     <script src="js/helperFunctions.js"></script>
     <script src="./assets/js_library/qrcode.min.js"></script>
+    <script defer src="js/leftPanel.js"></script>
     <script defer src="js/dashboard.js"></script>
   </head>
   <body>
@@ -87,27 +88,27 @@
           <h1>BillBliss</h1>
         </div>
         <div class="leftPanelButtonGroupe">
-          <div
+          <button
             class="leftPanelButton hidden"
             style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
             onclick="ShowToast('This has not been implemented yet','Red')"
           >
             Project settings
-          </div>
-          <div
+          </button>
+          <button
             class="leftPanelButton"
             style="--iconURL: url(&quot;../assets/icons/Share.svg&quot;)"
             onclick="toShareProject();"
           >
             Share this project
-          </div>
-          <div
+          </button>
+          <button
             class="leftPanelButton"
             style="--iconURL: url(&quot;../assets/icons/EditProject.svg&quot;)"
             onclick="toEditProject();"
           >
             Edit this project
-          </div>
+          </button>
           <label class="ButtonRetractible">
             <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
             <div
@@ -117,7 +118,7 @@
               Projects
             </div>
             <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
-              <div
+              <button
                 class="leftPanelButton"
                 onclick="window.location.href = './AddProject.html'"
                 style="
@@ -125,7 +126,7 @@
                 "
               >
                 Add project
-              </div>
+              </button>
               <div class="leftPanelButton" onclick="loadProject('demo')">
                 demo
               </div>
@@ -137,20 +138,20 @@
           <div class="leftPanelButton hidden">Button 1</div>
         </div>
         <div class="leftPanelButtonGroupe leftPanelFooter">
-          <div
+          <button
             class="leftPanelButton"
             style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
             onclick="window.location.href = './settings.html'"
           >
             Settings
-          </div>
-          <div
+          </button>
+          <button
             class="leftPanelButton"
             style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
             onclick="window.location.href = './about.html'"
           >
             About BillBliss
-          </div>
+          </button>
         </div>
       </div>
     </section>
