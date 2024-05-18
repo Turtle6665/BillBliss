@@ -64,9 +64,11 @@ function startLoading() {
   } else {
     let loadingAnnim = document.getElementById("loadingAnnim");
   }
-  [...document.body.getElementsByTagName("button")].forEach(
-    (i) => (i.disabled = true)
-  );
+  [...document.body.getElementsByTagName("button")]
+    .filter((button) => {
+      return !button.classList.contains("leftPanelButton");
+    })
+    .forEach((i) => (i.disabled = true));
   loadingAnnim.classList.remove("hidden");
 }
 
