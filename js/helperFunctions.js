@@ -65,14 +65,14 @@ function startLoading() {
     let loadingAnnim = document.getElementById("loadingAnnim");
   }
   [...document.body.getElementsByTagName("button")].forEach(
-    (i) => (i.disabled = true),
+    (i) => (i.disabled = true)
   );
   loadingAnnim.classList.remove("hidden");
 }
 
 function endLoading() {
   [...document.body.getElementsByTagName("button")].forEach(
-    (i) => (i.disabled = false),
+    (i) => (i.disabled = false)
   );
   document.getElementById("loadingAnnim").classList.add("hidden");
 }
@@ -147,17 +147,21 @@ function VerifieAuthCode(projectID, ProjectCode) {
 }
 
 function getFirstBoolean(values) {
-    for (let value of values) {
-        if (typeof value === 'boolean') {
-            return value;
-        }
+  for (let value of values) {
+    if (typeof value === "boolean") {
+      return value;
     }
-    return false;
+  }
+  return false;
 }
 
-function switchDarkMode(forceChangeTo=null) {
+function switchDarkMode(forceChangeTo = null) {
   let defaultDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  let DarkMode = getFirstBoolean([forceChangeTo, storage.getItem("DarkMode"), defaultDark]);
+  let DarkMode = getFirstBoolean([
+    forceChangeTo,
+    storage.getItem("DarkMode"),
+    defaultDark,
+  ]);
   if (DarkMode) {
     document.documentElement.classList.remove("ligth");
     document.documentElement.classList.add("dark");

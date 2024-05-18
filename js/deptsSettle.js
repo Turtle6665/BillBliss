@@ -19,7 +19,7 @@ function checkBalance(debiters, crediters) {
 
   if (Math.abs(sumCrediters - sumDebiters) >= 0.01) {
     throw new Error(
-      `Unsolvable : debiters (-${sumDebiters}) and crediters (+${sumCrediters}) are unbalanced.`,
+      `Unsolvable : debiters (-${sumDebiters}) and crediters (+${sumCrediters}) are unbalanced.`
     );
   }
 }

@@ -1,12 +1,12 @@
 // settgins
 let DarkModeSettingSwitch = document.getElementById("DarkModeSettingSwitch");
 let localStorageSettingSwitch = document.getElementById(
-  "localStorageSettingSwitch",
+  "localStorageSettingSwitch"
 );
 
 function saveSettings() {
   //choose lightdarkmode
-  let DarkMode = DarkModeSettingSwitch.getElementsByTagName("input")[0].checked
+  let DarkMode = DarkModeSettingSwitch.getElementsByTagName("input")[0].checked;
   storage.setItem("DarkMode", DarkMode);
 
   //localStorage acceptation
@@ -29,10 +29,12 @@ function saveSettings() {
 
 //to update the settings on the page
 function updateSettings(toast = true) {
-  DarkModeSettingSwitch.getElementsByTagName("input")[0].checked =
-    getFirstBoolean([
-      storage.getItem("DarkMode"),
-      window.matchMedia("(prefers-color-scheme: dark)").matches]);
+  DarkModeSettingSwitch.getElementsByTagName(
+    "input"
+  )[0].checked = getFirstBoolean([
+    storage.getItem("DarkMode"),
+    window.matchMedia("(prefers-color-scheme: dark)").matches,
+  ]);
   switchDarkMode();
 
   localStorageSettingSwitch.getElementsByTagName("input")[0].checked =
@@ -43,13 +45,13 @@ function updateSettings(toast = true) {
   }
 }
 
-function PreviewDarkMode(){
-  let darkmode = DarkModeSettingSwitch.getElementsByTagName('input')[0].checked
+function PreviewDarkMode() {
+  let darkmode = DarkModeSettingSwitch.getElementsByTagName("input")[0].checked;
   switchDarkMode(darkmode);
   if (darkmode) {
-    ShowToast("DarkMode previewed","Orange");
+    ShowToast("DarkMode previewed", "Orange");
   } else {
-    ShowToast("LightMode previewed","Orange");
+    ShowToast("LightMode previewed", "Orange");
   }
 }
 

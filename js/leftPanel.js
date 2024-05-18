@@ -14,7 +14,7 @@ function updateProjectList() {
   });
   LeftPanelProjectList.appendChild(projectButton);
   if (!!ProjectsList) {
-    let currentprojectID
+    let currentprojectID;
     if (typeof projectID == "undefined") {
       currentprojectID = "";
     } else {
