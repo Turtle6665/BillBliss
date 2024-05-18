@@ -361,6 +361,10 @@ function addMember() {
       console.error("Error adding new member:", error);
     });
 }
+document.getElementById('addMemberForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  addMember();
+});
 
 //function to show the edit membertab
 function editMember(memberID) {

@@ -187,17 +187,21 @@
         <div id="members" class="foregroundCard">
           <h2>Members</h2>
           <label id="addMemberLabel" for="addMemberInput">New member:</label>
-          <div id="addMemberDiv">
+          <form id="addMemberForm">
             <input
               id="addMemberInput"
               type="text"
               name="addMember"
               value=""
               placeholder="Member name"
-            /><button type="button" name="button" onclick="addMember()">
+              required
+            /><button
+              type="submit"
+              name="addMemberButton"
+            >
               +
             </button>
-          </div>
+          </form>
           <div id="membersList"></div>
         </div>
       </div>

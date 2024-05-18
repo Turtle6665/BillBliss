@@ -516,23 +516,24 @@ Information page
   margin: 0.2em 0;
 }
 
-#addMemberDiv {
+#addMemberForm {
   padding: 0.5em;
   margin-bottom: 0.5em;
 }
 
-#addMemberDiv > input,
-#addMemberDiv > button {
+#addMemberForm > input,
+#addMemberForm > button {
   display: inline-block;
   padding: 0.3em;
   margin: 0;
   height: 2.3em;
 }
 
-#addMemberDiv > input {
+#addMemberForm > input {
   border-radius: 0.3em 0 0 0.3em;
+  max-width: calc(100% - 2.3em);
 }
-#addMemberDiv > button {
+#addMemberForm > button {
   border-radius: 0 0.3em 0.3em 0;
   aspect-ratio: 1 / 1;
 }
