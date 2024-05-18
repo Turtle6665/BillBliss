@@ -145,15 +145,6 @@ class LS {
       if ((this.old_LS_accepted == false) & brodcast) {
         bc.postMessage(["setItem", item, fulldata]);
       }
-      //update the setting pages
-      if (document.location.pathname.includes("settings")) {
-        try {
-          updateSettings(false);
-        } catch {
-          // to prevent an error is the setting page is not completly charged
-          null;
-        }
-      }
     }
   }
 
@@ -207,7 +198,22 @@ storage = new LS();
 
 bc.onmessage = (event) => {
   let tData = event.data;
-  if (tData[0] == "denyLocalStorage") {
+  if (tData[0] == "SettingsUpdated"){
+    //update the setting pages
+    if (document.location.pathname.includes("settings")) {
+      try {
+        updateSettings(false);
+      } catch {
+        // to prevent an error is the setting page is not completly charged
+        null;
+      }
+    }
+    if (tData[1] == "DarkMode"){
+      //this allows to update theme on all the page at the same time
+      switchDarkMode(tData[2]);
+    }
+  }
+  else if (tData[0] == "denyLocalStorage") {
     let allItemsAndData = tData[1];
     Object.keys(allItemsAndData).forEach((item) => {
       sessionStorage.setItem(item, allItemsAndData[item]);
@@ -313,8 +319,8 @@ function askLocalStorage() {
           <br>We don't track you nor store any of your data. Learn more on the \
           <a href='./about.html'>about page</a>.\
         </p> <br> \
-        <button onclick='storage.denyLocalStorage();'>Deny</button> \
-        <button onclick='storage.acceptLocalStorage();'>Accept</button> \
+        <button onclick='storage.denyLocalStorage();bc.postMessage([&quot;SettingsUpdated&quot;]);'>Deny</button> \
+        <button onclick='storage.acceptLocalStorage();bc.postMessage([&quot;SettingsUpdated&quot;]);'>Accept</button> \
         </div> \
       ",
   });

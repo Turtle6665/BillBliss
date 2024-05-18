@@ -33,18 +33,16 @@
   --border-shadow: #969691;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #14161f;
-    --foreground: #1f212e;
-    --border: #33364d;
+.dark {
+  --background: #14161f;
+  --foreground: #1f212e;
+  --border: #33364d;
 
-    --copy: #fafbfc;
-    --copy-light: #d1d3e0;
-    --copy-lighter: #9498b8;
+  --copy: #fafbfc;
+  --copy-light: #d1d3e0;
+  --copy-lighter: #9498b8;
 
-    --border-shadow: #0a0a0a;
-  }
+  --border-shadow: #0a0a0a;
 }
 
 * {
@@ -504,10 +502,8 @@ Pages layout
   background-color: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  .foregroundCard {
-    border: 2px solid var(--border);
-  }
+.dark .foregroundCard {
+  border: 2px solid var(--border);
 }
 
 /*---------
@@ -1007,10 +1003,8 @@ Single pages
   background-color: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  .SinglePageContainer {
+.dark .SinglePageContainer {
     border: 2px solid var(--border);
-  }
 }
 
 .SinglePageContainer label,

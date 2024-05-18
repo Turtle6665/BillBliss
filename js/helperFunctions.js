@@ -146,12 +146,24 @@ function VerifieAuthCode(projectID, ProjectCode) {
     });
 }
 
-function switchDarkMode() {
-  let DarkMode = storage.getItem("DarkMode") || false;
+function getFirstBoolean(values) {
+    for (let value of values) {
+        if (typeof value === 'boolean') {
+            return value;
+        }
+    }
+    return false;
+}
+
+function switchDarkMode(forceChangeTo=null) {
+  let defaultDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  let DarkMode = getFirstBoolean([forceChangeTo, storage.getItem("DarkMode"), defaultDark]);
   if (DarkMode) {
+    document.documentElement.classList.remove("ligth");
     document.documentElement.classList.add("dark");
   } else {
     document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("ligth");
   }
 }
 

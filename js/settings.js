@@ -5,6 +5,10 @@ let localStorageSettingSwitch = document.getElementById(
 );
 
 function saveSettings() {
+  //choose lightdarkmode
+  let DarkMode = DarkModeSettingSwitch.getElementsByTagName("input")[0].checked
+  storage.setItem("DarkMode", DarkMode);
+
   //localStorage acceptation
   if (
     localStorageSettingSwitch.getElementsByTagName("input")[0].checked &
@@ -18,9 +22,7 @@ function saveSettings() {
     storage.denyLocalStorage();
   }
 
-  //choose lightdarkmode
-  storage.setItem("DarkMode", DarkModeSettingSwitch.getElementsByTagName("input")[0].checked);
-  switchDarkMode();
+  bc.postMessage(["SettingsUpdated", "DarkMode", DarkMode]);
 
   ShowToast("Settings updated", "Green");
 }
@@ -28,13 +30,26 @@ function saveSettings() {
 //to update the settings on the page
 function updateSettings(toast = true) {
   DarkModeSettingSwitch.getElementsByTagName("input")[0].checked =
-    storage.getItem("DarkMode") || false;
+    getFirstBoolean([
+      storage.getItem("DarkMode"),
+      window.matchMedia("(prefers-color-scheme: dark)").matches]);
+  switchDarkMode();
 
   localStorageSettingSwitch.getElementsByTagName("input")[0].checked =
     storage.old_LS_accepted;
 
   if (toast) {
     ShowToast("Change in settings canceled", "Red");
+  }
+}
+
+function PreviewDarkMode(){
+  let darkmode = DarkModeSettingSwitch.getElementsByTagName('input')[0].checked
+  switchDarkMode(darkmode);
+  if (darkmode) {
+    ShowToast("DarkMode previewed","Orange");
+  } else {
+    ShowToast("LightMode previewed","Orange");
   }
 }
 

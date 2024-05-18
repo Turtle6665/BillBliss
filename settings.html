@@ -133,6 +133,13 @@
         <button type="button" name="DiscardSettings" onclick="updateSettings()">
           Cancel
         </button>
+        <h2>Light/Dark mode</h2>
+        <label id="DarkModeSettingSwitch" class="switch switchFullWidth">
+          <input type="checkbox" name="localStorageUse" onclick="PreviewDarkMode();"/>
+          Light mode
+          <span><span></span></span>
+          Dark mode
+        </label>
 
         <h2 id="localStorageSection">Local storage</h2>
         <label class="ButtonRetractible">
