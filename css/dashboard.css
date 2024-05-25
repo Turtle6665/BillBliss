@@ -42,7 +42,7 @@
   --copy-light: #d1d3e0;
   --copy-lighter: #9498b8;
 
-  --border-shadow: #0a0a0a;
+  --border-shadow: rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -1160,12 +1160,22 @@ Retractible
 
 .btn-green {
   color: var(--success-content);
-  background-color: var(--success);
+  background-color: var(--success) !important;
   border-color: var(--success-content);
+}
+
+.btn-green:hover {
+  background-color: var(--success);
+  box-shadow: 2px 2px 8px var(--success);
 }
 
 .btn-red {
   color: var(--error-content);
-  background-color: var(--error);
+  background-color: var(--error) !important;
   border-color: var(--error-content);
+}
+
+.btn-red:hover {
+  background-color: var(--error);
+  box-shadow: 2px 2px 8px var(--error);
 }
