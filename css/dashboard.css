@@ -106,6 +106,7 @@ body {
   display: flex;
   flex-flow: column;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
 }
@@ -241,6 +242,7 @@ Loading animation
 #loadingAnnim {
   left: calc(50vw - 40px);
   top: calc(50vh - 40px);
+  top: calc(50dvh - 40px);
 }
 #loadingAnnim div {
   border-color: var(--primary-dark) transparent transparent transparent;
@@ -298,6 +300,7 @@ leftPanel layout
   left: -100vw;
   z-index: 100;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   max-width: 300px;
   transition: left 0.2s;
@@ -435,6 +438,7 @@ Pages layout
     max-width: 700px;
     width: 70vw !important;
     height: calc(100vh * 0.8) !important;
+    height: calc(100dvh * 0.8) !important;
     border-radius: 0.5em;
     margin-top: 2em;
   }
@@ -572,6 +576,7 @@ Edit member page
 #editMemberPage {
   z-index: 10;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   display: block;
   position: absolute;
@@ -656,6 +661,7 @@ Bills page
 #bills_endSpacer {
   position: relative;
   margin-bottom: 15vh;
+  margin-bottom: 15dvh;
 }
 
 /*Bill footer*/
@@ -669,6 +675,7 @@ Bills page
 #addBill {
   position: absolute;
   bottom: 2.5vh;
+  bottom: 2.5dvh;
   left: calc(50vw - 1.2em / 2);
   border-radius: 1.2em;
   font-size: 2.5em;
@@ -735,7 +742,7 @@ Summary Page
 
 .NegativeMB .memberLeafContained {
   direction: ltr;
-  width: 50vh;
+  width: 50vw;
 }
 
 .memberLeafContained {
@@ -756,6 +763,7 @@ select {
 .ModalContainer {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   position: absolute;
   top: 0;
   right: 0;
@@ -779,6 +787,7 @@ select {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 12;
   text-align: center;
   overflow-y: auto;
@@ -889,7 +898,7 @@ select {
   z-index: 10;
   right: 0;
   top: 4.2em;
-  width: 0vh;
+  width: 0;
   overflow: visible;
   direction: rtl;
   text-align: left;
@@ -917,6 +926,7 @@ select {
 @keyframes ToastShow {
   0% {
     margin-top: 5vh;
+    margin-top: 5dvh;
     opacity: 0;
   }
   100% {
