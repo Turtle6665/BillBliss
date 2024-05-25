@@ -116,9 +116,8 @@ function CreateNewProject() {
   };
   //Advance Options
   if (document.getElementById("newProjectCurrency").value != "") {
-    projectData["default_currency"] = document.getElementById(
-      "newProjectCurrency"
-    ).value;
+    projectData["default_currency"] =
+      document.getElementById("newProjectCurrency").value;
   }
   if (document.getElementById("newProjectId").value != "") {
     projectData["id"] = document.getElementById("newProjectId").value;
@@ -153,7 +152,7 @@ function CreateNewProject() {
       if (projectData["id"] != data) {
         ShowToast(
           "The id of your project is " + JSON.stringify(data),
-          "Orange"
+          "Orange",
         );
       }
       // Extract and handle the ID from the response data

@@ -74,7 +74,7 @@ function startLoading() {
 
 function endLoading() {
   [...document.body.getElementsByTagName("button")].forEach(
-    (i) => (i.disabled = false)
+    (i) => (i.disabled = false),
   );
   document.getElementById("loadingAnnim").classList.add("hidden");
 }

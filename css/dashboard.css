@@ -26,9 +26,9 @@
   --success: #adf4ad;
   --warning: #f4f4ad;
   --error: #f4adad;
-  --success-content: #0A520A;
-  --warning-content: #4C4C0B;
-  --error-content: #650D0D;
+  --success-content: #0a520a;
+  --warning-content: #4c4c0b;
+  --error-content: #650d0d;
 
   --border-shadow: #969691;
 }
@@ -220,7 +220,8 @@ Navigation Menu
   z-index: 2;
   left: 0;
   position: absolute;
-  box-shadow: 4px 2px 4px -2px var(--border-shadow),
+  box-shadow:
+    4px 2px 4px -2px var(--border-shadow),
     -4px 2px 4px -2px var(--border-shadow);
 }
 #progress-bar-back {
@@ -306,7 +307,7 @@ leftPanel layout
   transition: left 0.2s;
 }
 
-#showLeftPanelCheckbox:checked ~ #leftPanel{
+#showLeftPanelCheckbox:checked ~ #leftPanel {
   transition: left 0.2s;
   left: 0;
 }
@@ -399,7 +400,6 @@ leftPanel layout
   background-repeat: no-repeat;
   background-position: left 0% bottom 50%;
   background-size: contain;
-
 }
 
 .leftPanelFooter {
@@ -454,11 +454,11 @@ Pages layout
   #billFooter {
     display: none !important;
   }
-  :root{
+  :root {
     --background: transparent;
     --foreground: transparent;
   }
-  body{
+  body {
     height: auto;
     overflow-y: auto;
   }
@@ -468,10 +468,10 @@ Pages layout
   }
   .billdivm,
   .memberBranch,
-  .settlementdiv{
+  .settlementdiv {
     break-inside: avoid !important;
   }
-  .memberLeaf{
+  .memberLeaf {
     border: 1px solid var(--border);
     box-sizing: border-box;
   }
@@ -1015,7 +1015,7 @@ Single pages
 }
 
 .dark .SinglePageContainer {
-    border: 2px solid var(--border);
+  border: 2px solid var(--border);
 }
 
 .SinglePageContainer label,
@@ -1094,16 +1094,20 @@ Retractible
   width: 100%;
   overflow-y: hidden;
   --transitionTime: 0.2s;
-  transition: clip-path var(--transitionTime),
-    shape-outside var(--transitionTime), max-height 0s var(--transitionTime);
+  transition:
+    clip-path var(--transitionTime),
+    shape-outside var(--transitionTime),
+    max-height 0s var(--transitionTime);
   display: flow-root;
 }
 .ButtonRetractibleCheckbox:checked ~ .ButtonRetractibleDiv {
   clip-path: inset(0 0 0 0);
   shape-outside: inset(0 0 0 0);
   max-height: 10000px;
-  transition: clip-path var(--transitionTime),
-    shape-outside var(--transitionTime), max-height 0s 0s;
+  transition:
+    clip-path var(--transitionTime),
+    shape-outside var(--transitionTime),
+    max-height 0s 0s;
 }
 
 /*----------

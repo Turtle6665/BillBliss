@@ -1,7 +1,7 @@
 // settgins
 let DarkModeSettingSwitch = document.getElementById("DarkModeSettingSwitch");
 let localStorageSettingSwitch = document.getElementById(
-  "localStorageSettingSwitch"
+  "localStorageSettingSwitch",
 );
 
 function saveSettings() {
@@ -29,12 +29,11 @@ function saveSettings() {
 
 //to update the settings on the page
 function updateSettings(toast = true) {
-  DarkModeSettingSwitch.getElementsByTagName(
-    "input"
-  )[0].checked = getFirstBoolean([
-    storage.getItem("DarkMode"),
-    window.matchMedia("(prefers-color-scheme: dark)").matches,
-  ]);
+  DarkModeSettingSwitch.getElementsByTagName("input")[0].checked =
+    getFirstBoolean([
+      storage.getItem("DarkMode"),
+      window.matchMedia("(prefers-color-scheme: dark)").matches,
+    ]);
   switchDarkMode();
 
   localStorageSettingSwitch.getElementsByTagName("input")[0].checked =

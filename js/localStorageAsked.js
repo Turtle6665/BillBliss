@@ -10,11 +10,11 @@ class LS {
   constructor() {
     //check if previusly accepted or denied
     this.old_LS_accepted = JSON.parse(
-      sessionStorage.getItem("old_LS_accepted")
+      sessionStorage.getItem("old_LS_accepted"),
     );
     if (this.old_LS_accepted == null) {
       this.old_LS_accepted = JSON.parse(
-        localStorage.getItem("old_LS_accepted")
+        localStorage.getItem("old_LS_accepted"),
       );
     }
     if (this.old_LS_accepted == null) {
@@ -139,8 +139,8 @@ class LS {
         allItems.filter(
           (value, index, array) =>
             //to remove the duplicates
-            array.indexOf(value) === index
-        )
+            array.indexOf(value) === index,
+        ),
       );
       if ((this.old_LS_accepted == false) & brodcast) {
         bc.postMessage(["setItem", item, fulldata]);
@@ -164,7 +164,7 @@ class LS {
     } else {
       console.log(
         "WARNING: you cannot remove the item `allItems`,",
-        "it's required for the storage API"
+        "it's required for the storage API",
       );
     }
   }
@@ -243,7 +243,7 @@ bc.onmessage = (event) => {
           Object.keys(tData[2].data).length)
       ) {
         let allProjectIDs = Object.keys(
-          Object.assign({}, oldProjectList, tData[2].data)
+          Object.assign({}, oldProjectList, tData[2].data),
         );
         let data = allProjectIDs.reduce((ProjectsListData, projectID) => {
           if (tData[2].data[projectID] == null) {
