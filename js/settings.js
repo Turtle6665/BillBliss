@@ -1,45 +1,14 @@
-//adding the project list
-function updateProjectList() {
-  let LeftPanelProjectList = document.getElementById("LeftPanelProjectList");
-  LeftPanelProjectList.innerHTML = "";
-  ProjectsList = storage.getItem("ProjectsList");
-  projectButton = document.createElement("div");
-  Object.assign(projectButton, {
-    textContent: "Add projects",
-    classList: "leftPanelButton",
-    style: "--iconURL: url('../assets/icons/AddProjects.svg');",
-    onclick: function () {
-      window.location.href = "./AddProject.html";
-    },
-  });
-  LeftPanelProjectList.appendChild(projectButton);
-  if (!!ProjectsList) {
-    Object.keys(ProjectsList).forEach((project) => {
-      projectButton = document.createElement("div");
-      Object.assign(projectButton, {
-        textContent: ProjectsList[project].name,
-        classList: "leftPanelButton",
-        onclick: function () {
-          loadProject(project);
-        },
-      });
-      LeftPanelProjectList.appendChild(projectButton);
-    });
-  }
-}
-
-//function to load a different projet
-function loadProject(project) {
-  document.getElementById("showLeftPanelCheckbox").checked = false;
-  window.location.href = "./dashboard.html?project=" + project;
-}
-
 // settgins
-localStorageSettingSwitch = document.getElementById(
+let DarkModeSettingSwitch = document.getElementById("DarkModeSettingSwitch");
+let localStorageSettingSwitch = document.getElementById(
   "localStorageSettingSwitch",
 );
 
 function saveSettings() {
+  //choose lightdarkmode
+  let DarkMode = DarkModeSettingSwitch.getElementsByTagName("input")[0].checked;
+  storage.setItem("DarkMode", DarkMode);
+
   //localStorage acceptation
   if (
     localStorageSettingSwitch.getElementsByTagName("input")[0].checked &
@@ -53,11 +22,20 @@ function saveSettings() {
     storage.denyLocalStorage();
   }
 
+  bc.postMessage(["SettingsUpdated", "DarkMode", DarkMode]);
+
   ShowToast("Settings updated", "Green");
 }
 
 //to update the settings on the page
 function updateSettings(toast = true) {
+  DarkModeSettingSwitch.getElementsByTagName("input")[0].checked =
+    getFirstBoolean([
+      storage.getItem("DarkMode"),
+      window.matchMedia("(prefers-color-scheme: dark)").matches,
+    ]);
+  switchDarkMode();
+
   localStorageSettingSwitch.getElementsByTagName("input")[0].checked =
     storage.old_LS_accepted;
 
@@ -66,5 +44,14 @@ function updateSettings(toast = true) {
   }
 }
 
-updateProjectList();
+function PreviewDarkMode() {
+  let darkmode = DarkModeSettingSwitch.getElementsByTagName("input")[0].checked;
+  switchDarkMode(darkmode);
+  if (darkmode) {
+    ShowToast("DarkMode previewed", "Orange");
+  } else {
+    ShowToast("LightMode previewed", "Orange");
+  }
+}
+
 updateSettings(false);

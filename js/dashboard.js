@@ -313,7 +313,9 @@ function updateSummary() {
     const settlementNames = document.createElement("div");
     Object.assign(settlementNames, {
       classList: "settlementNames",
-      textContent: `${memberNames[transfer[0]]} pays ${memberNames[transfer[2]]}`,
+      textContent: `${memberNames[transfer[0]]} pays ${
+        memberNames[transfer[2]]
+      }`,
     });
     const settlementAmount = document.createElement("div");
     Object.assign(settlementAmount, {
@@ -361,6 +363,12 @@ function addMember() {
       console.error("Error adding new member:", error);
     });
 }
+document
+  .getElementById("addMemberForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    addMember();
+  });
 
 //function to show the edit membertab
 function editMember(memberID) {
@@ -856,38 +864,6 @@ function removeBill(billID) {
     });
 }
 
-//adding the project list
-function updateProjectList() {
-  let LeftPanelProjectList = document.getElementById("LeftPanelProjectList");
-  LeftPanelProjectList.innerHTML = "";
-  ProjectsList = storage.getItem("ProjectsList");
-  projectButton = document.createElement("div");
-  Object.assign(projectButton, {
-    textContent: "Add project",
-    classList: "leftPanelButton",
-    style: "--iconURL: url('../assets/icons/AddProjects.svg');",
-    onclick: function () {
-      window.location.href = "./AddProject.html";
-    },
-  });
-  LeftPanelProjectList.appendChild(projectButton);
-  if (!!ProjectsList) {
-    Object.keys(ProjectsList).forEach((project) => {
-      if (project != projectID) {
-        projectButton = document.createElement("div");
-        Object.assign(projectButton, {
-          textContent: ProjectsList[project].name,
-          classList: "leftPanelButton",
-          onclick: function () {
-            loadProject(project);
-          },
-        });
-        LeftPanelProjectList.appendChild(projectButton);
-      }
-    });
-  }
-}
-
 //go to project invitation page
 function toShareProject() {
   //show the page
@@ -1115,12 +1091,6 @@ function updateAll() {
     console.log("your token and/or project ID are not given");
     ShowToast("Your token and/or project ID are not given.", "Red");
   }
-}
-
-//function to load a different projet
-function loadProject(project) {
-  document.getElementById("showLeftPanelCheckbox").checked = false;
-  window.location.search = "?project=" + project;
 }
 
 //the main run for all

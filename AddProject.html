@@ -43,6 +43,7 @@
     <script src="js/deptsSettle.js"></script>
     <script src="js/localStorageAsked.js"></script>
     <script src="js/helperFunctions.js"></script>
+    <script defer src="js/leftPanel.js"></script>
     <script defer src="js/AddProject.js"></script>
   </head>
   <body>
@@ -85,7 +86,7 @@
               Projects
             </div>
             <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
-              <div
+              <button
                 class="leftPanelButton"
                 onclick="window.location.href = './AddProject.html'"
                 style="
@@ -93,7 +94,7 @@
                 "
               >
                 Add project
-              </div>
+              </button>
               <div class="leftPanelButton" onclick="loadProject('demo')">
                 demo
               </div>
@@ -105,27 +106,27 @@
           <div class="leftPanelButton hidden">Button 1</div>
         </div>
         <div class="leftPanelButtonGroupe leftPanelFooter">
-          <div
+          <button
             class="leftPanelButton"
             style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
             onclick="window.location.href = './settings.html'"
           >
             Settings
-          </div>
-          <div
+          </button>
+          <button
             class="leftPanelButton"
             style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
             onclick="window.location.href = './about.html'"
           >
             About BillBliss
-          </div>
+          </button>
         </div>
       </div>
     </section>
 
     <section id="AddProjectSection" class="SinglePage">
       <div class="SinglePageContainer">
-        <h1>Log in to an existing project</h1>
+        <h1 id="LogIn">Log in to an existing project</h1>
         <h3>From private code</h3>
         <form onsubmit="event.preventDefault()">
           <label
@@ -169,7 +170,7 @@
         </form>
         <br />
 
-        <h1>Create a new project</h1>
+        <h1 id="SignIn">Create a new project</h1>
         <p>
           This will create a new project on
           <a href="https://ihatemoney.org/">ihatemoney.org</a>. Upon creation,

@@ -3,12 +3,15 @@
   --colorRed: #ff5e47;
 
   --primary: #adb6f4;
-  --primary-content: #13238f;
+  --primary-content: #061682;
+  --primary-content-light: #26338e;
+  --primary-content-dark: #000000;
   --primary-dark: #808eee;
   --primary-light: #dadefa;
 
   --secondary: #f5e573;
   --secondary-content: #625707;
+  --secondary-content-dark: #262202;
   --secondary-dark: #f2dc43;
   --secondary-light: #f8eea3;
 
@@ -23,25 +26,23 @@
   --success: #adf4ad;
   --warning: #f4f4ad;
   --error: #f4adad;
-  --success-content: #138f13;
-  --warning-content: #8f8f13;
-  --error-content: #8f1313;
+  --success-content: #0a520a;
+  --warning-content: #4c4c0b;
+  --error-content: #650d0d;
 
   --border-shadow: #969691;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #14161f;
-    --foreground: #1f212e;
-    --border: #33364d;
+.dark {
+  --background: #14161f;
+  --foreground: #1f212e;
+  --border: #33364d;
 
-    --copy: #fafbfc;
-    --copy-light: #d1d3e0;
-    --copy-lighter: #9498b8;
+  --copy: #fafbfc;
+  --copy-light: #d1d3e0;
+  --copy-lighter: #9498b8;
 
-    --border-shadow: #0a0a0a;
-  }
+  --border-shadow: rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -58,17 +59,10 @@
   height: 0;
 }
 
-@media (hover: none),
-  (hover: on-demand),
-  (-moz-touch-enabled: 1),
-  (pointer: coarse) and (max-width: 900px) {
-  /*make a bigger interface for smartphones and tuched device*/
-  html {
-    font-size: 18px;
-  }
-}
-
 button {
+  font: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
   padding: 0.3em;
   border-radius: 0.3em;
   margin: 0.1em;
@@ -93,6 +87,9 @@ button:active {
 
 input,
 select {
+  font: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
   color: var(--copy);
   background-color: var(--foreground);
   border-radius: 3px;
@@ -109,6 +106,7 @@ body {
   display: flex;
   flex-flow: column;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
 }
@@ -140,8 +138,13 @@ Navigation Menu
 }
 
 #showLeftPanelCheckbox {
-  visibility: hidden;
-  display: none;
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 }
 
 .burgerLayer {
@@ -149,7 +152,7 @@ Navigation Menu
   width: 80%;
   height: 4px;
   border-radius: 2px;
-  background-color: black;
+  background-color: var(--primary-content-dark);
   float: left;
   margin: calc((100% - 4px * 3 - 0.2em) / 4) 0 0 0;
 }
@@ -179,7 +182,6 @@ Navigation Menu
   text-decoration: none;
   border-radius: 3px;
   display: block;
-  font-size: 16px;
   position: relative;
   cursor: pointer;
 }
@@ -202,7 +204,7 @@ Navigation Menu
   width: 100%;
   height: 100%;
   display: block;
-  color: black;
+  color: var(--primary-content-dark);
 }
 
 #navigationList a:hover {
@@ -241,6 +243,7 @@ Loading animation
 #loadingAnnim {
   left: calc(50vw - 40px);
   top: calc(50vh - 40px);
+  top: calc(50dvh - 40px);
 }
 #loadingAnnim div {
   border-color: var(--primary-dark) transparent transparent transparent;
@@ -298,15 +301,24 @@ leftPanel layout
   left: -100vw;
   z-index: 100;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   max-width: 300px;
   transition: left 0.2s;
 }
 
-#showLeftPanelCheckbox:checked ~ #leftPanel,
-#showLeftPanelCheckbox:checked ~ #leftPanelBackground {
+#showLeftPanelCheckbox:checked ~ #leftPanel {
+  transition: left 0.2s;
   left: 0;
+}
+
+#showLeftPanelCheckbox:checked ~ #leftPanelBackground {
   visibility: visible;
+}
+
+#showLeftPanelCheckbox:focus ~ #leftPanel #PanelTitle label {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline: 2px auto Highlight;
 }
 
 #PanelTitle {
@@ -327,7 +339,7 @@ leftPanel layout
   width: 100%;
   height: 5px;
   border-radius: 4px;
-  background-color: black;
+  background-color: var(--primary-content-dark);
   padding: 0;
 }
 .Xside1 {
@@ -339,6 +351,7 @@ leftPanel layout
 
 #PanelTitle > h1 {
   margin: 0.1em 0.2em;
+  color: var(--primary-content-dark);
 }
 
 /*project list*/
@@ -358,14 +371,24 @@ leftPanel layout
   background-image: url(../assets/^slider.svg);
 }
 
+.ButtonRetractibleCheckbox:focus ~ div {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline: 5px auto Highlight;
+}
+
 .leftPanelButtonGroupe {
   overflow-y: auto;
   margin: 0.4em 0;
+  padding: 0 0.2em;
 }
 
 .leftPanelButton {
-  padding: 0.4em 0.8em;
+  padding: 0.3em 0.6em;
   cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border: none;
+  margin: 0.1em 0;
 }
 
 .leftPanelButton::before {
@@ -383,11 +406,6 @@ leftPanel layout
   background-color: inherit;
 }
 
-/*
-.leftPanelButton::before{
-  content: attr(url(icon));
-}
-*/
 /*---------
 Pages layout
 ---------*/
@@ -420,8 +438,42 @@ Pages layout
     max-width: 700px;
     width: 70vw !important;
     height: calc(100vh * 0.8) !important;
+    height: calc(100dvh * 0.8) !important;
     border-radius: 0.5em;
     margin-top: 2em;
+  }
+}
+
+@media print {
+  #navigationList,
+  #leftPanelContainer,
+  #progress-bar,
+  #progress-bar-back,
+  #updateAll,
+  #bills_endSpacer,
+  #billFooter {
+    display: none !important;
+  }
+  :root {
+    --background: transparent;
+    --foreground: transparent;
+  }
+  body {
+    height: auto;
+    overflow-y: auto;
+  }
+  #page-container {
+    display: block;
+    overflow-y: auto;
+  }
+  .billdivm,
+  .memberBranch,
+  .settlementdiv {
+    break-inside: avoid !important;
+  }
+  .memberLeaf {
+    border: 1px solid var(--border);
+    box-sizing: border-box;
   }
 }
 
@@ -454,10 +506,8 @@ Pages layout
   background-color: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  .foregroundCard {
-    border: 2px solid var(--border);
-  }
+.dark .foregroundCard {
+  border: 2px solid var(--border);
 }
 
 /*---------
@@ -470,25 +520,26 @@ Information page
   margin: 0.2em 0;
 }
 
-#addMemberDiv {
+#addMemberForm {
   padding: 0.5em;
   margin-bottom: 0.5em;
 }
 
-#addMemberDiv > input,
-#addMemberDiv > button {
+#addMemberForm > input,
+#addMemberForm > button {
   display: inline-block;
   padding: 0.3em;
   margin: 0;
   height: 2.3em;
 }
 
-#addMemberDiv > input {
+#addMemberForm > input {
   border-radius: 0.3em 0 0 0.3em;
+  max-width: calc(100% - 2.3em);
 }
-#addMemberDiv > button {
+#addMemberForm > button {
   border-radius: 0 0.3em 0.3em 0;
-  width: 2.3em;
+  aspect-ratio: 1 / 1;
 }
 
 #membersList {
@@ -511,12 +562,12 @@ Information page
 
 #membersList > .deactivated::after {
   content: " (deactivated)";
-  color: var(--copy-light);
+  color: var(--primary-content-light);
 }
 
 #membersList > div::before {
   content: attr(weight);
-  color: var(--copy-light);
+  color: var(--primary-content-light);
 }
 
 /*---------------
@@ -525,6 +576,7 @@ Edit member page
 #editMemberPage {
   z-index: 10;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   display: block;
   position: absolute;
@@ -609,6 +661,7 @@ Bills page
 #bills_endSpacer {
   position: relative;
   margin-bottom: 15vh;
+  margin-bottom: 15dvh;
 }
 
 /*Bill footer*/
@@ -622,6 +675,7 @@ Bills page
 #addBill {
   position: absolute;
   bottom: 2.5vh;
+  bottom: 2.5dvh;
   left: calc(50vw - 1.2em / 2);
   border-radius: 1.2em;
   font-size: 2.5em;
@@ -688,7 +742,7 @@ Summary Page
 
 .NegativeMB .memberLeafContained {
   direction: ltr;
-  width: 50vh;
+  width: 50vw;
 }
 
 .memberLeafContained {
@@ -709,6 +763,7 @@ select {
 .ModalContainer {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   position: absolute;
   top: 0;
   right: 0;
@@ -732,6 +787,7 @@ select {
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 12;
   text-align: center;
   overflow-y: auto;
@@ -842,7 +898,7 @@ select {
   z-index: 10;
   right: 0;
   top: 4.2em;
-  width: 0vh;
+  width: 0;
   overflow: visible;
   direction: rtl;
   text-align: left;
@@ -870,6 +926,7 @@ select {
 @keyframes ToastShow {
   0% {
     margin-top: 5vh;
+    margin-top: 5dvh;
     opacity: 0;
   }
   100% {
@@ -957,10 +1014,8 @@ Single pages
   background-color: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  .SinglePageContainer {
-    border: 2px solid var(--border);
-  }
+.dark .SinglePageContainer {
+  border: 2px solid var(--border);
 }
 
 .SinglePageContainer label,
@@ -975,7 +1030,7 @@ Single pages
   padding: 0.2em;
   width: 100%;
   background-color: var(--secondary);
-  color: var(--secondary-content);
+  color: var(--secondary-content-dark);
   border-radius: 0.2em;
   cursor: pointer;
 }
@@ -1023,8 +1078,13 @@ Retractible
 }
 
 .ButtonRetractibleCheckbox {
-  display: none;
-  visibility: collapse;
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 }
 .ButtonRetractibleDiv {
   float: left;
@@ -1055,8 +1115,13 @@ Retractible
 ----------*/
 
 .switch > input {
-  display: none;
-  visibility: hidden;
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
 }
 
 .switch > span {
@@ -1066,6 +1131,11 @@ Retractible
   width: calc(2em - 5px);
   background-color: var(--primary);
   padding: 2.5px;
+}
+
+.switch > input:focus ~ span {
+  outline: 5px auto -webkit-focus-ring-color;
+  outline: 2px auto Highlight;
 }
 
 .switch > span > span {
@@ -1090,12 +1160,22 @@ Retractible
 
 .btn-green {
   color: var(--success-content);
-  background-color: var(--success);
+  background-color: var(--success) !important;
   border-color: var(--success-content);
+}
+
+.btn-green:hover {
+  background-color: var(--success);
+  box-shadow: 2px 2px 8px var(--success);
 }
 
 .btn-red {
   color: var(--error-content);
-  background-color: var(--error);
+  background-color: var(--error) !important;
   border-color: var(--error-content);
+}
+
+.btn-red:hover {
+  background-color: var(--error);
+  box-shadow: 2px 2px 8px var(--error);
 }
