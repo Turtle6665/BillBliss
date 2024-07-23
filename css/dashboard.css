@@ -11,12 +11,13 @@
 
   --secondary: #f5e573;
   --secondary-content: #625707;
-  --secondary-content-dark: #262202;
+  --secondary-content-dark: #161401;
   --secondary-dark: #f2dc43;
   --secondary-light: #f8eea3;
 
   --background: #ededf3;
   --foreground: #fafbfc;
+  --ultra-foreground: #fff;
   --border: #d9dae5;
 
   --copy: #1f212e;
@@ -36,6 +37,7 @@
 .dark {
   --background: #14161f;
   --foreground: #1f212e;
+  --ultra-foreground: #2d3251;
   --border: #33364d;
 
   --copy: #fafbfc;
@@ -63,7 +65,7 @@ button {
   font: inherit;
   letter-spacing: inherit;
   word-spacing: inherit;
-  padding: 0.3em;
+  padding: 0.3em 0.6em;
   border-radius: 0.3em;
   margin: 0.1em;
   color: var(--copy);
@@ -124,7 +126,7 @@ Navigation Menu
   grid-template-columns: 2em 2.4em auto min-content;
   width: 100vw;
   position: relative;
-  padding: 0.2em 0.5em;
+  padding: 0.2em 0.2em 0.2em 0.5em;
   z-index: 2;
   background-color: var(--primary);
   box-shadow: 0px 0px 5px 2px var(--border-shadow);
@@ -177,7 +179,8 @@ Navigation Menu
   background-color: var(--success); /* Green */
   color: var(--success-content);
   border: none;
-  padding: 6px;
+  padding: 0.3em 0.6em;
+  margin: 0;
   text-align: center;
   text-decoration: none;
   border-radius: 3px;
@@ -547,7 +550,7 @@ Information page
   flex-flow: row wrap;
 }
 
-#membersList > div {
+#membersList > button {
   border-radius: 0.5em;
   background-color: var(--primary);
   border-style: 1px solid var(--primary-content);
@@ -565,7 +568,7 @@ Information page
   color: var(--primary-content-light);
 }
 
-#membersList > div::before {
+#membersList > button::before {
   content: attr(weight);
   color: var(--primary-content-light);
 }
@@ -652,9 +655,12 @@ Bills page
 
 .billdiv {
   overflow: auto;
+  border: none;
+  width: 100%;
   border-bottom: 2px solid var(--border);
   background-color: var(--foreground);
-  padding: 0.3em 0;
+  padding: 0.4em 0 0.3em 0;
+  margin: 0;
   cursor: pointer;
 }
 
@@ -848,8 +854,11 @@ select {
 }
 
 .settlementdiv {
+  border: none;
+  width: 100%;
   border-bottom: 2px solid var(--border);
-  cursor: pointer;
+  padding: 0.4em 0 0.3em 0;
+  margin: 0;
 }
 
 /*--------------

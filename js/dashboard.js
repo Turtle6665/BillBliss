@@ -145,7 +145,7 @@ function updateInfo() {
           memberActivated[member.id] = !(
             !member.activated && Math.abs(member.balance) <= 0.01
           );
-          const memberDiv = document.createElement("div");
+          const memberDiv = document.createElement("button");
           let weight = member.weight != 1 ? "(" + member.weight + "x) " : "";
           Object.assign(memberDiv, {
             textContent: member.name,
@@ -204,7 +204,7 @@ function updateBills() {
       //for(let i = 0; i<50; i++){bills[bills.length+1] = bills[0]}
       allbills = bills;
       bills.forEach((bill) => {
-        const billdiv = document.createElement("div");
+        const billdiv = document.createElement("button");
         Object.assign(billdiv, {
           classList: "billdiv",
           id: "bill~" + bill.id,
@@ -298,7 +298,7 @@ function updateSummary() {
   const settlementslist = document.getElementById("settlements_list");
   settlementslist.innerHTML = "";
   settlements.forEach((transfer) => {
-    const settlementdiv = document.createElement("div");
+    const settlementdiv = document.createElement("button");
     Object.assign(settlementdiv, {
       classList: "settlementdiv",
       onclick: () => {
