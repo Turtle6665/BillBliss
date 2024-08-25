@@ -74,7 +74,7 @@ function startLoading() {
 
 function endLoading() {
   [...document.body.getElementsByTagName("button")].forEach(
-    (i) => (i.disabled = false),
+    (i) => (i.disabled = false)
   );
   document.getElementById("loadingAnnim").classList.add("hidden");
 }
@@ -163,6 +163,7 @@ function switchDarkMode(forceChangeTo = null) {
     forceChangeTo,
     storage.getItem("DarkMode"),
     defaultDark,
+    false,
   ]);
   if (DarkMode) {
     document.documentElement.classList.remove("ligth");
