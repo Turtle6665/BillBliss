@@ -186,7 +186,7 @@ Navigation Menu
   border-radius: 3px;
   display: block;
   position: relative;
-  cursor: pointer;
+  margin: 0.05em;
 }
 
 #navigationList {
@@ -223,8 +223,7 @@ Navigation Menu
   z-index: 2;
   left: 0;
   position: absolute;
-  box-shadow:
-    4px 2px 4px -2px var(--border-shadow),
+  box-shadow: 4px 2px 4px -2px var(--border-shadow),
     -4px 2px 4px -2px var(--border-shadow);
 }
 #progress-bar-back {
@@ -531,7 +530,7 @@ Information page
 #addMemberForm > input,
 #addMemberForm > button {
   display: inline-block;
-  padding: 0.3em;
+  padding: 0.3em 0.6em;
   margin: 0;
   height: 2.3em;
 }
@@ -556,7 +555,7 @@ Information page
   border-style: 1px solid var(--primary-content);
   color: var(--primary-content);
   box-shadow: 0px 0px 5px 2px var(--border-shadow);
-  padding: 0.5em;
+  padding: 0.5em 1em;
   margin: 0.4em;
   width: auto;
   display: inline-block;
@@ -607,7 +606,7 @@ Edit member page
 }
 
 #editMemberDiv > button {
-  padding: 0.3em;
+  padding: 0.3em 0.6em;
   border-radius: 0.3em;
   margin: 0.7em 0.1em 0 0.1em;
 }
@@ -755,6 +754,10 @@ Summary Page
   padding: 0 0.3em;
 }
 
+#settlements_list p {
+  padding: 0.5em 0 0 0;
+}
+
 /*---------
 Add Bill page
 ----------*/
@@ -848,7 +851,7 @@ select {
 }
 
 #newBillPage button {
-  padding: 0.3em;
+  padding: 0.3em 0.6em;
   border-radius: 0.3em;
   margin: 0.1em;
 }
@@ -1036,7 +1039,7 @@ Single pages
 
 .SinglePageContainer button,
 .wideForms button {
-  padding: 0.2em;
+  padding: 0.2em 0.4em;
   width: 100%;
   background-color: var(--secondary);
   color: var(--secondary-content-dark);
@@ -1103,20 +1106,16 @@ Retractible
   width: 100%;
   overflow-y: hidden;
   --transitionTime: 0.2s;
-  transition:
-    clip-path var(--transitionTime),
-    shape-outside var(--transitionTime),
-    max-height 0s var(--transitionTime);
+  transition: clip-path var(--transitionTime),
+    shape-outside var(--transitionTime), max-height 0s var(--transitionTime);
   display: flow-root;
 }
 .ButtonRetractibleCheckbox:checked ~ .ButtonRetractibleDiv {
   clip-path: inset(0 0 0 0);
   shape-outside: inset(0 0 0 0);
   max-height: 10000px;
-  transition:
-    clip-path var(--transitionTime),
-    shape-outside var(--transitionTime),
-    max-height 0s 0s;
+  transition: clip-path var(--transitionTime),
+    shape-outside var(--transitionTime), max-height 0s 0s;
 }
 
 /*----------
@@ -1187,4 +1186,17 @@ Retractible
 .btn-red:hover {
   background-color: var(--error);
   box-shadow: 2px 2px 8px var(--error);
+}
+
+/*----------
+button list
+-----------*/
+.ButttonList {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.ButttonList button {
+  width: fit-content;
+  flex-grow: 1;
 }
