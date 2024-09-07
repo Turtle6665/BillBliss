@@ -1114,6 +1114,7 @@ function addRankingsItem(markerNumber, nameText, imgSrc) {
   // Create the inner div
   const innerDiv = document.createElement("div");
   innerDiv.className = "rankingsItem--inner";
+  innerDiv.dataset.origin = markerNumber;
 
   // Create the div for the name
   const nameDiv = document.createElement("div");
@@ -1173,6 +1174,41 @@ function setupList() {
   Object.keys(ProjectsList).forEach((item, i) => {
     addRankingsItem(i + 1, ProjectsList[item].name, "");
   });
+}
+
+function saveList() {
+  let projectIDsList = Object.keys(ProjectsList);
+  // reorder the ProjectsList based on the order in oldList
+  if (typeUI == "input") {
+    ProjectsList = [...Array(oldList.children.length).keys()].reduce(
+      (agg, i) => {
+        // get the original order
+        let OriginID = oldList.children[i].children[1].dataset.origin - 1;
+        // set the niew order as the niew original
+        oldList.children[i].children[1].dataset.origin = i + 1;
+        let ProjectID = projectIDsList[OriginID];
+        agg[ProjectID] = ProjectsList[ProjectID];
+        return agg;
+      },
+      {}
+    );
+  } else {
+    let OrderedList = document.getElementsByClassName("rankingsItem");
+    ProjectsList = [...Array(OrderedList.length).keys()].reduce((agg, i) => {
+      // get the original order
+      let OriginID = OrderedList[i].children[1].dataset.origin - 1;
+      // set the niew order as the niew original
+      oldList.children[i].children[1].dataset.origin = i + 1;
+      let ProjectID = projectIDsList[OriginID];
+      agg[ProjectID] = ProjectsList[ProjectID];
+      return agg;
+    }, {});
+  }
+  // upate the ProjectsList saved in storage
+  storage.setItem("ProjectsList", ProjectsList);
+  // update the left panel ProjectList
+  updateProjectList();
+  ShowToast("List of project updated", "Green");
 }
 
 document.addEventListener("DOMContentLoaded", () => {

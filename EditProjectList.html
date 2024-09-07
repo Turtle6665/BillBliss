@@ -143,8 +143,12 @@
           </p>
           <div class="ButttonList">
             <!--TODO : add button behavior-->
-            <button>Show draggable & save current changes</button>
-            <button>Show draggable & discard current changes</button>
+            <button onclick="updateOrder(); setupDragable();">
+              Show draggable & Update list order
+            </button>
+            <button onclick="setupDragable(); ">
+              Show draggable & discard list order
+            </button>
           </div>
           <!--TODO : add change to this text on Loading
           <p>
@@ -194,6 +198,7 @@
               class="button buttonLarge"
               type="submit"
               name="save"
+              onclick="saveList();"
             >
               Save
             </button>
