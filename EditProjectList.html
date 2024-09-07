@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BillBliss</title>
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/rankingList.css" />
+
+    <!-- favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./logo/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./logo/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="./logo/android-chrome-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./logo/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./logo/site.webmanifest" />
+    <link rel="mask-icon" href="./logo/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="./logo/favicon.ico" />
+    <meta name="apple-mobile-web-app-title" content="BillBliss" />
+    <meta name="application-name" content="BillBliss" />
+    <meta name="msapplication-TileColor" content="#ffc40d" />
+    <meta name="msapplication-config" content="./logo/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- scripts -->
+    <script src="js/deptsSettle.js"></script>
+    <script src="js/localStorageAsked.js"></script>
+    <script src="js/helperFunctions.js"></script>
+    <script defer src="js/leftPanel.js"></script>
+    <script defer src="js/EditProjectList.js"></script>
+  </head>
+  <body>
+    <!-- Navigation Menu -->
+    <nav>
+      <div id="NavigationTitle">
+        <label id="showLeftPanel" for="showLeftPanelCheckbox">
+          <strong class="burgerLayer"></strong>
+          <strong class="burgerLayer"></strong>
+          <strong class="burgerLayer"></strong>
+        </label>
+        <img src="./logo/logo.png" />
+        <h1>BillBliss</h1>
+      </div>
+    </nav>
+
+    <section id="leftPanelContainer">
+      <input type="checkbox" id="showLeftPanelCheckbox" />
+      <label
+        id="leftPanelBackground"
+        class="ModalBackground"
+        for="showLeftPanelCheckbox"
+      ></label>
+      <div id="leftPanel">
+        <div id="PanelTitle">
+          <label for="showLeftPanelCheckbox">
+            <strong class="Xside1"></strong>
+            <strong class="Xside2"></strong>
+          </label>
+          <img src="./logo/logo.png" style="height: 2em;" />
+          <h1>BillBliss</h1>
+        </div>
+        <div class="leftPanelButtonGroupe">
+          <label class="ButtonRetractible">
+            <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
+            <div
+              class="leftPanelButton"
+              style="--iconURL: url('../assets/icons/Projects.svg');"
+            >
+              Projects
+            </div>
+            <div id="LeftPanelProjectList" class="ButtonRetractibleDiv">
+              <button
+                class="leftPanelButton"
+                onclick="window.location.href = './AddProject.html'"
+                style="--iconURL: url('../assets/icons/AddProjects.svg');"
+              >
+                Add project
+              </button>
+              <div class="leftPanelButton" onclick="loadProject('demo')">
+                demo
+              </div>
+              <div class="leftPanelButton" onclick="loadProject('demo2')">
+                demo2
+              </div>
+            </div>
+          </label>
+          <div class="leftPanelButton hidden">Button 1</div>
+        </div>
+        <div class="leftPanelButtonGroupe leftPanelFooter">
+          <button
+            class="leftPanelButton"
+            style="--iconURL: url('../assets/icons/Settings.svg');"
+            onclick="window.location.href = './settings.html'"
+          >
+            Settings
+          </button>
+          <button
+            class="leftPanelButton"
+            style="--iconURL: url('../assets/icons/About.svg');"
+            onclick="window.location.href = './about.html'"
+          >
+            About BillBliss
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="AboutSection" class="SinglePage">
+      <div class="SinglePageContainer">
+        <h1>Edit Project List</h1>
+        <div id="ExplainUIdiv">
+          <!-- this part is changed using EditProjectList.js when one of the two
+          buttons are used-->
+          <p>
+            The project list contains all the project you are parcipating with.
+          </p>
+          <p>
+            You can choose the display order on the left menu by assigning them
+            a number id. Click on the "Update list" button to see the change.
+            Once you are satisfied with it, you can save the order.
+            <strong>Exiting the page will discard your changes</strong>
+          </p>
+          <p>
+            If you prefer to drag to order them along :
+          </p>
+          <div class="ButttonList">
+            <!--TODO : add button behavior-->
+            <button>Show draggable & save current changes</button>
+            <button>Show draggable & discard current changes</button>
+          </div>
+          <!--TODO : add change to this text on Loading
+          <p>
+            The project list contains all the project you are parcipating with.
+          </p>
+          <p>
+            You can choose the display order on the left menu by dragging the
+            list item along or by using the arrows.
+          </p>
+          <p>
+            If you prefer to input numbers to order them along :
+          </p>
+          <div class="ButttonList">
+            TODO : add button behavior
+            <button>See inputs & save current changes</button>
+            <button>See inputs & discard current changes</button>
+          </div>
+          -->
+        </div>
+
+        <form onsubmit="event.preventDefault()">
+          <div class="rankings">
+            <a href="#rankingsSkipEnd" class="skipLink" id="rankingsSkipStart"
+              >&darr; Jump to list end</a
+            >
+            <ol></ol>
+            <a href="#rankingsSkipStart" class="skipLink" id="rankingsSkipEnd"
+              >&uarr; Jump to list start</a
+            >
+
+            <div class="buttonRowRight">
+              <button
+                id="updateBtn"
+                class="button buttonSecondary"
+                type="submit"
+                name="update"
+                onclick="updateOrder();"
+              >
+                Update list
+              </button>
+            </div>
+          </div>
+
+          <div class="buttonRowRight">
+            <button
+              id="saveBtn"
+              class="button buttonLarge"
+              type="submit"
+              name="save"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </body>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="visuallyHidden"
+    focusable="false"
+    aria-hidden="true"
+  >
+    <defs>
+      <symbol id="icon--up" viewBox="0 0 14 14">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          d="M.7 10.1L7 3.8l6.3 6.3"
+        />
+      </symbol>
+      <symbol id="icon--down" viewBox="0 0 14 14">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          d="M.7 3.8L7 10.1l6.3-6.3"
+        />
+      </symbol>
+    </defs>
+  </svg>
+</html>
