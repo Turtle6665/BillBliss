@@ -87,7 +87,7 @@ function itemDragEnter(e) {
 
     // feedback message
     announceStatus(
-      `Entered drag area for #${pos}, ${e.target.dataset.name}. Drop to swap positions.`
+      `Entered drag area for #${pos}, ${e.target.dataset.name}. Drop to swap positions.`,
     );
   } else {
     // set drag data
@@ -144,7 +144,7 @@ function itemDrop(e) {
     announceStatus(
       `Items ${pos1 + 1} and ${pos2 + 1} swapped: ${curName} moved to #${
         pos2 + 1
-      }.`
+      }.`,
     );
   }
 
@@ -586,7 +586,7 @@ function itemFocus(e) {
 function buttonFocus(e) {
   // update focus info
   updateFocusInfo(
-    e.target.parentElement.parentElement.parentElement.dataset.pos
+    e.target.parentElement.parentElement.parentElement.dataset.pos,
   );
 
   // expose focused button to screen reader
@@ -777,14 +777,14 @@ function setupItem(list, oldItem, pos) {
     (e) => {
       e.target.parentElement.classList.add("__itemGrab");
     },
-    false
+    false,
   );
   inner.addEventListener(
     "mouseup",
     (e) => {
       e.target.parentElement.classList.remove("__itemGrab");
     },
-    false
+    false,
   );
 
   /* This event fixes a bug in Android Chrome where draging non-focused element does not assign focus and will result in wrong element being moved */
@@ -794,7 +794,7 @@ function setupItem(list, oldItem, pos) {
       updateFocusInfo(e.target.parentElement.dataset.pos);
       e.target.focus();
     },
-    false
+    false,
   );
 
   // set up name and image elements
@@ -1206,7 +1206,7 @@ function saveList() {
         agg[ProjectID] = ProjectsList[ProjectID];
         return agg;
       },
-      {}
+      {},
     );
   } else {
     let OrderedList = document.getElementsByClassName("rankingsItem");
@@ -1252,7 +1252,7 @@ document.addEventListener("DOMContentLoaded", () => {
         typeUI +
         "' is not possible as typeUI. \
         You will be redirected to the default draggable UI",
-      "Red"
+      "Red",
     );
     setupDragable();
   }

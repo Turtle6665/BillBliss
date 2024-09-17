@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -74,7 +74,7 @@
             <strong class="Xside1"></strong>
             <strong class="Xside2"></strong>
           </label>
-          <img src="./logo/logo.png" style="height: 2em;" />
+          <img src="./logo/logo.png" style="height: 2em" />
           <h1>BillBliss</h1>
         </div>
         <div class="leftPanelButtonGroupe">
@@ -82,7 +82,7 @@
             <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
             <div
               class="leftPanelButton"
-              style="--iconURL: url('../assets/icons/Projects.svg');"
+              style="--iconURL: url(&quot;../assets/icons/Projects.svg&quot;)"
             >
               Projects
             </div>
@@ -90,7 +90,9 @@
               <button
                 class="leftPanelButton"
                 onclick="window.location.href = './AddProject.html'"
-                style="--iconURL: url('../assets/icons/AddProjects.svg');"
+                style="
+                  --iconURL: url(&quot;../assets/icons/AddProjects.svg&quot;);
+                "
               >
                 Add project
               </button>
@@ -107,14 +109,14 @@
         <div class="leftPanelButtonGroupe leftPanelFooter">
           <button
             class="leftPanelButton"
-            style="--iconURL: url('../assets/icons/Settings.svg');"
+            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
             onclick="window.location.href = './settings.html'"
           >
             Settings
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url('../assets/icons/About.svg');"
+            style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
             onclick="window.location.href = './about.html'"
           >
             About BillBliss
@@ -138,9 +140,7 @@
             Once you are satisfied with it, you can save the order.
             <strong>Exiting the page will discard your changes</strong>
           </p>
-          <p>
-            If you prefer to drag to order them along :
-          </p>
+          <p>If you prefer to drag to order them along :</p>
           <div class="ButttonList">
             <!--TODO : add button behavior-->
             <button onclick="updateOrder(); saveList(); setupDragable();">
