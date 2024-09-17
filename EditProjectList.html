@@ -143,30 +143,13 @@
           </p>
           <div class="ButttonList">
             <!--TODO : add button behavior-->
-            <button onclick="updateOrder(); setupDragable();">
-              Show draggable & Update list order
+            <button onclick="updateOrder(); saveList(); setupDragable();">
+              Show draggable & save current changes
             </button>
             <button onclick="setupDragable(); ">
-              Show draggable & discard list order
+              Show draggable & discard current changes
             </button>
           </div>
-          <!--TODO : add change to this text on Loading
-          <p>
-            The project list contains all the project you are parcipating with.
-          </p>
-          <p>
-            You can choose the display order on the left menu by dragging the
-            list item along or by using the arrows.
-          </p>
-          <p>
-            If you prefer to input numbers to order them along :
-          </p>
-          <div class="ButttonList">
-            TODO : add button behavior
-            <button>See inputs & save current changes</button>
-            <button>See inputs & discard current changes</button>
-          </div>
-          -->
         </div>
 
         <form onsubmit="event.preventDefault()">

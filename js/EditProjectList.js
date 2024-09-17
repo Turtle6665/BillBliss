@@ -1090,10 +1090,26 @@ function setupDragable() {
   wrapper.innerHTML = "";
   wrapper.appendChild(wrapperFrag);
 
-  // set up resize handler
-  /*window.addEventListener('resize', debounce(() => {
-		setGapHeight();
-	}, 1000));*/
+  // set up the ExplainUIdiv
+  let ExplainUIdiv = document.getElementById("ExplainUIdiv");
+  ExplainUIdiv.children[1].innerText =
+    "You can choose the display order on the left menu by dragging\
+    the list item along or by using the arrows.";
+  ExplainUIdiv.children[2].innerText =
+    "If you prefer to input numbers to order them along :";
+  ExplainUIdiv.children[3].children[0].innerText =
+    "Show inputs & save current changes";
+  ExplainUIdiv.children[3].children[0].onclick = () => {
+    saveList();
+    window.location =
+      window.location.origin + window.location.pathname + "?UI=input";
+  };
+  ExplainUIdiv.children[3].children[1].innerText =
+    "Show inputs & discard current changes";
+  ExplainUIdiv.children[3].children[1].onclick = () => {
+    window.location =
+      window.location.origin + window.location.pathname + "?UI=input";
+  };
 }
 
 function addRankingsItem(markerNumber, nameText, imgSrc) {
@@ -1198,7 +1214,7 @@ function saveList() {
       // get the original order
       let OriginID = OrderedList[i].children[1].dataset.origin - 1;
       // set the niew order as the niew original
-      oldList.children[i].children[1].dataset.origin = i + 1;
+      OrderedList[i].children[1].dataset.origin = i + 1;
       let ProjectID = projectIDsList[OriginID];
       agg[ProjectID] = ProjectsList[ProjectID];
       return agg;
