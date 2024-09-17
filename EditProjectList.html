@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BillBliss | Settings</title>
+    <title>BillBliss</title>
     <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/rankingList.css" />
 
     <!-- favicon -->
     <link
@@ -44,7 +45,7 @@
     <script src="js/localStorageAsked.js"></script>
     <script src="js/helperFunctions.js"></script>
     <script defer src="js/leftPanel.js"></script>
-    <script defer src="js/settings.js"></script>
+    <script defer src="js/EditProjectList.js"></script>
   </head>
   <body>
     <!-- Navigation Menu -->
@@ -124,82 +125,94 @@
       </div>
     </section>
 
-    <section id="MainSettingSection" class="SinglePage">
+    <section id="AboutSection" class="SinglePage">
       <div class="SinglePageContainer">
-        <h1>Main Settings</h1>
-        <button
-          class="btn-green"
-          type="button"
-          name="saveSettings"
-          onclick="saveSettings()"
-        >
-          Save
-        </button>
-        <button type="button" name="DiscardSettings" onclick="updateSettings()">
-          Cancel
-        </button>
-        <h2>Light/Dark mode</h2>
-        <label id="DarkModeSettingSwitch" class="switch switchFullWidth">
-          <input
-            type="checkbox"
-            name="localStorageUse"
-            onclick="PreviewDarkMode();"
-          />
-          Light mode
-          <span><span></span></span>
-          Dark mode
-        </label>
-
-        <h2 id="localStorageSection">Local storage</h2>
-        <label class="ButtonRetractible">
-          <input type="checkbox" class="ButtonRetractibleCheckbox" />
+        <h1>Edit Project List</h1>
+        <div id="ExplainUIdiv">
+          <!-- this part is changed using EditProjectList.js when one of the two
+          buttons are used-->
           <p>
-            Enable local storage for a persistent and personalized budgeting
-            journey. It stores settings and project list on your device,
-            ensuring seamless access across sessions.
+            The project list contains all the project you are parcipating with.
           </p>
-          <div class="ButtonRetractibleDiv">
-            <h3>What is Local Storage?</h3>
-            <p>
-              Local storage is like a personal memory bank for your preferences
-              and important data. It allows us to save things like your
-              customized settings, and project lists so you don't have to
-              repeatedly enter your credentials.
-            </p>
-
-            <h3>Why Not Session Storage?</h3>
-            <p>
-              You might be wondering about session storage. Well, it's like a
-              temporary notepad that only works while you're actively using
-              BillBliss. Once you close all your BillBliss tabs, it says goodbye
-              to all the settings and project lists. Local storage, on the other
-              hand, is a long-term friend that sticks around, making sure your
-              important data is always there when you need it.
-            </p>
-            <br />
+          <p>
+            You can choose the display order on the left menu by assigning them
+            a number id. Click on the "Update list" button to see the change.
+            Once you are satisfied with it, you can save the order.
+            <strong>Exiting the page will discard your changes</strong>
+          </p>
+          <p>If you prefer to drag to order them along :</p>
+          <div class="ButttonList">
+            <!--TODO : add button behavior-->
+            <button onclick="updateOrder(); saveList(); setupDragable();">
+              Show draggable & save current changes
+            </button>
+            <button onclick="setupDragable(); ">
+              Show draggable & discard current changes
+            </button>
           </div>
-        </label>
+        </div>
 
-        <label id="localStorageSettingSwitch" class="switch switchFullWidth">
-          <input type="checkbox" name="localStorageUse" onclick=";" />
-          Session storage
-          <span><span></span></span>
-          Local storage
-        </label>
+        <form onsubmit="event.preventDefault()">
+          <div class="rankings">
+            <a href="#rankingsSkipEnd" class="skipLink" id="rankingsSkipStart"
+              >&darr; Jump to list end</a
+            >
+            <ol></ol>
+            <a href="#rankingsSkipStart" class="skipLink" id="rankingsSkipEnd"
+              >&uarr; Jump to list start</a
+            >
 
-        <h1>Change project list order</h1>
-        <p>
-          This is a beta feature. Don't use it now if you don't know what you
-          are doing.
-        </p>
-        <button
-          type="button"
-          name="EditProjectList"
-          onclick="window.location.href = './EditProjectList.html'"
-        >
-          Change the order
-        </button>
+            <div class="buttonRowRight">
+              <button
+                id="updateBtn"
+                class="button buttonSecondary"
+                type="submit"
+                name="update"
+                onclick="updateOrder();"
+              >
+                Update list
+              </button>
+            </div>
+          </div>
+
+          <div class="buttonRowRight">
+            <button
+              id="saveBtn"
+              class="button buttonLarge"
+              type="submit"
+              name="save"
+              onclick="saveList();"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </section>
   </body>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="visuallyHidden"
+    focusable="false"
+    aria-hidden="true"
+  >
+    <defs>
+      <symbol id="icon--up" viewBox="0 0 14 14">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          d="M.7 10.1L7 3.8l6.3 6.3"
+        />
+      </symbol>
+      <symbol id="icon--down" viewBox="0 0 14 14">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          d="M.7 3.8L7 10.1l6.3-6.3"
+        />
+      </symbol>
+    </defs>
+  </svg>
 </html>

@@ -163,6 +163,7 @@ function switchDarkMode(forceChangeTo = null) {
     forceChangeTo,
     storage.getItem("DarkMode"),
     defaultDark,
+    false,
   ]);
   if (DarkMode) {
     document.documentElement.classList.remove("ligth");
