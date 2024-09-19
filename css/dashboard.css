@@ -70,6 +70,7 @@ button {
   margin: 0.1em;
   color: var(--copy);
   background-color: var(--foreground);
+  cursor: pointer;
 }
 
 button:hover,
@@ -223,8 +224,7 @@ Navigation Menu
   z-index: 2;
   left: 0;
   position: absolute;
-  box-shadow:
-    4px 2px 4px -2px var(--border-shadow),
+  box-shadow: 4px 2px 4px -2px var(--border-shadow),
     -4px 2px 4px -2px var(--border-shadow);
 }
 #progress-bar-back {
@@ -1107,20 +1107,16 @@ Retractible
   width: 100%;
   overflow-y: hidden;
   --transitionTime: 0.2s;
-  transition:
-    clip-path var(--transitionTime),
-    shape-outside var(--transitionTime),
-    max-height 0s var(--transitionTime);
+  transition: clip-path var(--transitionTime),
+    shape-outside var(--transitionTime), max-height 0s var(--transitionTime);
   display: flow-root;
 }
 .ButtonRetractibleCheckbox:checked ~ .ButtonRetractibleDiv {
   clip-path: inset(0 0 0 0);
   shape-outside: inset(0 0 0 0);
   max-height: 10000px;
-  transition:
-    clip-path var(--transitionTime),
-    shape-outside var(--transitionTime),
-    max-height 0s 0s;
+  transition: clip-path var(--transitionTime),
+    shape-outside var(--transitionTime), max-height 0s 0s;
 }
 
 /*----------

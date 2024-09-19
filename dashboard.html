@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -84,27 +84,27 @@
             <strong class="Xside1"></strong>
             <strong class="Xside2"></strong>
           </label>
-          <img src="./logo/logo.png" style="height: 2em" />
+          <img src="./logo/logo.png" style="height: 2em;" />
           <h1>BillBliss</h1>
         </div>
         <div class="leftPanelButtonGroupe">
           <button
             class="leftPanelButton hidden"
-            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
+            style="--iconURL: url('../assets/icons/Settings.svg');"
             onclick="ShowToast('This has not been implemented yet','Red')"
           >
             Project settings
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url(&quot;../assets/icons/Share.svg&quot;)"
+            style="--iconURL: url('../assets/icons/Share.svg');"
             onclick="toShareProject();"
           >
             Share this project
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url(&quot;../assets/icons/EditProject.svg&quot;)"
+            style="--iconURL: url('../assets/icons/EditProject.svg');"
             onclick="toEditProject();"
           >
             Edit this project
@@ -113,7 +113,7 @@
             <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
             <div
               class="leftPanelButton"
-              style="--iconURL: url(&quot;../assets/icons/Projects.svg&quot;)"
+              style="--iconURL: url('../assets/icons/Projects.svg');"
             >
               Projects
             </div>
@@ -121,9 +121,7 @@
               <button
                 class="leftPanelButton"
                 onclick="window.location.href = './AddProject.html'"
-                style="
-                  --iconURL: url(&quot;../assets/icons/AddProjects.svg&quot;);
-                "
+                style="--iconURL: url('../assets/icons/AddProjects.svg');"
               >
                 Add project
               </button>
@@ -140,14 +138,14 @@
         <div class="leftPanelButtonGroupe leftPanelFooter">
           <button
             class="leftPanelButton"
-            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
+            style="--iconURL: url('../assets/icons/Settings.svg');"
             onclick="window.location.href = './settings.html'"
           >
             Settings
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
+            style="--iconURL: url('../assets/icons/About.svg');"
             onclick="window.location.href = './about.html'"
           >
             About BillBliss
@@ -490,7 +488,7 @@
           irreversible.
         </strong>
         <form
-          id="RemoveProjectForm"
+          id="DeleteProjectForm"
           onsubmit="event.preventDefault(); DeleteProject(false);"
           class="wideForms"
         >
@@ -511,6 +509,53 @@
             class="btn-red"
           >
             Delete project
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="removeProject" class="ModalContainer">
+      <div
+        id="removeProjectBack"
+        class="ModalBackground"
+        onclick="document.getElementById('removeProject').classList.add('hidden')"
+      ></div>
+      <div id="editProjectDiv" class="Modal">
+        <button
+          class="CloseModal"
+          onclick="document.getElementById('removeProject').classList.add('hidden')"
+        ></button>
+        <br /><br />
+        <h1>Remove the project from your device</h1>
+        <br />
+        <p>
+          This will remove your project from your device.
+          <strong>All the data is still saved on the server.</strong> If the
+          project will not be used anymore, please remove it via the
+          <button
+            class="btn"
+            onclick="document.getElementById('removeProject').classList.add('hidden'); toEditProject();"
+          >
+            this page</button
+          >.
+        </p>
+        <br />
+        <p>
+          If don't want the other to lose the data. You are at the right place!
+        </p>
+        <br />
+        <form
+          id="RemoveProjectForm"
+          onsubmit="event.preventDefault(); removeCurrentProject(false);"
+          class="wideForms"
+        >
+          <button
+            type="submit"
+            name="RemoveProjectSubmit"
+            id="RemoveProjectSubmit"
+            class="btn-red"
+          >
+            Remove project
           </button>
         </form>
       </div>

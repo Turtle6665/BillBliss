@@ -3,6 +3,22 @@ function updateProjectList() {
   let LeftPanelProjectList = document.getElementById("LeftPanelProjectList");
   LeftPanelProjectList.innerHTML = "";
   ProjectsList = storage.getItem("ProjectsList");
+
+  // add remove project button (only if on dashboard)
+  if (typeof projectID == "string") {
+    projectButton = document.createElement("button");
+    Object.assign(projectButton, {
+      textContent: "Remove this project",
+      classList: "leftPanelButton",
+      style: "--iconURL: url('../assets/icons/RmProjects.svg');",
+      onclick: function () {
+        toRemoveProject();
+      },
+    });
+    LeftPanelProjectList.appendChild(projectButton);
+  }
+
+  // Add add project button
   projectButton = document.createElement("button");
   Object.assign(projectButton, {
     textContent: "Add project",
@@ -13,6 +29,8 @@ function updateProjectList() {
     },
   });
   LeftPanelProjectList.appendChild(projectButton);
+
+  // Add all projects
   if (!!ProjectsList) {
     let currentprojectID;
     if (typeof projectID == "undefined") {
