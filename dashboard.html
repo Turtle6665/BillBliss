@@ -490,7 +490,7 @@
           irreversible.
         </strong>
         <form
-          id="RemoveProjectForm"
+          id="DeleteProjectForm"
           onsubmit="event.preventDefault(); DeleteProject(false);"
           class="wideForms"
         >
@@ -511,6 +511,53 @@
             class="btn-red"
           >
             Delete project
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="removeProject" class="ModalContainer">
+      <div
+        id="removeProjectBack"
+        class="ModalBackground"
+        onclick="document.getElementById('removeProject').classList.add('hidden')"
+      ></div>
+      <div id="editProjectDiv" class="Modal">
+        <button
+          class="CloseModal"
+          onclick="document.getElementById('removeProject').classList.add('hidden')"
+        ></button>
+        <br /><br />
+        <h1>Remove the project from your device</h1>
+        <br />
+        <p>
+          This will remove your project from your device.
+          <strong>All the data is still saved on the server.</strong> If the
+          project will not be used anymore, please remove it via the
+          <button
+            class="btn"
+            onclick="document.getElementById('removeProject').classList.add('hidden'); toEditProject();"
+          >
+            this page</button
+          >.
+        </p>
+        <br />
+        <p>
+          If don't want the other to lose the data. You are at the right place!
+        </p>
+        <br />
+        <form
+          id="RemoveProjectForm"
+          onsubmit="event.preventDefault(); removeCurrentProject(false);"
+          class="wideForms"
+        >
+          <button
+            type="submit"
+            name="RemoveProjectSubmit"
+            id="RemoveProjectSubmit"
+            class="btn-red"
+          >
+            Remove project
           </button>
         </form>
       </div>

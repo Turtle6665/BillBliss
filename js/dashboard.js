@@ -913,7 +913,7 @@ function toEditProject() {
   document.getElementById("showLeftPanelCheckbox").checked = false;
   // reset the remove form text and functions
   document
-    .getElementById("RemoveProjectForm")
+    .getElementById("DeleteProjectForm")
     .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(false)");
   document.getElementById("DeleteProjectSubmit").innerText = "Delete project";
 
@@ -1012,7 +1012,7 @@ function DeleteProject(validated) {
       "Orange",
     );
     document
-      .getElementById("RemoveProjectForm")
+      .getElementById("DeleteProjectForm")
       .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(true)");
     document.getElementById("DeleteProjectSubmit").innerText = "Are you sure?";
   } else {
@@ -1046,7 +1046,7 @@ function DeleteProject(validated) {
       .catch((error) => {
         // reset the remove form text and functions
         document
-          .getElementById("RemoveProjectForm")
+          .getElementById("DeleteProjectForm")
           .setAttribute(
             "onsubmit",
             "event.preventDefault(); DeleteProject(false)",
@@ -1075,6 +1075,47 @@ function amountToText(amount, currency) {
     return `${amount}`;
   }
   return `${amount} ${currency}`;
+}
+
+function toRemoveProject() {
+  // show the modal page
+  document.getElementById("removeProject").classList.remove("hidden");
+  document.getElementById("showLeftPanelCheckbox").checked = false;
+
+  // restore the main button
+  document
+    .getElementById("RemoveProjectForm")
+    .setAttribute(
+      "onsubmit",
+      "event.preventDefault(); removeCurrentProject(false)",
+    );
+  document.getElementById("RemoveProjectSubmit").innerText =
+    "Remove this project";
+}
+
+function removeCurrentProject(confirmed) {
+  if (!confirmed) {
+    //need confirmation
+    ShowToast(
+      "Are you sure you want to remove the project?\
+               This action can not be undone!",
+      "Orange",
+    );
+    document
+      .getElementById("RemoveProjectForm")
+      .setAttribute(
+        "onsubmit",
+        "event.preventDefault(); removeCurrentProject(true)",
+      );
+    document.getElementById("RemoveProjectSubmit").innerText =
+      "Are you sure to remove the project '" + info.name + "'?";
+  } else {
+    // remove the project from the project list
+    storage.removeSubItem("ProjectsList", projectID);
+    // reload the page to go to an other project (if no more project, it
+    // will redirect to the add new project page)
+    window.location.href = window.location.origin + window.location.pathname;
+  }
 }
 
 //the function to update all the page
