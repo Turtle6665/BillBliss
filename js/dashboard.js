@@ -603,6 +603,11 @@ function addBill({
       document.getElementById("whom~" + memberid).checked = true;
     }); //select only the required checked
   }
+  // if advance options has been used, reuse it
+  if (AdvanceWhomOptions) {
+    ShowAdvanceWhomView();
+  }
+
   // change the buttons if we edit a bill rather than creating a new one
   if (edit) {
     [...document.getElementsByClassName("editBill")].forEach((buttons) => {
@@ -634,23 +639,89 @@ function SelectforWhom(SelectAll) {
     [
       ...document.getElementById("bill-forWhom").getElementsByTagName("input"),
     ].forEach((memberCheck) => {
-      if (!memberCheck.disabled) {
-        memberCheck.checked = SelectAll;
+      if (AdvanceWhomOptions) {
+        // if advance view, change only zeros values when selecting all
+        //   and set all to 0 if deselecting
+        if (SelectAll & (memberCheck.value == 0)) {
+          memberCheck.value = 1;
+        } else if (!SelectAll) {
+          memberCheck.value = 0;
+        }
+      } else {
+        if (!memberCheck.disabled) {
+          memberCheck.checked = SelectAll;
+        }
       }
     });
   } else {
     let inp = document.getElementById("whom~" + SelectAll);
-    if (!inp.disabled) {
-      inp.checked = !inp.checked;
+    if (AdvanceWhomOptions) {
+      //if it's the advance view, focus the input
+      inp.focus();
+    } else {
+      if (!inp.disabled) {
+        inp.checked = !inp.checked;
+      }
     }
   }
 }
 
-//push the bill to the server
+// ShowAdvanceWhomView
+let AdvanceWhomOptions = storage.getItem("AdvanceWhomOptions") || false;
+function ShowAdvanceWhomView() {
+  startLoading();
+  AdvanceWhomOptions = true;
+  storage.setItem("AdvanceWhomOptions", AdvanceWhomOptions);
+  let ListforWhom = [
+    ...document.getElementById("bill-forWhom").getElementsByTagName("input"),
+  ];
+
+  ListforWhom.forEach((input) => {
+    input.value = Number(input.checked);
+    input.type = "number";
+    reverseChildren(input.parentElement);
+  });
+
+  Object.assign(document.getElementById("AdvanceWhomView"), {
+    textContent: "Normal view",
+    onclick: function () {
+      HideAdvanceWhomView();
+    },
+  });
+
+  endLoading();
+}
+// hide AdvanceWhomView
+function HideAdvanceWhomView() {
+  startLoading();
+  AdvanceWhomOptions = false;
+  storage.setItem("AdvanceWhomOptions", AdvanceWhomOptions);
+  let ListforWhom = [
+    ...document.getElementById("bill-forWhom").getElementsByTagName("input"),
+  ];
+
+  ListforWhom.forEach((input) => {
+    input.type = "checkbox";
+    input.checked = input.value != 0;
+    reverseChildren(input.parentElement);
+  });
+
+  Object.assign(document.getElementById("AdvanceWhomView"), {
+    textContent: "Advance view",
+    onclick: function () {
+      ShowAdvanceWhomView();
+    },
+  });
+
+  endLoading();
+}
+
+// push the bill to the server
 let lastbillID = 0;
 function pushNewBill(addNew = false) {
   startLoading();
-  const billInputData = [
+
+  let billInputData = [
     ...document.getElementById("newBillPage").getElementsByTagName("input"),
     ...document.getElementById("newBillPage").getElementsByTagName("select"),
   ].reduce(
@@ -659,85 +730,126 @@ function pushNewBill(addNew = false) {
         if (nex.checked & !nex.disabled) {
           one["payed_for"].push(nex.name.split("~")[1]);
         }
-      } else {
+      } else if (!/whom/.test(nex.name)) {
         one[nex.name.split("-")[1]] = nex.value;
       }
       return one;
     },
-    { payed_for: [] },
+    { payed_for: [] }
   );
   const memberToActivate = [
     ...new Set(billInputData.payed_for.concat(billInputData.payer)),
   ].filter((id) => !memberTrueActivated[id]);
+
   let activateMember = memberToActivate.reduce((allmempush, memberID) => {
     return allmempush.concat(pushEditedMember(memberID, true, false));
   }, []);
 
-  return Promise.all(activateMember)
-    .then((a) => {
-      return fetch(apiUrl_Project + "/bills", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(billInputData),
-      })
-        .then(async (response) => {
-          //console.log(response)
-          respJson = await response.clone().json();
-          if (response.status === 201) {
-            return; // Parse the response JSON
-          } else if (response.status === 400) {
-            for (field in respJson) {
-              ShowToast(
-                "Failed to update bills. Please check the field '" +
-                  field +
-                  "'",
-                "Red",
-              );
-            }
-            throw new Error(
-              "Failed to Update bills. Please check your input values.",
-            );
-          } else {
-            throw new Error(
-              "Failed to fetch bills. Please check your credentials.",
+  function POSTBill(billInputData) {
+    return fetch(apiUrl_Project + "/bills", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(billInputData),
+    })
+      .then(async (response) => {
+        //console.log(response)
+        respJson = await response.clone().json();
+        if (response.status === 201) {
+          return; // Parse the response JSON
+        } else if (response.status === 400) {
+          for (field in respJson) {
+            ShowToast(
+              "Failed to update bills. Please check the field '" + field + "'",
+              "Red"
             );
           }
-        })
-        .then((data) => {
-          lastbillID = data;
-          lastwho = billInputData["payer"];
-        })
-        .catch((error) => {
-          console.log(error);
-          return false;
-        });
+          throw new Error(
+            "Failed to Update bills. Please check your input values."
+          );
+        } else {
+          throw new Error(
+            "Failed to fetch bills. Please check your credentials."
+          );
+        }
+      })
+      .then((data) => {
+        lastbillID = data;
+        lastwho = billInputData["payer"];
+      });
+  }
+  return Promise.all(activateMember)
+    .then((a) => {
+      let AllSubBills;
+      if (AdvanceWhomOptions) {
+        // get all inputs for bill splits
+        let ListforWhom = [
+          ...document
+            .getElementById("bill-forWhom")
+            .getElementsByTagName("input"),
+        ];
+        // calculate the total of parts
+        let totalParts = ListforWhom.reduce((a, b) => a + Number(b.value), 0);
+        // Calculate per person the amount of things to pay
+        let ToPay = ListforWhom.reduce(
+          (arr, nex) =>
+            arr.concat({
+              name: nex.name.split("~")[1],
+              value:
+                (nex.value / totalParts) *
+                document.getElementById("bill-much").value,
+            }),
+          []
+        );
+        // Create a bill per total value amount
+        var groupBy = function (xs, key) {
+          return xs.reduce(function (rv, x) {
+            (rv[x[key]] = rv[x[key]] || []).push(x);
+            return rv;
+          }, {});
+        };
+
+        let BillsForWhom = groupBy(ToPay, "value");
+
+        AllSubBills = Object.keys(BillsForWhom).reduce((Bills, key) => {
+          let item = BillsForWhom[key];
+          // adapt the subtotal sum
+          billInputData.amount = item.reduce((a, b) => a + b.value, 0);
+
+          // adapt payed for bills
+          billInputData.payed_for = item.reduce(
+            (arr, nex) => arr.concat(nex.name),
+            []
+          );
+
+          // concat all the POST request for the bills
+          Bills.concat(POSTBill(billInputData));
+          return Bills;
+        }, []);
+      } else {
+        // no Advance options, make a simple array with the bill
+        AllSubBills = [POSTBill(billInputData)];
+      }
+      return Promise.all(AllSubBills);
     })
     .then((a) => {
       if (a === false) {
         endLoading();
         return a;
       }
-      activateMember = memberToActivate.reduce((allmempush, memberID) => {
-        return allmempush; // allmempush.concat(removeMember(memberID, false))
-      }, []);
-      return Promise.all(activateMember).then((a) => {
-        endLoading();
-        ShowToast("New bill added.", "Green");
-        updateAll();
-        document.getElementById("newBillPage").classList.add("hidden");
-        if (addNew) {
-          addBill();
-        }
-      });
+
+      endLoading();
+      ShowToast("New bill added.", "Green");
+      updateAll();
+      document.getElementById("newBillPage").classList.add("hidden");
+      if (addNew) {
+        addBill();
+      }
     })
     .catch((error) => {
       endLoading();
-      activateMember = memberToActivate.reduce((allmempush, memberID) => {
-        return allmempush; //allmempush.concat(removeMember(memberID, false))
-      }, []);
     });
 }
 
@@ -867,6 +979,38 @@ function removeBill(billID) {
     });
 }
 
+//adding the project list
+function updateProjectList() {
+  let LeftPanelProjectList = document.getElementById("LeftPanelProjectList");
+  LeftPanelProjectList.innerHTML = "";
+  ProjectsList = storage.getItem("ProjectsList");
+  projectButton = document.createElement("button");
+  Object.assign(projectButton, {
+    textContent: "Add project",
+    classList: "leftPanelButton",
+    style: "--iconURL: url('../assets/icons/AddProjects.svg');",
+    onclick: function () {
+      window.location.href = "./AddProject.html";
+    },
+  });
+  LeftPanelProjectList.appendChild(projectButton);
+  if (!!ProjectsList) {
+    Object.keys(ProjectsList).forEach((project) => {
+      if (project != projectID) {
+        projectButton = document.createElement("div");
+        Object.assign(projectButton, {
+          textContent: ProjectsList[project].name,
+          classList: "leftPanelButton",
+          onclick: function () {
+            loadProject(project);
+          },
+        });
+        LeftPanelProjectList.appendChild(projectButton);
+      }
+    });
+  }
+}
+
 //go to project invitation page
 function toShareProject() {
   //show the page
@@ -913,7 +1057,7 @@ function toEditProject() {
   document.getElementById("showLeftPanelCheckbox").checked = false;
   // reset the remove form text and functions
   document
-    .getElementById("DeleteProjectForm")
+    .getElementById("RemoveProjectForm")
     .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(false)");
   document.getElementById("DeleteProjectSubmit").innerText = "Delete project";
 
@@ -1009,10 +1153,10 @@ function DeleteProject(validated) {
     ShowToast(
       "Are you sure you want to delete the project?\
                This action can not be undone!",
-      "Orange",
+      "Orange"
     );
     document
-      .getElementById("DeleteProjectForm")
+      .getElementById("RemoveProjectForm")
       .setAttribute("onsubmit", "event.preventDefault(); DeleteProject(true)");
     document.getElementById("DeleteProjectSubmit").innerText = "Are you sure?";
   } else {
@@ -1046,10 +1190,10 @@ function DeleteProject(validated) {
       .catch((error) => {
         // reset the remove form text and functions
         document
-          .getElementById("DeleteProjectForm")
+          .getElementById("RemoveProjectForm")
           .setAttribute(
             "onsubmit",
-            "event.preventDefault(); DeleteProject(false)",
+            "event.preventDefault(); DeleteProject(false)"
           );
         document.getElementById("DeleteProjectSubmit").innerText =
           "Delete project";
@@ -1075,47 +1219,6 @@ function amountToText(amount, currency) {
     return `${amount}`;
   }
   return `${amount} ${currency}`;
-}
-
-function toRemoveProject() {
-  // show the modal page
-  document.getElementById("removeProject").classList.remove("hidden");
-  document.getElementById("showLeftPanelCheckbox").checked = false;
-
-  // restore the main button
-  document
-    .getElementById("RemoveProjectForm")
-    .setAttribute(
-      "onsubmit",
-      "event.preventDefault(); removeCurrentProject(false)",
-    );
-  document.getElementById("RemoveProjectSubmit").innerText =
-    "Remove this project";
-}
-
-function removeCurrentProject(confirmed) {
-  if (!confirmed) {
-    //need confirmation
-    ShowToast(
-      "Are you sure you want to remove the project?\
-               This action can not be undone!",
-      "Orange",
-    );
-    document
-      .getElementById("RemoveProjectForm")
-      .setAttribute(
-        "onsubmit",
-        "event.preventDefault(); removeCurrentProject(true)",
-      );
-    document.getElementById("RemoveProjectSubmit").innerText =
-      "Are you sure to remove the project '" + info.name + "'?";
-  } else {
-    // remove the project from the project list
-    storage.removeSubItem("ProjectsList", projectID);
-    // reload the page to go to an other project (if no more project, it
-    // will redirect to the add new project page)
-    window.location.href = window.location.origin + window.location.pathname;
-  }
 }
 
 //the function to update all the page

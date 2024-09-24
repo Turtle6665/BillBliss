@@ -175,3 +175,10 @@ function switchDarkMode(forceChangeTo = null) {
 }
 
 switchDarkMode();
+
+// other usefull function
+function reverseChildren(parent) {
+  for (var i = 1; i < parent.childNodes.length; i++) {
+    parent.insertBefore(parent.childNodes[i], parent.firstChild);
+  }
+}
