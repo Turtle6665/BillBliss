@@ -905,10 +905,20 @@ select {
   background-size: contain;
 }
 
-#ShareInvitationLinkDiv > svg {
+#ShareInvitationLinkDiv > svg,
+#ShareWithOthersDiv > svg {
   max-width: 100%;
 }
 
+#shareProjectDiv > p,
+#ShareInvitationLinkDiv > * {
+  margin-bottom: 0.6em;
+}
+
+#shareProjectDiv {
+  //max-width: 100%;
+  overflow-x: clip;
+}
 /*------
  Toasts
 -------*/
