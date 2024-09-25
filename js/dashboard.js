@@ -13,7 +13,7 @@ if ("serviceWorker" in navigator) {
       // Registration was successful
       console.log(
         "ServiceWorker registration successful with scope: ",
-        registration.scope,
+        registration.scope
       );
     })
     .catch(function (err) {
@@ -106,7 +106,7 @@ function updateInfo() {
         return response.json(); // Parse the response JSON
       } else {
         throw new Error(
-          "Failed to fetch information. Please check your credentials.",
+          "Failed to fetch information. Please check your credentials."
         );
       }
     })
@@ -191,10 +191,10 @@ function updateBills() {
       } else {
         ShowToast(
           "Failed to fetch bills. Please check your credentials.",
-          "Red",
+          "Red"
         );
         throw new Error(
-          "Failed to fetch bills. Please check your credentials.",
+          "Failed to fetch bills. Please check your credentials."
         );
       }
     })
@@ -356,7 +356,7 @@ function addMember() {
         for (field in respJson) {
           ShowToast(
             "Failed to add member. " + field + ": " + respJson[field],
-            "Red",
+            "Red"
           );
         }
         throw new Error(response);
@@ -441,7 +441,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
         } else {
           ShowToast(
             memberNames[memberID] + "'s informations updated.",
-            "Green",
+            "Green"
           );
         }
         document.getElementById("editMemberPage").classList.add("hidden");
@@ -454,15 +454,15 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
         for (field in respJson) {
           ShowToast(
             "Failed to update member. Please check the field '" + field + "'.",
-            "Red",
+            "Red"
           );
         }
         throw new Error(
-          "Failed to Update member. Please check your input values.",
+          "Failed to Update member. Please check your input values."
         );
       } else {
         throw new Error(
-          "Failed to Update Member. Please check your credentials.",
+          "Failed to Update Member. Please check your credentials."
         );
       }
     })
@@ -485,7 +485,7 @@ function removeMember(memberID, updateall = true) {
         return response.json(); // Parse the response JSON
       } else {
         throw new Error(
-          "Failed to remove the member. Please check your credentials.",
+          "Failed to remove the member. Please check your credentials."
         );
       }
     })
@@ -604,7 +604,7 @@ function addBill({
     }); //select only the required checked
   }
   // if advance options has been used, reuse it
-  if (AdvanceWhomOptions) {
+  if (AdvanceWhomOptions & !edit) {
     ShowAdvanceWhomView();
   }
 
@@ -622,6 +622,7 @@ function addBill({
     document.getElementById("btn-RemoveBill").onclick = function () {
       removeBill(BillID);
     };
+    document.getElementById("AdvanceWhomView").classList.add("hidden");
   } else {
     [...document.getElementsByClassName("editBill")].forEach((buttons) => {
       buttons.classList.add("hidden");
@@ -629,6 +630,7 @@ function addBill({
     [...document.getElementsByClassName("newBill")].forEach((buttons) => {
       buttons.classList.remove("hidden");
     });
+    document.getElementById("AdvanceWhomView").classList.remove("hidden");
   }
 }
 
@@ -870,7 +872,7 @@ function pushEditedBill(billID) {
       }
       return one;
     },
-    { payed_for: [] },
+    { payed_for: [] }
   );
 
   const memberToActivate = [
@@ -901,17 +903,17 @@ function pushEditedBill(billID) {
                 "Failed to update bills. Please check the field '" +
                   field +
                   "'",
-                "Red",
+                "Red"
               );
             }
             throw new Error("Failed to update bills.");
           } else {
             ShowToast(
               "Failed to Update bills. Please check your credentials.",
-              "Red",
+              "Red"
             );
             throw new Error(
-              "Failed to Update bills. Please check your credentials.",
+              "Failed to Update bills. Please check your credentials."
             );
           }
         })
@@ -965,10 +967,10 @@ function removeBill(billID) {
       } else {
         ShowToast(
           "Failed to remove the bill. Please check your credentials.",
-          "Red",
+          "Red"
         );
         throw new Error(
-          "Failed to Update bills. Please check your credentials.",
+          "Failed to Update bills. Please check your credentials."
         );
       }
     })
@@ -1069,7 +1071,7 @@ function toEditProject() {
   document.getElementById("DeleteProjectCode").value = "";
   updateCurrencyList(
     document.getElementById("EditProjectCurrency"),
-    info.default_currency,
+    info.default_currency
   );
 }
 
@@ -1120,7 +1122,7 @@ function EditProject() {
         // Reset Auth token
         ShowToast(
           "Project settings updated. Fetching new auth token...",
-          "Green",
+          "Green"
         );
         let token = await VerifieAuthCode(projectID, NewProjectCode);
         if (!!token) {
