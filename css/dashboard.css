@@ -19,6 +19,7 @@
   --foreground: #fafbfc;
   --ultra-foreground: #fff;
   --border: #d9dae5;
+  --stressed-border: #5b6093;
 
   --copy: #1f212e;
   --copy-light: #52577a;
@@ -39,6 +40,7 @@
   --foreground: #1f212e;
   --ultra-foreground: #2d3251;
   --border: #33364d;
+  --stressed-border: #5d6495;
 
   --copy: #fafbfc;
   --copy-light: #d1d3e0;
@@ -70,6 +72,7 @@ button {
   margin: 0.1em;
   color: var(--copy);
   background-color: var(--foreground);
+  border-color: var(--stressed-border);
   cursor: pointer;
 }
 
@@ -95,6 +98,7 @@ select {
   word-spacing: inherit;
   color: var(--copy);
   background-color: var(--foreground);
+  border-color: var(--stressed-border);
   border-radius: 3px;
 }
 
@@ -544,6 +548,7 @@ Information page
 #addMemberForm > button {
   border-radius: 0 0.3em 0.3em 0;
   aspect-ratio: 1 / 1;
+  border-left-width: 0;
 }
 
 #membersList {
@@ -839,7 +844,7 @@ select {
 #bill-forWhom > div {
   text-align: left;
   padding: 0.3em;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 0.3em;
   margin: 0.05em;
   cursor: pointer;
@@ -850,6 +855,12 @@ select {
 
 #bill-forWhom > div > label {
   margin: 0.3em;
+}
+
+#bill-forWhom > div > input[type="number"] {
+  width: calc(100%-0.4em);
+  margin: 0.2em;
+  padding: 0.2em;
 }
 
 #newBillPage button {
