@@ -13,7 +13,7 @@ if ("serviceWorker" in navigator) {
       // Registration was successful
       console.log(
         "ServiceWorker registration successful with scope: ",
-        registration.scope,
+        registration.scope
       );
     })
     .catch(function (err) {
@@ -106,7 +106,7 @@ function updateInfo() {
         return response.json(); // Parse the response JSON
       } else {
         throw new Error(
-          "Failed to fetch information. Please check your credentials.",
+          "Failed to fetch information. Please check your credentials."
         );
       }
     })
@@ -191,10 +191,10 @@ function updateBills() {
       } else {
         ShowToast(
           "Failed to fetch bills. Please check your credentials.",
-          "Red",
+          "Red"
         );
         throw new Error(
-          "Failed to fetch bills. Please check your credentials.",
+          "Failed to fetch bills. Please check your credentials."
         );
       }
     })
@@ -356,7 +356,7 @@ function addMember() {
         for (field in respJson) {
           ShowToast(
             "Failed to add member. " + field + ": " + respJson[field],
-            "Red",
+            "Red"
           );
         }
         throw new Error(response);
@@ -441,7 +441,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
         } else {
           ShowToast(
             memberNames[memberID] + "'s informations updated.",
-            "Green",
+            "Green"
           );
         }
         document.getElementById("editMemberPage").classList.add("hidden");
@@ -454,15 +454,15 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
         for (field in respJson) {
           ShowToast(
             "Failed to update member. Please check the field '" + field + "'.",
-            "Red",
+            "Red"
           );
         }
         throw new Error(
-          "Failed to Update member. Please check your input values.",
+          "Failed to Update member. Please check your input values."
         );
       } else {
         throw new Error(
-          "Failed to Update Member. Please check your credentials.",
+          "Failed to Update Member. Please check your credentials."
         );
       }
     })
@@ -485,7 +485,7 @@ function removeMember(memberID, updateall = true) {
         return response.json(); // Parse the response JSON
       } else {
         throw new Error(
-          "Failed to remove the member. Please check your credentials.",
+          "Failed to remove the member. Please check your credentials."
         );
       }
     })
@@ -737,7 +737,7 @@ function pushNewBill(addNew = false) {
       }
       return one;
     },
-    { payed_for: [] },
+    { payed_for: [] }
   );
   const memberToActivate = [
     ...new Set(billInputData.payed_for.concat(billInputData.payer)),
@@ -765,15 +765,15 @@ function pushNewBill(addNew = false) {
           for (field in respJson) {
             ShowToast(
               "Failed to update bills. Please check the field '" + field + "'",
-              "Red",
+              "Red"
             );
           }
           throw new Error(
-            "Failed to Update bills. Please check your input values.",
+            "Failed to Update bills. Please check your input values."
           );
         } else {
           throw new Error(
-            "Failed to fetch bills. Please check your credentials.",
+            "Failed to fetch bills. Please check your credentials."
           );
         }
       })
@@ -803,7 +803,7 @@ function pushNewBill(addNew = false) {
                 (nex.value / totalParts) *
                 document.getElementById("bill-much").value,
             }),
-          [],
+          []
         );
         // Create a bill per total value amount
         var groupBy = function (xs, key) {
@@ -823,7 +823,7 @@ function pushNewBill(addNew = false) {
           // adapt payed for bills
           billInputData.payed_for = item.reduce(
             (arr, nex) => arr.concat(nex.name),
-            [],
+            []
           );
 
           // concat all the POST request for the bills
@@ -872,7 +872,7 @@ function pushEditedBill(billID) {
       }
       return one;
     },
-    { payed_for: [] },
+    { payed_for: [] }
   );
 
   const memberToActivate = [
@@ -903,17 +903,17 @@ function pushEditedBill(billID) {
                 "Failed to update bills. Please check the field '" +
                   field +
                   "'",
-                "Red",
+                "Red"
               );
             }
             throw new Error("Failed to update bills.");
           } else {
             ShowToast(
               "Failed to Update bills. Please check your credentials.",
-              "Red",
+              "Red"
             );
             throw new Error(
-              "Failed to Update bills. Please check your credentials.",
+              "Failed to Update bills. Please check your credentials."
             );
           }
         })
@@ -967,10 +967,10 @@ function removeBill(billID) {
       } else {
         ShowToast(
           "Failed to remove the bill. Please check your credentials.",
-          "Red",
+          "Red"
         );
         throw new Error(
-          "Failed to Update bills. Please check your credentials.",
+          "Failed to Update bills. Please check your credentials."
         );
       }
     })
@@ -1012,6 +1012,15 @@ function toShareProject() {
   ShareInvitationLinkDiv.appendChild(sharedLinkBr);
   ShareInvitationLinkDiv.appendChild(SharedQRcode);
 
+  // Share invitation with other apps
+  ShareWithOthersDiv = document.getElementById("ShareWithOthersDiv");
+  ShareWithOthersDiv.innerHTML = "";
+  SharedQRcode2 = new QRCode({
+    msg: "ihatemoney://ihatemoney.org/" + projectID + "/join/" + token,
+    pal: ["#000000", "#ffffff"],
+  });
+  ShareWithOthersDiv.appendChild(SharedQRcode2);
+
   //invitation ProjectID
   SharedProjectID = document.getElementById("SharedProjectID");
   Object.assign(SharedProjectID, {
@@ -1039,7 +1048,7 @@ function toEditProject() {
   document.getElementById("DeleteProjectCode").value = "";
   updateCurrencyList(
     document.getElementById("EditProjectCurrency"),
-    info.default_currency,
+    info.default_currency
   );
 }
 
@@ -1090,7 +1099,7 @@ function EditProject() {
         // Reset Auth token
         ShowToast(
           "Project settings updated. Fetching new auth token...",
-          "Green",
+          "Green"
         );
         let token = await VerifieAuthCode(projectID, NewProjectCode);
         if (!!token) {
@@ -1123,7 +1132,7 @@ function DeleteProject(validated) {
     ShowToast(
       "Are you sure you want to delete the project?\
                This action can not be undone!",
-      "Orange",
+      "Orange"
     );
     document
       .getElementById("DeleteProjectForm")
@@ -1163,7 +1172,7 @@ function DeleteProject(validated) {
           .getElementById("DeleteProjectForm")
           .setAttribute(
             "onsubmit",
-            "event.preventDefault(); DeleteProject(false)",
+            "event.preventDefault(); DeleteProject(false)"
           );
         document.getElementById("DeleteProjectSubmit").innerText =
           "Delete project";
@@ -1201,7 +1210,7 @@ function toRemoveProject() {
     .getElementById("RemoveProjectForm")
     .setAttribute(
       "onsubmit",
-      "event.preventDefault(); removeCurrentProject(false)",
+      "event.preventDefault(); removeCurrentProject(false)"
     );
   document.getElementById("RemoveProjectSubmit").innerText =
     "Remove this project";
@@ -1213,13 +1222,13 @@ function removeCurrentProject(confirmed) {
     ShowToast(
       "Are you sure you want to remove the project?\
                This action can not be undone!",
-      "Orange",
+      "Orange"
     );
     document
       .getElementById("RemoveProjectForm")
       .setAttribute(
         "onsubmit",
-        "event.preventDefault(); removeCurrentProject(true)",
+        "event.preventDefault(); removeCurrentProject(true)"
       );
     document.getElementById("RemoveProjectSubmit").innerText =
       "Are you sure to remove the project '" + info.name + "'?";
