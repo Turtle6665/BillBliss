@@ -1,33 +1,33 @@
 {
-    "name": "BillBliss",
-    "short_name": "BillBliss",
-    "icons": [
-        {
-            "src": "./android-chrome-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "./android-chrome-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ],
-    "theme_color": "#adb6f4",
-    "background_color": "#ffffff",
-    "display": "standalone",
-    "background": {
-      "service_worker": "./../js/service-worker.js"
+  "name": "BillBliss",
+  "short_name": "BillBliss",
+  "icons": [
+    {
+      "src": "./android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
-    "id": "PWAforIHM",
-    "start_url": "./../dashboard.html",
-    "orientation": "portrait-primary",
-    "display_override": [
-        "standalone",
-        "fullscreen",
-        "minimal-ui",
-        "window-controls-overlay",
-        "browser"
-    ],
-    "description": "A mobile-first, pure JavaScript/CSS/HTML5 approach for IHateMoney frontend"
+    {
+      "src": "./android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#adb6f4",
+  "background_color": "#14161f",
+  "display": "standalone",
+  "background": {
+    "service_worker": "./../js/service-worker.js"
+  },
+  "id": "PWAforIHM",
+  "start_url": "./../dashboard.html",
+  "orientation": "portrait-primary",
+  "display_override": [
+    "standalone",
+    "fullscreen",
+    "minimal-ui",
+    "window-controls-overlay",
+    "browser"
+  ],
+  "description": "A mobile-first, pure JavaScript/CSS/HTML5 approach for IHateMoney frontend"
 }
