@@ -234,6 +234,13 @@
               <span><span></span></span>
               personalized
             </label>
+            <button
+              id="askLocalUserChoice"
+              onclick="askLocalUserChoice()"
+              class="hidden"
+            >
+              Change who you are!
+            </button>
           </div>
           <!-- Display current state information here -->
           <div id="balance_tree"></div>
@@ -348,7 +355,7 @@
             Advance view
           </button>
         </div>
-        <div id="bill-forWhom">
+        <div id="bill-forWhom" class="checkboxlist">
           <input type="checkbox" id="3RT2" name="3RT2" /><label for="3RT2"
             >Scales</label
           >
@@ -601,6 +608,53 @@
             Remove project
           </button>
         </form>
+      </div>
+    </section>
+
+    <section id="selectLocalUser" class="ModalContainer">
+      <div
+        id="selectLocalUserBack"
+        class="ModalBackground"
+        onclick="document.getElementById('selectLocalUser').classList.add('hidden')"
+      ></div>
+      <div id="selectLocalUserDiv" class="Modal">
+        <button
+          class="CloseModal"
+          onclick="document.getElementById('selectLocalUser').classList.add('hidden')"
+        ></button>
+        <h1>Who are you?</h1>
+        <div id="localUserID-who" class="checkboxlist">
+          <!--Example of a checkbox-->
+          <div>
+            <input type="checkbox" id="whom~61469" name="whom~61469" /><label
+              for="whom~61469"
+              >Andrew</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" id="whom~614692" name="whom~614692" /><label
+              for="whom~614692"
+              >Andrew2</label
+            >
+          </div>
+        </div>
+        <!--Currency-->
+        <button
+          type="button"
+          name="Submit"
+          onclick="setPersonalizedUser()"
+          class="btn-green"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          name="cancel"
+          onclick="setPersonalizedUser(true)"
+          class="btn-red"
+        >
+          Cancel
+        </button>
       </div>
     </section>
   </body>

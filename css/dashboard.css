@@ -838,14 +838,14 @@ select {
   padding: 0.3em 0;
 }
 
-#bill-forWhom {
+.checkboxlist {
   padding: 0 0.2em 0.2em 0.2em;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 0.3em;
 }
 
-#bill-forWhom > div {
+.checkboxlist > div {
   text-align: left;
   padding: 0.3em;
   border: 1.5px solid var(--border);
@@ -853,15 +853,15 @@ select {
   margin: 0.05em;
   cursor: pointer;
 }
-#bill-forWhom > div:hover {
+.checkboxlist > div:hover {
   background-color: var(--primary-light);
 }
 
-#bill-forWhom > div > label {
+.checkboxlist > div > label {
   margin: 0.3em;
 }
 
-#bill-forWhom > div > input[type="number"] {
+.checkboxlist > div > input[type="number"] {
   width: calc(100%-0.4em);
   margin: 0.2em;
   padding: 0.2em;

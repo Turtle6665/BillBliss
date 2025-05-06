@@ -985,21 +985,106 @@ function removeBill(billID) {
 function changePersonalizedView() {
   personalizedViewSwitch = document.getElementById("personalizedViewSwitch");
   input = personalizedViewSwitch.getElementsByTagName("input")[0].checked;
+
+  if (input) {
+    // if select to see user view
+    ProjectsList = storage.getItem("ProjectsList");
+    //if no local user, ask to chose one (cancel should set back the old value)
+    localUserID = ProjectsList[projectID]["localUserID"];
+
+    if (
+      info.members.filter(
+        (member) => member.id == ProjectsList[projectID]["localUserID"]
+      ).length == 0
+    ) {
+      activateUserView(); // TODO: REMOVE AFTER TESTING!
+      askLocalUserChoice();
+      // wait the validation (via activateUserView) to updateAll
+    } else {
+      //if there is one, juste activate it
+      // TODO:
+      activateUserView();
+    }
+  } else {
+    // if select to see global view
+    // TODO:
+    unActivateUserView();
+  }
 }
 
-function setPersonalizedUser(localUserID) {
+function askLocalUserChoice() {
+  // TODO: update the modal page to choose the selected user
+  document.getElementById("selectLocalUser").classList.remove("hidden");
+}
+
+function setPersonalizedUser(canceled = false) {
+  // if canceled, create a toast and remove the modal
+  startLoading();
+  if (canceled) {
+    document.getElementById("selectLocalUser").classList.add("hidden");
+    ShowToast("The personalisation of the view has been canceled", "Red");
+    endLoading();
+    return null;
+  }
+  // if not canceled, see if one is selected
+  possibleLocalUserIDList = document.getElementById("localUserID-who");
+  SelectedLocalUserInput = [
+    ...possibleLocalUserIDList.getElementsByTagName("input"),
+  ].filter((input) => input.checked);
+
+  if (SelectedLocalUserInput.length == 0) {
+    ShowToast("Please select a yourself in the list.", "Red");
+    endLoading();
+    return null;
+  } else if (SelectedLocalUserInput.length > 1) {
+    ShowToast("Please select only one member in the list.", "Red");
+    endLoading();
+    return null;
+  }
+
+  localUserID = SelectedLocalUserInput[0].name.split("~")[1];
+
   ProjectsList = storage.getItem("ProjectsList");
   ProjectsList[projectID]["localUserID"] = localUserID;
   storage.setItem("ProjectsList", ProjectsList);
   bc.postMessage(["updateProjectList"]);
 
-  updateAll();
   // todo : 1) take into acount the local user when updating the list
   //        2) Add a "(you)" in user list
   //        3) Add a button to change the local user choice
   //        4)
+
+  ShowToast("You are now marked as " + memberNames[localUserID], "Green");
+  document.getElementById("selectLocalUser").classList.add("hidden");
+  activateUserView();
 }
 
+function activateUserView() {
+  // function opposite to unActivateUserView
+  ProjectsList = storage.getItem("ProjectsList");
+  ProjectsList[projectID]["userView"] = true;
+  storage.setItem("ProjectsList", ProjectsList);
+  bc.postMessage(["updateProjectList"]);
+
+  // show a button to change the selected user
+  document.getElementById("askLocalUserChoice").classList.remove("hidden");
+
+  //update all content
+  updateAll();
+}
+function unActivateUserView() {
+  // function opposite to activateUserView
+  ProjectsList = storage.getItem("ProjectsList");
+  ProjectsList[projectID]["userView"] = false;
+  storage.setItem("ProjectsList", ProjectsList);
+  bc.postMessage(["updateProjectList"]);
+
+  // hide the button to change the selected user
+  document.getElementById("askLocalUserChoice").classList.add("hidden");
+
+  // update all content
+  updateAll();
+}
 // The Left panel functions
 
 //go to project invitation page
