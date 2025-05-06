@@ -1,4 +1,4 @@
-apiUrl = "https://ihatemoney.org/api/";
+//apiUrl a constant variable from config
 const apiUrlProjects = apiUrl + "projects/";
 const apiUrlCreateProject = apiUrl + "projects";
 
@@ -77,9 +77,13 @@ async function logInByIHMInvitation() {
   }
 
   //check if it's an invitation link:
-  if (
-    !/^https?:\/\/ihatemoney\.org\/.+\/join\/.+$/.test(iHMinvitationLinkvalue)
-  ) {
+
+  const regexPattern = `^https?:\/\/${IhmUrl.replace(
+    /\./g,
+    "\\."
+  )}\/.+\/join\/.+$`;
+  regex = new RegExp(regexPattern);
+  if (!regex.test(iHMinvitationLinkvalue)) {
     ShowToast("Invitation link not valid", "Red");
     endLoading();
 
@@ -116,8 +120,9 @@ function CreateNewProject() {
   };
   //Advance Options
   if (document.getElementById("newProjectCurrency").value != "") {
-    projectData["default_currency"] =
-      document.getElementById("newProjectCurrency").value;
+    projectData["default_currency"] = document.getElementById(
+      "newProjectCurrency"
+    ).value;
   }
   if (document.getElementById("newProjectId").value != "") {
     projectData["id"] = document.getElementById("newProjectId").value;
@@ -152,7 +157,7 @@ function CreateNewProject() {
       if (projectData["id"] != data) {
         ShowToast(
           "The id of your project is " + JSON.stringify(data),
-          "Orange",
+          "Orange"
         );
       }
       // Extract and handle the ID from the response data

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -40,7 +40,7 @@
     <meta name="theme-color" content="#ffffff" />
 
     <!-- scripts -->
-    <script src="js/deptsSettle.js"></script>
+    <script src="js/config.js"></script>
     <script src="js/localStorageAsked.js"></script>
     <script src="js/helperFunctions.js"></script>
     <script defer src="js/leftPanel.js"></script>
@@ -73,7 +73,7 @@
             <strong class="Xside1"></strong>
             <strong class="Xside2"></strong>
           </label>
-          <img src="./logo/logo.png" style="height: 2em" />
+          <img src="./logo/logo.png" style="height: 2em;" />
           <h1>BillBliss</h1>
         </div>
         <div class="leftPanelButtonGroupe">
@@ -81,7 +81,7 @@
             <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
             <div
               class="leftPanelButton"
-              style="--iconURL: url(&quot;../assets/icons/Projects.svg&quot;)"
+              style="--iconURL: url('../assets/icons/Projects.svg');"
             >
               Projects
             </div>
@@ -89,9 +89,7 @@
               <button
                 class="leftPanelButton"
                 onclick="window.location.href = './AddProject.html'"
-                style="
-                  --iconURL: url(&quot;../assets/icons/AddProjects.svg&quot;);
-                "
+                style="--iconURL: url('../assets/icons/AddProjects.svg');"
               >
                 Add project
               </button>
@@ -108,14 +106,14 @@
         <div class="leftPanelButtonGroupe leftPanelFooter">
           <button
             class="leftPanelButton"
-            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
+            style="--iconURL: url('../assets/icons/Settings.svg');"
             onclick="window.location.href = './settings.html'"
           >
             Settings
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
+            style="--iconURL: url('../assets/icons/About.svg');"
             onclick="window.location.href = './about.html'"
           >
             About BillBliss

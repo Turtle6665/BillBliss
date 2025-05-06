@@ -2,8 +2,8 @@
 //import settle from "./deptsSettle.js";
 
 //setup values
-apiUrl = "https://ihatemoney.org/api/";
-let base_apiUrl = apiUrl + "projects/";
+//apiUrl a constant variable from config
+const base_apiUrl = apiUrl + "projects/";
 
 //install the service worker
 if ("serviceWorker" in navigator) {
@@ -980,6 +980,27 @@ function removeBill(billID) {
       document.getElementById("newBillPage").classList.add("hidden");
     });
 }
+
+// Summary functions
+function changePersonalizedView() {
+  personalizedViewSwitch = document.getElementById("personalizedViewSwitch");
+  input = personalizedViewSwitch.getElementsByTagName("input")[0].checked;
+}
+
+function setPersonalizedUser(localUserID) {
+  ProjectsList = storage.getItem("ProjectsList");
+  ProjectsList[projectID]["localUserID"] = localUserID;
+  storage.setItem("ProjectsList", ProjectsList);
+  bc.postMessage(["updateProjectList"]);
+
+  updateAll();
+  // todo : 1) take into acount the local user when updating the list
+  //        2) Add a "(you)" in user list
+  //        3) Add a button to change the local user choice
+  //        4)
+}
+
+// The Left panel functions
 
 //go to project invitation page
 function toShareProject() {

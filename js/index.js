@@ -1,4 +1,4 @@
-const apiUrl = "https://ihatemoney.org/api/projects/";
+//const apiUrl = base_apiUrl;
 
 let invitationLink = "";
 
@@ -21,8 +21,14 @@ function accessByInvitation() {
   }
 
   //check if it's an invitation link:
+  const regexPattern = `^https?:\/\/${IhmUrl.replace(
+    /\./g,
+    "\\."
+  )}\/.+\/join\/.+$`;
+  regex = new RegExp(regexPattern);
   if (
-    !/^https?:\/\/ihatemoney\.org\/.+\/join\/.+$/.test(iHMinvitationLinkvalue)
+    !regex.test(iHMinvitationLinkvalue)
+    // /^https?:\/\/ihatemoney\.org\/.+\/join\/.+$/.test(iHMinvitationLinkvalue)
   ) {
     ShowToast("Invitation link not valid", "Red");
     throw console.error("Invitation link not valid");

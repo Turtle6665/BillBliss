@@ -40,6 +40,7 @@
     <meta name="theme-color" content="#ffffff" />
 
     <!-- scripts -->
+    <script src="js/config.js"></script>
     <script src="js/deptsSettle.js"></script>
     <script src="js/localStorageAsked.js"></script>
     <script src="js/helperFunctions.js"></script>
@@ -221,11 +222,27 @@
         <div id="summary" class="linktarget"></div>
         <div class="foregroundCard">
           <h1>Summary</h1>
+          <div class="cardinfo" id="personalize_trigger">
+            <label id="personalizedViewSwitch" class="switch switchFullWidth">
+              <input
+                type="checkbox"
+                name="personalizedViewSwitchInput"
+                onclick="changePersonalizedView();"
+              />
+              Show only the information relevent to you ? <br />
+              Global
+              <span><span></span></span>
+              personalized
+            </label>
+          </div>
           <!-- Display current state information here -->
           <div id="balance_tree"></div>
         </div>
         <div class="foregroundCard">
           <h2>Settlement</h2>
+          <div class="cardinfo">
+            Click on a settlement mark the dept as settled.
+          </div>
           <div id="settlements_list"></div>
         </div>
       </div>
