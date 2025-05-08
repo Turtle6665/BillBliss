@@ -1083,7 +1083,10 @@ function askLocalUserChoice() {
       return a.name > b.name;
     })
     .forEach((member) => {
-      //adding all member to whom
+      //adding all (memberTrueActivated) member to whom
+      if (!memberActivated[member.id]) {
+        return null;
+      }
       const memberLabel = document.createElement("label");
       const memberInput = document.createElement("input");
       Object.assign(memberInput, {
