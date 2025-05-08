@@ -269,6 +269,17 @@ function updateBills() {
         billdiv.appendChild(date);
         billsList.appendChild(billdiv);
       });
+
+      // check if bills and if not, show a message
+      if (billsList.children.length == 0) {
+        billsList.textContent =
+          bills.length == 0
+            ? "Your project don't have bills yet !"
+            : "You (" +
+              memberNames[ProjectsList[projectID]["localUserID"]] +
+              ") are not involved into any bills." +
+              " Change to global view to see all bills";
+      }
     })
     .catch((error) => {
       console.error("Error:", error);

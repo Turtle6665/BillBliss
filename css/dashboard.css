@@ -870,8 +870,14 @@ select {
   margin: 0.05em;
   cursor: pointer;
 }
+
+.checkboxlist > label > input[type="radio"] {
+  margin: 0.2em;
+  margin-right: 0.4em;
+}
+
 .checkboxlist > *:hover {
-  background-color: var(--primary-light);
+  background-color: var(--border);
 }
 
 .checkboxlist > div > label {
