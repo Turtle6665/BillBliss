@@ -261,7 +261,7 @@ function updateBills() {
           classList: "billPayer",
         });
         const payerName = document.createElement("strong");
-        payerName.textContent = memberNames[bill.payer_id];
+        payerName.textContent = isPayer ? "you" : memberNames[bill.payer_id];
         payer.appendChild(payerName);
         billdiv.appendChild(payer);
         const date = document.createElement("div");
@@ -1083,7 +1083,7 @@ function askLocalUserChoice() {
       return a.name > b.name;
     })
     .forEach((member) => {
-      //adding all (memberTrueActivated) member to whom
+      //adding all (memberActivated) member to whom
       if (!memberActivated[member.id]) {
         return null;
       }
