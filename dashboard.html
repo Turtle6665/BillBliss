@@ -611,26 +611,21 @@
       </div>
     </section>
 
-    <section id="selectLocalUser" class="ModalContainer">
+    <section id="selectLocalUser" class="ModalContainer hidden">
       <div
         id="selectLocalUserBack"
         class="ModalBackground"
-        onclick="document.getElementById('selectLocalUser').classList.add('hidden')"
+        onclick="setPersonalizedUser(true)"
       ></div>
       <div id="selectLocalUserDiv" class="Modal">
-        <button
-          class="CloseModal"
-          onclick="document.getElementById('selectLocalUser').classList.add('hidden')"
-        ></button>
+        <button class="CloseModal" onclick="setPersonalizedUser(true)"></button>
         <h1>Who are you?</h1>
         <div id="localUserID-who" class="checkboxlist">
           <!--Example of a checkbox-->
-          <div>
-            <input type="checkbox" id="whom~61469" name="whom~61469" /><label
-              for="whom~61469"
-              >Andrew</label
-            >
-          </div>
+          <label>
+            <input type="checkbox" id="whom~61469" name="whom~61469" />
+            Andrew
+          </label>
           <div>
             <input type="checkbox" id="whom~614692" name="whom~614692" /><label
               for="whom~614692"

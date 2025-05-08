@@ -169,6 +169,7 @@ function updateInfo() {
             membersList.appendChild(memberDiv);
           }
         });
+      initUserView();
     })
     .catch((error) => {
       ShowToast(error, "Red");
@@ -204,6 +205,18 @@ function updateBills() {
       //for(let i = 0; i<50; i++){bills[bills.length+1] = bills[0]}
       allbills = bills;
       bills.forEach((bill) => {
+        if (ProjectsList[projectID]["userView"]) {
+          // don't show not relevent bills
+          if (
+            !(bill.payer_id == ProjectsList[projectID]["localUserID"]) &
+            !bill.owers
+              .reduce((a, b) => a.concat(b.id), [])
+              .includes(Number(ProjectsList[projectID]["localUserID"]))
+          ) {
+            return null;
+          }
+        }
+
         const billdiv = document.createElement("button");
         Object.assign(billdiv, {
           classList: "billdiv",
@@ -298,6 +311,16 @@ function updateSummary() {
   const settlementslist = document.getElementById("settlements_list");
   settlementslist.innerHTML = "";
   settlements.forEach((transfer) => {
+    if (ProjectsList[projectID]["userView"]) {
+      // don't show not relevent bills
+      if (
+        !(transfer[0] == ProjectsList[projectID]["localUserID"]) &
+        !(transfer[2] == ProjectsList[projectID]["localUserID"])
+      ) {
+        return null;
+      }
+      //localUserID ; userView
+    }
     const settlementdiv = document.createElement("button");
     Object.assign(settlementdiv, {
       classList: "settlementdiv",
@@ -997,7 +1020,7 @@ function changePersonalizedView() {
         (member) => member.id == ProjectsList[projectID]["localUserID"]
       ).length == 0
     ) {
-      activateUserView(); // TODO: REMOVE AFTER TESTING!
+      //activateUserView(); // TODO: REMOVE AFTER TESTING!
       askLocalUserChoice();
       // wait the validation (via activateUserView) to updateAll
     } else {
@@ -1014,15 +1037,60 @@ function changePersonalizedView() {
 
 function askLocalUserChoice() {
   // TODO: update the modal page to choose the selected user
+  //show modal
   document.getElementById("selectLocalUser").classList.remove("hidden");
+  userlist = document.getElementById("localUserID-who");
+
+  // Update project data based on storage
+  ProjectsList = storage.getItem("ProjectsList");
+
+  // remove old user list
+  userlist.innerHTML = "";
+  info.members
+    .sort((a, b) => {
+      return a.name > b.name;
+    })
+    .forEach((member) => {
+      //adding all member to whom
+      const memberLabel = document.createElement("label");
+      const memberInput = document.createElement("input");
+      Object.assign(memberInput, {
+        type: "radio",
+        id: "whomUserView~" + member.id,
+        name: "radioUserView",
+        value: member.id,
+        checked: member.id == ProjectsList[projectID]["localUserID"],
+        //disabled: !memberActivated[member.id],
+      });
+      memberName = document.createTextNode(memberNames[member.id]);
+
+      userlist.appendChild(memberLabel);
+      memberLabel.appendChild(memberInput);
+      memberLabel.appendChild(memberName);
+    });
 }
 
 function setPersonalizedUser(canceled = false) {
   // if canceled, create a toast and remove the modal
   startLoading();
   if (canceled) {
+    // Turn of the personalize switch
+    ProjectsList = storage.getItem("ProjectsList");
+    isUserViewActivated = ProjectsList[projectID]["userView"] | false;
+    document
+      .getElementById("personalizedViewSwitch")
+      .getElementsByTagName("input")[0].checked = isUserViewActivated;
+
     document.getElementById("selectLocalUser").classList.add("hidden");
-    ShowToast("The personalisation of the view has been canceled", "Red");
+    if (isUserViewActivated) {
+      ShowToast(
+        "You are still connected as " +
+          memberNames[ProjectsList[projectID]["localUserID"]],
+        "Red"
+      );
+    } else {
+      ShowToast("The personalisation of the view has been canceled", "Red");
+    }
     endLoading();
     return null;
   }
@@ -1037,12 +1105,13 @@ function setPersonalizedUser(canceled = false) {
     endLoading();
     return null;
   } else if (SelectedLocalUserInput.length > 1) {
+    // this should not be possible as we now use radio buttons
     ShowToast("Please select only one member in the list.", "Red");
     endLoading();
     return null;
   }
 
-  localUserID = SelectedLocalUserInput[0].name.split("~")[1];
+  localUserID = SelectedLocalUserInput[0].value;
 
   ProjectsList = storage.getItem("ProjectsList");
   ProjectsList[projectID]["localUserID"] = localUserID;
@@ -1085,6 +1154,33 @@ function unActivateUserView() {
   // update all content
   updateAll();
 }
+
+// default show of hide the local user view
+function initUserView() {
+  ProjectsList = storage.getItem("ProjectsList");
+  ProjectsList[projectID]["userView"];
+  ProjectsList[projectID]["localUserID"];
+
+  //check if localUserID exist in curent member list of ids, if not,
+  //choose global view by default
+  if (!(ProjectsList[projectID]["localUserID"] in memberActivated)) {
+    ProjectsList[projectID]["userView"] = false;
+    ProjectsList[projectID]["localUserID"] = null;
+    storage.setItem("ProjectsList", ProjectsList);
+    bc.postMessage(["updateProjectList"]);
+  }
+
+  isUserViewActivated = ProjectsList[projectID]["userView"] | false;
+  document
+    .getElementById("personalizedViewSwitch")
+    .getElementsByTagName("input")[0].checked = isUserViewActivated;
+  if (isUserViewActivated) {
+    document.getElementById("askLocalUserChoice").classList.remove("hidden");
+  } else {
+    document.getElementById("askLocalUserChoice").classList.add("hidden");
+  }
+}
+
 // The Left panel functions
 
 //go to project invitation page

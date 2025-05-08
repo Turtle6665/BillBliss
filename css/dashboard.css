@@ -845,7 +845,7 @@ select {
   gap: 0.3em;
 }
 
-.checkboxlist > div {
+.checkboxlist > * {
   text-align: left;
   padding: 0.3em;
   border: 1.5px solid var(--border);
@@ -853,7 +853,7 @@ select {
   margin: 0.05em;
   cursor: pointer;
 }
-.checkboxlist > div:hover {
+.checkboxlist > *:hover {
   background-color: var(--primary-light);
 }
 
