@@ -23,7 +23,7 @@ function accessByInvitation() {
   //check if it's an invitation link:
   const regexPattern = `^https?:\/\/${IhmUrl.replace(
     /\./g,
-    "\\."
+    "\\.",
   )}\/.+\/join\/.+$`;
   regex = new RegExp(regexPattern);
   if (

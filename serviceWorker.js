@@ -24,9 +24,9 @@ self.addEventListener("activate", (event) => {
             console.log("Deleting out of date cache:", cacheName);
             return caches.delete(cacheName);
           }
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 });
 
@@ -51,7 +51,7 @@ async function cacheThenNetwork(event) {
         console.log(
           " No response for %s found in cache. About to fetch " +
             "from network…",
-          url.toString()
+          url.toString(),
         );
 
         // We call .clone() on the request since we might use it
@@ -63,7 +63,7 @@ async function cacheThenNetwork(event) {
           console.log(
             "  Response for %s from network is: %O",
             url.toString(),
-            response
+            response,
           );
           if (response.status < 400) {
             // This avoids caching responses that we know are errors

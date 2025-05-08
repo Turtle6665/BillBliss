@@ -147,7 +147,8 @@
 
 .rankingsItem--inner {
   background-color: var(--ultra-foreground);
-  background-image: radial-gradient(
+  background-image:
+    radial-gradient(
       3px 3px at var(--dotDistance) calc(50% - 9px),
       var(--dotColor) 50%,
       transparent 50%
