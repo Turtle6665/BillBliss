@@ -193,6 +193,8 @@ Navigation Menu
   margin: 0.1em 0.2em;
   z-index: 5;
   /*width: max-content;calc(100vw - 0.2em - 2em - (1em + 50px));*/
+  text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
 }
 
@@ -413,6 +415,9 @@ leftPanel layout
   text-align: left;
   border: none;
   margin: 0.1em 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .leftPanelButton::before {
@@ -652,6 +657,12 @@ Bills page
 #billMain {
   height: 100%;
   overflow: auto;
+}
+
+.billWhat {
+  /*limite to 2 lines maximum*/
+  overflow: clip;
+  max-height: 2lh;
 }
 
 .billPayer,
