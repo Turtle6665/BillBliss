@@ -1,6 +1,9 @@
 :root {
-  --colorGreen: #9dfe00b0;
-  --colorRed: #ff5e47;
+  --colorGreen: #9dfe00;
+  --colorRed: #ff8c7a; /*#ff5e47*/
+
+  --colorGreenText: #134d00;
+  --colorRedText: #be0909;
 
   --primary: #adb6f4;
   --primary-content: #061682;
@@ -36,6 +39,12 @@
 }
 
 .dark {
+  --colorGreen: #457000;
+  --colorRed: #c21a00; /*#ff5e47*/
+
+  --colorGreenText: #2eb800;
+  --colorRedText: #f97777;
+
   --background: #14161f;
   --foreground: #1f212e;
   --ultra-foreground: #2d3251;
@@ -100,6 +109,14 @@ select {
   background-color: var(--foreground);
   border-color: var(--stressed-border);
   border-radius: 3px;
+}
+
+.colorRed {
+  color: var(--colorRedText);
+}
+
+.colorGreen {
+  color: var(--colorGreenText);
 }
 
 /*---------

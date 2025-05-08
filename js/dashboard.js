@@ -204,17 +204,22 @@ function updateBills() {
       billsList.innerHTML = "";
       //for(let i = 0; i<50; i++){bills[bills.length+1] = bills[0]}
       allbills = bills;
+      let localView;
+      let isPayer;
+      let isOwer;
       bills.forEach((bill) => {
         if (ProjectsList[projectID]["userView"]) {
           // don't show not relevent bills
-          if (
-            !(bill.payer_id == ProjectsList[projectID]["localUserID"]) &
-            !bill.owers
-              .reduce((a, b) => a.concat(b.id), [])
-              .includes(Number(ProjectsList[projectID]["localUserID"]))
-          ) {
+          isPayer = bill.payer_id == ProjectsList[projectID]["localUserID"];
+          isOwer = bill.owers
+            .reduce((a, b) => a.concat(b.id), [])
+            .includes(Number(ProjectsList[projectID]["localUserID"]));
+          if (!isPayer & !isOwer) {
             return null;
           }
+          localView = true;
+        } else {
+          localView = false;
         }
 
         const billdiv = document.createElement("button");
@@ -229,9 +234,25 @@ function updateBills() {
         Object.assign(name, { textContent: bill.what, classList: "billWhat" });
         billdiv.appendChild(name);
         const price = document.createElement("div");
+        let amount;
+        let amountColorClasses;
+        if (localView) {
+          // calculate the users amount
+
+          owerAmount = isOwer ? bill.amount / bill.owers.length : 0;
+          payerAmount = isPayer ? bill.amount : 0;
+          amount = payerAmount - owerAmount;
+          console.log(bill.what, bill.amount, owerAmount, payerAmount, amount);
+          amountColorClasses =
+            amount > 0 ? "colorGreen" : amount < 0 ? "colorRed" : "";
+        } else {
+          amount = bill.amount;
+          amountColorClasses = "";
+        }
+
         Object.assign(price, {
-          textContent: amountToText(bill.amount, bill.original_currency),
-          classList: "billAmount",
+          textContent: amountToText(amount, bill.original_currency),
+          classList: "billAmount " + amountColorClasses,
         });
         billdiv.appendChild(price);
         const payer = document.createElement("div");
