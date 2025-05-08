@@ -1,9 +1,9 @@
 // The name of the cache your app uses.
-const CACHE_VERSION = "0.1.7";
+self.importScripts("./js/config.js");
+
 const CURRENT_CACHES = {
   BillBliss: `BillBliss-cache-v${CACHE_VERSION}`,
 };
-const Testing = false;
 
 self.addEventListener("activate", (event) => {
   // Delete all caches that aren't named in CURRENT_CACHES.
@@ -97,9 +97,12 @@ async function cacheThenNetwork(event) {
   });
 }
 
+IHMregex = new RegExp(IhmUrl);
+
 self.addEventListener("fetch", (event) => {
   console.log("fetched: ", event.request.url);
-  if (/ihatemoney/.test(event.request.url)) {
+  console.log("is IHM ?", IHMregex.test(event.request.url));
+  if (IHMregex.test(event.request.url)) {
     event.respondWith(fetch(event.request));
   } else {
     event.respondWith(cacheThenNetwork(event));

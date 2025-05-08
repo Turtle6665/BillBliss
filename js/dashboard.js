@@ -2,8 +2,8 @@
 //import settle from "./deptsSettle.js";
 
 //setup values
-apiUrl = "https://ihatemoney.org/api/";
-let base_apiUrl = apiUrl + "projects/";
+//apiUrl a constant variable from config
+const base_apiUrl = apiUrl + "projects/";
 
 //install the service worker
 if ("serviceWorker" in navigator) {
@@ -13,7 +13,7 @@ if ("serviceWorker" in navigator) {
       // Registration was successful
       console.log(
         "ServiceWorker registration successful with scope: ",
-        registration.scope
+        registration.scope,
       );
     })
     .catch(function (err) {
@@ -106,7 +106,7 @@ function updateInfo() {
         return response.json(); // Parse the response JSON
       } else {
         throw new Error(
-          "Failed to fetch information. Please check your credentials."
+          "Failed to fetch information. Please check your credentials.",
         );
       }
     })
@@ -169,6 +169,7 @@ function updateInfo() {
             membersList.appendChild(memberDiv);
           }
         });
+      initUserView();
     })
     .catch((error) => {
       ShowToast(error, "Red");
@@ -191,10 +192,10 @@ function updateBills() {
       } else {
         ShowToast(
           "Failed to fetch bills. Please check your credentials.",
-          "Red"
+          "Red",
         );
         throw new Error(
-          "Failed to fetch bills. Please check your credentials."
+          "Failed to fetch bills. Please check your credentials.",
         );
       }
     })
@@ -203,7 +204,24 @@ function updateBills() {
       billsList.innerHTML = "";
       //for(let i = 0; i<50; i++){bills[bills.length+1] = bills[0]}
       allbills = bills;
+      let localView;
+      let isPayer;
+      let isOwer;
       bills.forEach((bill) => {
+        if (ProjectsList[projectID]["userView"]) {
+          // don't show not relevent bills
+          isPayer = bill.payer_id == ProjectsList[projectID]["localUserID"];
+          isOwer = bill.owers
+            .reduce((a, b) => a.concat(b.id), [])
+            .includes(Number(ProjectsList[projectID]["localUserID"]));
+          if (!isPayer & !isOwer) {
+            return null;
+          }
+          localView = true;
+        } else {
+          localView = false;
+        }
+
         const billdiv = document.createElement("button");
         Object.assign(billdiv, {
           classList: "billdiv",
@@ -216,9 +234,25 @@ function updateBills() {
         Object.assign(name, { textContent: bill.what, classList: "billWhat" });
         billdiv.appendChild(name);
         const price = document.createElement("div");
+        let amount;
+        let amountColorClasses;
+        if (localView) {
+          // calculate the users amount
+
+          owerAmount = isOwer ? bill.amount / bill.owers.length : 0;
+          payerAmount = isPayer ? bill.amount : 0;
+          amount = payerAmount - owerAmount;
+          console.log(bill.what, bill.amount, owerAmount, payerAmount, amount);
+          amountColorClasses =
+            amount > 0 ? "colorGreen" : amount < 0 ? "colorRed" : "";
+        } else {
+          amount = bill.amount;
+          amountColorClasses = "";
+        }
+
         Object.assign(price, {
-          textContent: amountToText(bill.amount, bill.original_currency),
-          classList: "billAmount",
+          textContent: amountToText(amount, bill.original_currency),
+          classList: "billAmount " + amountColorClasses,
         });
         billdiv.appendChild(price);
         const payer = document.createElement("div");
@@ -227,7 +261,7 @@ function updateBills() {
           classList: "billPayer",
         });
         const payerName = document.createElement("strong");
-        payerName.textContent = memberNames[bill.payer_id];
+        payerName.textContent = isPayer ? "you" : memberNames[bill.payer_id];
         payer.appendChild(payerName);
         billdiv.appendChild(payer);
         const date = document.createElement("div");
@@ -235,6 +269,17 @@ function updateBills() {
         billdiv.appendChild(date);
         billsList.appendChild(billdiv);
       });
+
+      // check if bills and if not, show a message
+      if (billsList.children.length == 0) {
+        billsList.textContent =
+          bills.length == 0
+            ? "Your project don't have bills yet !"
+            : "You (" +
+              memberNames[ProjectsList[projectID]["localUserID"]] +
+              ") are not involved into any bills." +
+              " Change to global view to see all bills";
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -298,6 +343,16 @@ function updateSummary() {
   const settlementslist = document.getElementById("settlements_list");
   settlementslist.innerHTML = "";
   settlements.forEach((transfer) => {
+    if (ProjectsList[projectID]["userView"]) {
+      // don't show not relevent bills
+      if (
+        !(transfer[0] == ProjectsList[projectID]["localUserID"]) &
+        !(transfer[2] == ProjectsList[projectID]["localUserID"])
+      ) {
+        return null;
+      }
+      //localUserID ; userView
+    }
     const settlementdiv = document.createElement("button");
     Object.assign(settlementdiv, {
       classList: "settlementdiv",
@@ -356,7 +411,7 @@ function addMember() {
         for (field in respJson) {
           ShowToast(
             "Failed to add member. " + field + ": " + respJson[field],
-            "Red"
+            "Red",
           );
         }
         throw new Error(response);
@@ -441,7 +496,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
         } else {
           ShowToast(
             memberNames[memberID] + "'s informations updated.",
-            "Green"
+            "Green",
           );
         }
         document.getElementById("editMemberPage").classList.add("hidden");
@@ -454,15 +509,15 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
         for (field in respJson) {
           ShowToast(
             "Failed to update member. Please check the field '" + field + "'.",
-            "Red"
+            "Red",
           );
         }
         throw new Error(
-          "Failed to Update member. Please check your input values."
+          "Failed to Update member. Please check your input values.",
         );
       } else {
         throw new Error(
-          "Failed to Update Member. Please check your credentials."
+          "Failed to Update Member. Please check your credentials.",
         );
       }
     })
@@ -485,7 +540,7 @@ function removeMember(memberID, updateall = true) {
         return response.json(); // Parse the response JSON
       } else {
         throw new Error(
-          "Failed to remove the member. Please check your credentials."
+          "Failed to remove the member. Please check your credentials.",
         );
       }
     })
@@ -737,7 +792,7 @@ function pushNewBill(addNew = false) {
       }
       return one;
     },
-    { payed_for: [] }
+    { payed_for: [] },
   );
   const memberToActivate = [
     ...new Set(billInputData.payed_for.concat(billInputData.payer)),
@@ -765,15 +820,15 @@ function pushNewBill(addNew = false) {
           for (field in respJson) {
             ShowToast(
               "Failed to update bills. Please check the field '" + field + "'",
-              "Red"
+              "Red",
             );
           }
           throw new Error(
-            "Failed to Update bills. Please check your input values."
+            "Failed to Update bills. Please check your input values.",
           );
         } else {
           throw new Error(
-            "Failed to fetch bills. Please check your credentials."
+            "Failed to fetch bills. Please check your credentials.",
           );
         }
       })
@@ -803,7 +858,7 @@ function pushNewBill(addNew = false) {
                 (nex.value / totalParts) *
                 document.getElementById("bill-much").value,
             }),
-          []
+          [],
         );
         // Create a bill per total value amount
         var groupBy = function (xs, key) {
@@ -823,7 +878,7 @@ function pushNewBill(addNew = false) {
           // adapt payed for bills
           billInputData.payed_for = item.reduce(
             (arr, nex) => arr.concat(nex.name),
-            []
+            [],
           );
 
           // concat all the POST request for the bills
@@ -872,7 +927,7 @@ function pushEditedBill(billID) {
       }
       return one;
     },
-    { payed_for: [] }
+    { payed_for: [] },
   );
 
   const memberToActivate = [
@@ -903,17 +958,17 @@ function pushEditedBill(billID) {
                 "Failed to update bills. Please check the field '" +
                   field +
                   "'",
-                "Red"
+                "Red",
               );
             }
             throw new Error("Failed to update bills.");
           } else {
             ShowToast(
               "Failed to Update bills. Please check your credentials.",
-              "Red"
+              "Red",
             );
             throw new Error(
-              "Failed to Update bills. Please check your credentials."
+              "Failed to Update bills. Please check your credentials.",
             );
           }
         })
@@ -967,10 +1022,10 @@ function removeBill(billID) {
       } else {
         ShowToast(
           "Failed to remove the bill. Please check your credentials.",
-          "Red"
+          "Red",
         );
         throw new Error(
-          "Failed to Update bills. Please check your credentials."
+          "Failed to Update bills. Please check your credentials.",
         );
       }
     })
@@ -980,6 +1035,188 @@ function removeBill(billID) {
       document.getElementById("newBillPage").classList.add("hidden");
     });
 }
+
+// Summary functions
+function changePersonalizedView() {
+  personalizedViewSwitch = document.getElementById("personalizedViewSwitch");
+  input = personalizedViewSwitch.getElementsByTagName("input")[0].checked;
+
+  if (input) {
+    // if select to see user view
+    ProjectsList = storage.getItem("ProjectsList");
+    //if no local user, ask to chose one (cancel should set back the old value)
+    localUserID = ProjectsList[projectID]["localUserID"];
+
+    if (
+      info.members.filter(
+        (member) => member.id == ProjectsList[projectID]["localUserID"],
+      ).length == 0
+    ) {
+      //activateUserView(); // TODO: REMOVE AFTER TESTING!
+      askLocalUserChoice();
+      // wait the validation (via activateUserView) to updateAll
+    } else {
+      //if there is one, juste activate it
+      // TODO:
+      activateUserView();
+    }
+  } else {
+    // if select to see global view
+    // TODO:
+    unActivateUserView();
+  }
+}
+
+function askLocalUserChoice() {
+  // TODO: update the modal page to choose the selected user
+  //show modal
+  document.getElementById("selectLocalUser").classList.remove("hidden");
+  userlist = document.getElementById("localUserID-who");
+
+  // Update project data based on storage
+  ProjectsList = storage.getItem("ProjectsList");
+
+  // remove old user list
+  userlist.innerHTML = "";
+  info.members
+    .sort((a, b) => {
+      return a.name > b.name;
+    })
+    .forEach((member) => {
+      //adding all (memberActivated) member to whom
+      if (!memberActivated[member.id]) {
+        return null;
+      }
+      const memberLabel = document.createElement("label");
+      const memberInput = document.createElement("input");
+      Object.assign(memberInput, {
+        type: "radio",
+        id: "whomUserView~" + member.id,
+        name: "radioUserView",
+        value: member.id,
+        checked: member.id == ProjectsList[projectID]["localUserID"],
+        //disabled: !memberActivated[member.id],
+      });
+      memberName = document.createTextNode(memberNames[member.id]);
+
+      userlist.appendChild(memberLabel);
+      memberLabel.appendChild(memberInput);
+      memberLabel.appendChild(memberName);
+    });
+}
+
+function setPersonalizedUser(canceled = false) {
+  // if canceled, create a toast and remove the modal
+  startLoading();
+  if (canceled) {
+    // Turn of the personalize switch
+    ProjectsList = storage.getItem("ProjectsList");
+    isUserViewActivated = ProjectsList[projectID]["userView"] | false;
+    document
+      .getElementById("personalizedViewSwitch")
+      .getElementsByTagName("input")[0].checked = isUserViewActivated;
+
+    document.getElementById("selectLocalUser").classList.add("hidden");
+    if (isUserViewActivated) {
+      ShowToast(
+        "You are still connected as " +
+          memberNames[ProjectsList[projectID]["localUserID"]],
+        "Red",
+      );
+    } else {
+      ShowToast("The personalisation of the view has been canceled", "Red");
+    }
+    endLoading();
+    return null;
+  }
+  // if not canceled, see if one is selected
+  possibleLocalUserIDList = document.getElementById("localUserID-who");
+  SelectedLocalUserInput = [
+    ...possibleLocalUserIDList.getElementsByTagName("input"),
+  ].filter((input) => input.checked);
+
+  if (SelectedLocalUserInput.length == 0) {
+    ShowToast("Please select a yourself in the list.", "Red");
+    endLoading();
+    return null;
+  } else if (SelectedLocalUserInput.length > 1) {
+    // this should not be possible as we now use radio buttons
+    ShowToast("Please select only one member in the list.", "Red");
+    endLoading();
+    return null;
+  }
+
+  localUserID = SelectedLocalUserInput[0].value;
+
+  ProjectsList = storage.getItem("ProjectsList");
+  ProjectsList[projectID]["localUserID"] = localUserID;
+  storage.setItem("ProjectsList", ProjectsList);
+  bc.postMessage(["updateProjectList"]);
+
+  // todo : 1) take into acount the local user when updating the list
+  //        2) Add a "(you)" in user list
+  //        3) Add a button to change the local user choice
+  //        4)
+
+  ShowToast("You are now marked as " + memberNames[localUserID], "Green");
+  document.getElementById("selectLocalUser").classList.add("hidden");
+  activateUserView();
+}
+
+function activateUserView() {
+  // function opposite to unActivateUserView
+  ProjectsList = storage.getItem("ProjectsList");
+  ProjectsList[projectID]["userView"] = true;
+  storage.setItem("ProjectsList", ProjectsList);
+  bc.postMessage(["updateProjectList"]);
+
+  // show a button to change the selected user
+  document.getElementById("askLocalUserChoice").classList.remove("hidden");
+
+  //update all content
+  updateAll();
+}
+function unActivateUserView() {
+  // function opposite to activateUserView
+  ProjectsList = storage.getItem("ProjectsList");
+  ProjectsList[projectID]["userView"] = false;
+  storage.setItem("ProjectsList", ProjectsList);
+  bc.postMessage(["updateProjectList"]);
+
+  // hide the button to change the selected user
+  document.getElementById("askLocalUserChoice").classList.add("hidden");
+
+  // update all content
+  updateAll();
+}
+
+// default show of hide the local user view
+function initUserView() {
+  ProjectsList = storage.getItem("ProjectsList");
+  ProjectsList[projectID]["userView"];
+  ProjectsList[projectID]["localUserID"];
+
+  //check if localUserID exist in curent member list of ids, if not,
+  //choose global view by default
+  if (!(ProjectsList[projectID]["localUserID"] in memberActivated)) {
+    ProjectsList[projectID]["userView"] = false;
+    ProjectsList[projectID]["localUserID"] = null;
+    storage.setItem("ProjectsList", ProjectsList);
+    bc.postMessage(["updateProjectList"]);
+  }
+
+  isUserViewActivated = ProjectsList[projectID]["userView"] | false;
+  document
+    .getElementById("personalizedViewSwitch")
+    .getElementsByTagName("input")[0].checked = isUserViewActivated;
+  if (isUserViewActivated) {
+    document.getElementById("askLocalUserChoice").classList.remove("hidden");
+  } else {
+    document.getElementById("askLocalUserChoice").classList.add("hidden");
+  }
+}
+
+// The Left panel functions
 
 //go to project invitation page
 function toShareProject() {
@@ -1048,7 +1285,7 @@ function toEditProject() {
   document.getElementById("DeleteProjectCode").value = "";
   updateCurrencyList(
     document.getElementById("EditProjectCurrency"),
-    info.default_currency
+    info.default_currency,
   );
 }
 
@@ -1099,7 +1336,7 @@ function EditProject() {
         // Reset Auth token
         ShowToast(
           "Project settings updated. Fetching new auth token...",
-          "Green"
+          "Green",
         );
         let token = await VerifieAuthCode(projectID, NewProjectCode);
         if (!!token) {
@@ -1132,7 +1369,7 @@ function DeleteProject(validated) {
     ShowToast(
       "Are you sure you want to delete the project?\
                This action can not be undone!",
-      "Orange"
+      "Orange",
     );
     document
       .getElementById("DeleteProjectForm")
@@ -1172,7 +1409,7 @@ function DeleteProject(validated) {
           .getElementById("DeleteProjectForm")
           .setAttribute(
             "onsubmit",
-            "event.preventDefault(); DeleteProject(false)"
+            "event.preventDefault(); DeleteProject(false)",
           );
         document.getElementById("DeleteProjectSubmit").innerText =
           "Delete project";
@@ -1210,7 +1447,7 @@ function toRemoveProject() {
     .getElementById("RemoveProjectForm")
     .setAttribute(
       "onsubmit",
-      "event.preventDefault(); removeCurrentProject(false)"
+      "event.preventDefault(); removeCurrentProject(false)",
     );
   document.getElementById("RemoveProjectSubmit").innerText =
     "Remove this project";
@@ -1222,13 +1459,13 @@ function removeCurrentProject(confirmed) {
     ShowToast(
       "Are you sure you want to remove the project?\
                This action can not be undone!",
-      "Orange"
+      "Orange",
     );
     document
       .getElementById("RemoveProjectForm")
       .setAttribute(
         "onsubmit",
-        "event.preventDefault(); removeCurrentProject(true)"
+        "event.preventDefault(); removeCurrentProject(true)",
       );
     document.getElementById("RemoveProjectSubmit").innerText =
       "Are you sure to remove the project '" + info.name + "'?";

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -40,6 +40,7 @@
     <meta name="theme-color" content="#ffffff" />
 
     <!-- scripts -->
+    <script src="js/config.js"></script>
     <script src="js/deptsSettle.js"></script>
     <script src="js/localStorageAsked.js"></script>
     <script src="js/helperFunctions.js"></script>
@@ -84,27 +85,27 @@
             <strong class="Xside1"></strong>
             <strong class="Xside2"></strong>
           </label>
-          <img src="./logo/logo.png" style="height: 2em;" />
+          <img src="./logo/logo.png" style="height: 2em" />
           <h1>BillBliss</h1>
         </div>
         <div class="leftPanelButtonGroupe">
           <button
             class="leftPanelButton hidden"
-            style="--iconURL: url('../assets/icons/Settings.svg');"
+            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
             onclick="ShowToast('This has not been implemented yet','Red')"
           >
             Project settings
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url('../assets/icons/Share.svg');"
+            style="--iconURL: url(&quot;../assets/icons/Share.svg&quot;)"
             onclick="toShareProject();"
           >
             Share this project
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url('../assets/icons/EditProject.svg');"
+            style="--iconURL: url(&quot;../assets/icons/EditProject.svg&quot;)"
             onclick="toEditProject();"
           >
             Edit this project
@@ -113,7 +114,7 @@
             <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
             <div
               class="leftPanelButton"
-              style="--iconURL: url('../assets/icons/Projects.svg');"
+              style="--iconURL: url(&quot;../assets/icons/Projects.svg&quot;)"
             >
               Projects
             </div>
@@ -121,7 +122,9 @@
               <button
                 class="leftPanelButton"
                 onclick="window.location.href = './AddProject.html'"
-                style="--iconURL: url('../assets/icons/AddProjects.svg');"
+                style="
+                  --iconURL: url(&quot;../assets/icons/AddProjects.svg&quot;);
+                "
               >
                 Add project
               </button>
@@ -138,14 +141,14 @@
         <div class="leftPanelButtonGroupe leftPanelFooter">
           <button
             class="leftPanelButton"
-            style="--iconURL: url('../assets/icons/Settings.svg');"
+            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
             onclick="window.location.href = './settings.html'"
           >
             Settings
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url('../assets/icons/About.svg');"
+            style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
             onclick="window.location.href = './about.html'"
           >
             About BillBliss
@@ -221,11 +224,34 @@
         <div id="summary" class="linktarget"></div>
         <div class="foregroundCard">
           <h1>Summary</h1>
+          <div class="cardinfo" id="personalize_trigger">
+            <label id="personalizedViewSwitch" class="switch switchFullWidth">
+              <input
+                type="checkbox"
+                name="personalizedViewSwitchInput"
+                onclick="changePersonalizedView();"
+              />
+              Show only the information relevent to you ? <br />
+              Global
+              <span><span></span></span>
+              Personalized
+            </label>
+            <button
+              id="askLocalUserChoice"
+              onclick="askLocalUserChoice()"
+              class="hidden"
+            >
+              Change who you are!
+            </button>
+          </div>
           <!-- Display current state information here -->
           <div id="balance_tree"></div>
         </div>
         <div class="foregroundCard">
           <h2>Settlement</h2>
+          <div class="cardinfo">
+            Click on a settlement to mark the dept as settled.
+          </div>
           <div id="settlements_list"></div>
         </div>
       </div>
@@ -331,7 +357,7 @@
             Advance view
           </button>
         </div>
-        <div id="bill-forWhom">
+        <div id="bill-forWhom" class="checkboxlist">
           <input type="checkbox" id="3RT2" name="3RT2" /><label for="3RT2"
             >Scales</label
           >
@@ -584,6 +610,48 @@
             Remove project
           </button>
         </form>
+      </div>
+    </section>
+
+    <section id="selectLocalUser" class="ModalContainer hidden">
+      <div
+        id="selectLocalUserBack"
+        class="ModalBackground"
+        onclick="setPersonalizedUser(true)"
+      ></div>
+      <div id="selectLocalUserDiv" class="Modal">
+        <button class="CloseModal" onclick="setPersonalizedUser(true)"></button>
+        <h1>Who are you?</h1>
+        <div id="localUserID-who" class="checkboxlist">
+          <!--Example of a checkbox-->
+          <label>
+            <input type="checkbox" id="whom~61469" name="whom~61469" />
+            Andrew
+          </label>
+          <div>
+            <input type="checkbox" id="whom~614692" name="whom~614692" /><label
+              for="whom~614692"
+              >Andrew2</label
+            >
+          </div>
+        </div>
+        <!--Currency-->
+        <button
+          type="button"
+          name="Submit"
+          onclick="setPersonalizedUser()"
+          class="btn-green"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          name="cancel"
+          onclick="setPersonalizedUser(true)"
+          class="btn-red"
+        >
+          Cancel
+        </button>
       </div>
     </section>
   </body>

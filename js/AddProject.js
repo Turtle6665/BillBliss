@@ -1,4 +1,4 @@
-apiUrl = "https://ihatemoney.org/api/";
+//apiUrl a constant variable from config
 const apiUrlProjects = apiUrl + "projects/";
 const apiUrlCreateProject = apiUrl + "projects";
 
@@ -77,9 +77,13 @@ async function logInByIHMInvitation() {
   }
 
   //check if it's an invitation link:
-  if (
-    !/^https?:\/\/ihatemoney\.org\/.+\/join\/.+$/.test(iHMinvitationLinkvalue)
-  ) {
+
+  const regexPattern = `^https?:\/\/${IhmUrl.replace(
+    /\./g,
+    "\\.",
+  )}\/.+\/join\/.+$`;
+  regex = new RegExp(regexPattern);
+  if (!regex.test(iHMinvitationLinkvalue)) {
     ShowToast("Invitation link not valid", "Red");
     endLoading();
 

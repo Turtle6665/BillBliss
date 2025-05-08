@@ -1027,6 +1027,13 @@ function updateOrder() {
 }
 
 function setupDragable() {
+  // upda page url without refresh
+  history.pushState(
+    {},
+    "",
+    window.location.origin + window.location.pathname + "?UI=draggable",
+  );
+
   // get wrapper and list element
   wrapper = document.querySelector(".rankings");
   oldList = wrapper.querySelector("ol");

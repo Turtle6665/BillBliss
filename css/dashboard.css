@@ -1,6 +1,9 @@
 :root {
-  --colorGreen: #9dfe00b0;
-  --colorRed: #ff5e47;
+  --colorGreen: #9dfe00;
+  --colorRed: #ff8c7a; /*#ff5e47*/
+
+  --colorGreenText: #134d00;
+  --colorRedText: #be0909;
 
   --primary: #adb6f4;
   --primary-content: #061682;
@@ -36,6 +39,12 @@
 }
 
 .dark {
+  --colorGreen: #457000;
+  --colorRed: #c21a00; /*#ff5e47*/
+
+  --colorGreenText: #2eb800;
+  --colorRedText: #f97777;
+
   --background: #14161f;
   --foreground: #1f212e;
   --ultra-foreground: #2d3251;
@@ -100,6 +109,14 @@ select {
   background-color: var(--foreground);
   border-color: var(--stressed-border);
   border-radius: 3px;
+}
+
+.colorRed {
+  color: var(--colorRedText);
+}
+
+.colorGreen {
+  color: var(--colorGreenText);
 }
 
 /*---------
@@ -176,6 +193,8 @@ Navigation Menu
   margin: 0.1em 0.2em;
   z-index: 5;
   /*width: max-content;calc(100vw - 0.2em - 2em - (1em + 50px));*/
+  text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
 }
 
@@ -397,6 +416,9 @@ leftPanel layout
   text-align: left;
   border: none;
   margin: 0.1em 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .leftPanelButton::before {
@@ -518,6 +540,11 @@ Pages layout
   border: 2px solid var(--border);
 }
 
+.cardinfo {
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+}
+
 /*---------
 Information page
 ---------*/
@@ -631,6 +658,12 @@ Bills page
 #billMain {
   height: 100%;
   overflow: auto;
+}
+
+.billWhat {
+  /*limite to 2 lines maximum*/
+  overflow: clip;
+  max-height: 2lh;
 }
 
 .billPayer,
@@ -834,14 +867,14 @@ select {
   padding: 0.3em 0;
 }
 
-#bill-forWhom {
+.checkboxlist {
   padding: 0 0.2em 0.2em 0.2em;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 0.3em;
 }
 
-#bill-forWhom > div {
+.checkboxlist > * {
   text-align: left;
   padding: 0.3em;
   border: 1.5px solid var(--border);
@@ -849,15 +882,21 @@ select {
   margin: 0.05em;
   cursor: pointer;
 }
-#bill-forWhom > div:hover {
-  background-color: var(--primary-light);
+
+.checkboxlist > label > input[type="radio"] {
+  margin: 0.2em;
+  margin-right: 0.4em;
 }
 
-#bill-forWhom > div > label {
+.checkboxlist > *:hover {
+  background-color: var(--border);
+}
+
+.checkboxlist > div > label {
   margin: 0.3em;
 }
 
-#bill-forWhom > div > input[type="number"] {
+.checkboxlist > div > input[type="number"] {
   width: calc(100%-0.4em);
   margin: 0.2em;
   padding: 0.2em;
