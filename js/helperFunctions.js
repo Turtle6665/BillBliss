@@ -74,7 +74,7 @@ function startLoading() {
 
 function endLoading() {
   [...document.body.getElementsByTagName("button")].forEach(
-    (i) => (i.disabled = false),
+    (i) => (i.disabled = false)
   );
   document.getElementById("loadingAnnim").classList.add("hidden");
 }
@@ -121,7 +121,7 @@ function updateCurrencyList(DOMSelected, selectedCurrency = "XXX") {
 //
 // Verifie code and get login token
 //
-function VerifieAuthCode(projectID, ProjectCode) {
+function VerifieAuthCode(projectID, ProjectCode, apiUrl) {
   //return Bool (false) if not correct or Token if varification successful
   return fetch(apiUrl + "projects/" + projectID + "/token", {
     method: "GET",
@@ -181,4 +181,17 @@ function reverseChildren(parent) {
   for (var i = 1; i < parent.childNodes.length; i++) {
     parent.insertBefore(parent.childNodes[i], parent.firstChild);
   }
+}
+
+// update IHM urls
+function updateIHMURL() {
+  if (IhmUrl != "ihatemoney.org") {
+    document.body.innerHTML = document.body.innerHTML.replaceAll(
+      "ihatemoney.org",
+      IhmUrl
+    );
+  }
+  [...document.getElementsByClassName("IHMServerURLinputs")].forEach(
+    (el) => (el.value = IhmUrl)
+  );
 }

@@ -3,7 +3,7 @@
 
 //setup values
 //apiUrl a constant variable from config
-const base_apiUrl = apiUrl + "projects/";
+let base_apiUrl = apiUrl + "projects/";
 
 //install the service worker
 if ("serviceWorker" in navigator) {
@@ -13,7 +13,7 @@ if ("serviceWorker" in navigator) {
       // Registration was successful
       console.log(
         "ServiceWorker registration successful with scope: ",
-        registration.scope,
+        registration.scope
       );
     })
     .catch(function (err) {
@@ -29,6 +29,8 @@ const URLQueryParams = new Proxy(new URLSearchParams(window.location.search), {
 // Get the value of "project" in eg "https://example.com/?project=some_value"
 let projectID = URLQueryParams.project;
 let token = URLQueryParams.token;
+let IHMserver = URLQueryParams.IHMserver;
+
 if (URLQueryParams.localStorage) {
   storage.acceptLocalStorage();
 }
@@ -50,18 +52,20 @@ if (projectID == null) {
 }
 
 if (!(projectID == null) & !(token == null)) {
-  //adding the projects token to localStorage
-  ProjectsList[projectID] = { token: token };
+  //adding the projects token to localStorage (IHMserver default to config)
+  ProjectsList[projectID] = { token: token, IHMserver: IHMserver || apiUrl };
   storage.setItem("ProjectsList", ProjectsList);
   bc.postMessage(["updateProjectList"]);
   //window.location.search = "?project="+projectID
   history.replaceState("", "", "?project=" + projectID);
+  base_apiUrl = (IHMserver || apiUrl) + "projects/";
 } else if (
   !(projectID == null) &
   (token == null) &
   !(ProjectsList[projectID] == null)
 ) {
   token = ProjectsList[projectID]["token"];
+  base_apiUrl = (ProjectsList[projectID]["IHMserver"] || apiUrl) + "projects/";
 } else if (
   !(projectID == null) &
   (token == null) &
@@ -78,6 +82,8 @@ if (!(projectID == null) & !(token == null)) {
       ProjectsList = storage.getItem("ProjectsList") || {};
     }
     token = ProjectsList[projectID]["token"];
+    base_apiUrl =
+      (ProjectsList[projectID]["IHMserver"] || apiUrl) + "projects/";
     //reload the page once the sync is performed
     document.location.href = document.location.href;
   }
@@ -106,7 +112,7 @@ function updateInfo() {
         return response.json(); // Parse the response JSON
       } else {
         throw new Error(
-          "Failed to fetch information. Please check your credentials.",
+          "Failed to fetch information. Please check your credentials."
         );
       }
     })
@@ -115,6 +121,9 @@ function updateInfo() {
       // Update the 'information' div with the project data
       // Update individual div elements with project data
       document.getElementById("projectName").textContent = data.name;
+      let IHMserver_url = new URL(apiUrl_Project);
+      document.getElementById("projectServerHost").textContent =
+        IHMserver_url.host;
       ProjectsList = storage.getItem("ProjectsList");
       ProjectsList[projectID]["name"] = data.name;
       storage.setItem("ProjectsList", ProjectsList);
@@ -192,10 +201,10 @@ function updateBills() {
       } else {
         ShowToast(
           "Failed to fetch bills. Please check your credentials.",
-          "Red",
+          "Red"
         );
         throw new Error(
-          "Failed to fetch bills. Please check your credentials.",
+          "Failed to fetch bills. Please check your credentials."
         );
       }
     })
@@ -411,7 +420,7 @@ function addMember() {
         for (field in respJson) {
           ShowToast(
             "Failed to add member. " + field + ": " + respJson[field],
-            "Red",
+            "Red"
           );
         }
         throw new Error(response);
@@ -496,7 +505,7 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
         } else {
           ShowToast(
             memberNames[memberID] + "'s informations updated.",
-            "Green",
+            "Green"
           );
         }
         document.getElementById("editMemberPage").classList.add("hidden");
@@ -509,15 +518,15 @@ function pushEditedMember(memberID, memberActiv = "", updateall = true) {
         for (field in respJson) {
           ShowToast(
             "Failed to update member. Please check the field '" + field + "'.",
-            "Red",
+            "Red"
           );
         }
         throw new Error(
-          "Failed to Update member. Please check your input values.",
+          "Failed to Update member. Please check your input values."
         );
       } else {
         throw new Error(
-          "Failed to Update Member. Please check your credentials.",
+          "Failed to Update Member. Please check your credentials."
         );
       }
     })
@@ -540,7 +549,7 @@ function removeMember(memberID, updateall = true) {
         return response.json(); // Parse the response JSON
       } else {
         throw new Error(
-          "Failed to remove the member. Please check your credentials.",
+          "Failed to remove the member. Please check your credentials."
         );
       }
     })
@@ -792,7 +801,7 @@ function pushNewBill(addNew = false) {
       }
       return one;
     },
-    { payed_for: [] },
+    { payed_for: [] }
   );
   const memberToActivate = [
     ...new Set(billInputData.payed_for.concat(billInputData.payer)),
@@ -820,15 +829,15 @@ function pushNewBill(addNew = false) {
           for (field in respJson) {
             ShowToast(
               "Failed to update bills. Please check the field '" + field + "'",
-              "Red",
+              "Red"
             );
           }
           throw new Error(
-            "Failed to Update bills. Please check your input values.",
+            "Failed to Update bills. Please check your input values."
           );
         } else {
           throw new Error(
-            "Failed to fetch bills. Please check your credentials.",
+            "Failed to fetch bills. Please check your credentials."
           );
         }
       })
@@ -858,7 +867,7 @@ function pushNewBill(addNew = false) {
                 (nex.value / totalParts) *
                 document.getElementById("bill-much").value,
             }),
-          [],
+          []
         );
         // Create a bill per total value amount
         var groupBy = function (xs, key) {
@@ -878,7 +887,7 @@ function pushNewBill(addNew = false) {
           // adapt payed for bills
           billInputData.payed_for = item.reduce(
             (arr, nex) => arr.concat(nex.name),
-            [],
+            []
           );
 
           // concat all the POST request for the bills
@@ -927,7 +936,7 @@ function pushEditedBill(billID) {
       }
       return one;
     },
-    { payed_for: [] },
+    { payed_for: [] }
   );
 
   const memberToActivate = [
@@ -958,17 +967,17 @@ function pushEditedBill(billID) {
                 "Failed to update bills. Please check the field '" +
                   field +
                   "'",
-                "Red",
+                "Red"
               );
             }
             throw new Error("Failed to update bills.");
           } else {
             ShowToast(
               "Failed to Update bills. Please check your credentials.",
-              "Red",
+              "Red"
             );
             throw new Error(
-              "Failed to Update bills. Please check your credentials.",
+              "Failed to Update bills. Please check your credentials."
             );
           }
         })
@@ -1022,10 +1031,10 @@ function removeBill(billID) {
       } else {
         ShowToast(
           "Failed to remove the bill. Please check your credentials.",
-          "Red",
+          "Red"
         );
         throw new Error(
-          "Failed to Update bills. Please check your credentials.",
+          "Failed to Update bills. Please check your credentials."
         );
       }
     })
@@ -1049,7 +1058,7 @@ function changePersonalizedView() {
 
     if (
       info.members.filter(
-        (member) => member.id == ProjectsList[projectID]["localUserID"],
+        (member) => member.id == ProjectsList[projectID]["localUserID"]
       ).length == 0
     ) {
       //activateUserView(); // TODO: REMOVE AFTER TESTING!
@@ -1111,7 +1120,7 @@ function setPersonalizedUser(canceled = false) {
   if (canceled) {
     // Turn of the personalize switch
     ProjectsList = storage.getItem("ProjectsList");
-    isUserViewActivated = ProjectsList[projectID]["userView"] | false;
+    isUserViewActivated = ProjectsList[projectID]["userView"] || false;
     document
       .getElementById("personalizedViewSwitch")
       .getElementsByTagName("input")[0].checked = isUserViewActivated;
@@ -1121,7 +1130,7 @@ function setPersonalizedUser(canceled = false) {
       ShowToast(
         "You are still connected as " +
           memberNames[ProjectsList[projectID]["localUserID"]],
-        "Red",
+        "Red"
       );
     } else {
       ShowToast("The personalisation of the view has been canceled", "Red");
@@ -1205,7 +1214,7 @@ function initUserView() {
     bc.postMessage(["updateProjectList"]);
   }
 
-  isUserViewActivated = ProjectsList[projectID]["userView"] | false;
+  isUserViewActivated = ProjectsList[projectID]["userView"] || false;
   document
     .getElementById("personalizedViewSwitch")
     .getElementsByTagName("input")[0].checked = isUserViewActivated;
@@ -1228,13 +1237,16 @@ function toShareProject() {
   //invitation links
   ShareInvitationLinkDiv = document.getElementById("ShareInvitationLinkDiv");
   ShareInvitationLinkDiv.innerHTML = "";
+  let projectIHMserver = ProjectsList[projectID]["IHMserver"] || apiUrl;
   ShareInvitationLink =
     window.location.origin +
     window.location.pathname +
     "?project=" +
-    projectID +
+    encodeURIComponent(projectID) +
     "&token=" +
-    token;
+    encodeURIComponent(token) +
+    "&IHMserver=" +
+    encodeURIComponent(projectIHMserver);
   sharedLinkA = document.createElement("a");
   Object.assign(sharedLinkA, {
     textContent: ShareInvitationLink,
@@ -1252,8 +1264,15 @@ function toShareProject() {
   // Share invitation with other apps
   ShareWithOthersDiv = document.getElementById("ShareWithOthersDiv");
   ShareWithOthersDiv.innerHTML = "";
+  projectIHMserver = new URL(projectIHMserver);
   SharedQRcode2 = new QRCode({
-    msg: "ihatemoney://ihatemoney.org/" + projectID + "/join/" + token,
+    msg:
+      "ihatemoney://" +
+      projectIHMserver.host +
+      "/" +
+      projectID +
+      "/join/" +
+      token,
     pal: ["#000000", "#ffffff"],
   });
   ShareWithOthersDiv.appendChild(SharedQRcode2);
@@ -1285,7 +1304,7 @@ function toEditProject() {
   document.getElementById("DeleteProjectCode").value = "";
   updateCurrencyList(
     document.getElementById("EditProjectCurrency"),
-    info.default_currency,
+    info.default_currency
   );
 }
 
@@ -1336,9 +1355,13 @@ function EditProject() {
         // Reset Auth token
         ShowToast(
           "Project settings updated. Fetching new auth token...",
-          "Green",
+          "Green"
         );
-        let token = await VerifieAuthCode(projectID, NewProjectCode);
+        let token = await VerifieAuthCode(
+          projectID,
+          NewProjectCode,
+          ProjectsList[projectID]["IHMserver"] || apiUrl
+        );
         if (!!token) {
           //is true if token is a non null string
           endLoading();
@@ -1369,7 +1392,7 @@ function DeleteProject(validated) {
     ShowToast(
       "Are you sure you want to delete the project?\
                This action can not be undone!",
-      "Orange",
+      "Orange"
     );
     document
       .getElementById("DeleteProjectForm")
@@ -1409,7 +1432,7 @@ function DeleteProject(validated) {
           .getElementById("DeleteProjectForm")
           .setAttribute(
             "onsubmit",
-            "event.preventDefault(); DeleteProject(false)",
+            "event.preventDefault(); DeleteProject(false)"
           );
         document.getElementById("DeleteProjectSubmit").innerText =
           "Delete project";
@@ -1447,7 +1470,7 @@ function toRemoveProject() {
     .getElementById("RemoveProjectForm")
     .setAttribute(
       "onsubmit",
-      "event.preventDefault(); removeCurrentProject(false)",
+      "event.preventDefault(); removeCurrentProject(false)"
     );
   document.getElementById("RemoveProjectSubmit").innerText =
     "Remove this project";
@@ -1459,13 +1482,13 @@ function removeCurrentProject(confirmed) {
     ShowToast(
       "Are you sure you want to remove the project?\
                This action can not be undone!",
-      "Orange",
+      "Orange"
     );
     document
       .getElementById("RemoveProjectForm")
       .setAttribute(
         "onsubmit",
-        "event.preventDefault(); removeCurrentProject(true)",
+        "event.preventDefault(); removeCurrentProject(true)"
       );
     document.getElementById("RemoveProjectSubmit").innerText =
       "Are you sure to remove the project '" + info.name + "'?";

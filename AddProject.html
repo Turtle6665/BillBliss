@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -73,7 +73,7 @@
             <strong class="Xside1"></strong>
             <strong class="Xside2"></strong>
           </label>
-          <img src="./logo/logo.png" style="height: 2em" />
+          <img src="./logo/logo.png" style="height: 2em;" />
           <h1>BillBliss</h1>
         </div>
         <div class="leftPanelButtonGroupe">
@@ -81,7 +81,7 @@
             <input type="checkbox" class="ButtonRetractibleCheckbox" checked />
             <div
               class="leftPanelButton"
-              style="--iconURL: url(&quot;../assets/icons/Projects.svg&quot;)"
+              style="--iconURL: url('../assets/icons/Projects.svg');"
             >
               Projects
             </div>
@@ -89,9 +89,7 @@
               <button
                 class="leftPanelButton"
                 onclick="window.location.href = './AddProject.html'"
-                style="
-                  --iconURL: url(&quot;../assets/icons/AddProjects.svg&quot;);
-                "
+                style="--iconURL: url('../assets/icons/AddProjects.svg');"
               >
                 Add project
               </button>
@@ -108,14 +106,14 @@
         <div class="leftPanelButtonGroupe leftPanelFooter">
           <button
             class="leftPanelButton"
-            style="--iconURL: url(&quot;../assets/icons/Settings.svg&quot;)"
+            style="--iconURL: url('../assets/icons/Settings.svg');"
             onclick="window.location.href = './settings.html'"
           >
             Settings
           </button>
           <button
             class="leftPanelButton"
-            style="--iconURL: url(&quot;../assets/icons/About.svg&quot;)"
+            style="--iconURL: url('../assets/icons/About.svg');"
             onclick="window.location.href = './about.html'"
           >
             About BillBliss
@@ -137,6 +135,15 @@
           <label
             >Private code:
             <input type="password" name="projectCode" id="projectCode" required
+          /></label>
+          <label
+            >I Hate money server:
+            <input
+              type="url"
+              name="projectIHMserver"
+              id="projectIHMserver"
+              class="IHMServerURLinputs"
+              required
           /></label>
           <br />
           <button
@@ -173,8 +180,9 @@
         <h1 id="SignIn">Create a new project</h1>
         <p>
           This will create a new project on
-          <a href="https://ihatemoney.org/">ihatemoney.org</a>. Upon creation,
-          you will receive an e-mail from their website.
+          <a href="https://ihatemoney.org/">ihatemoney.org</a> (or the selected
+          one using the advanced options). Upon creation, you will receive an
+          e-mail from their website.
         </p>
         <form onsubmit="event.preventDefault();">
           <label
@@ -207,6 +215,15 @@
                 >Project curency:
                 <select name="curency" id="newProjectCurrency"></select
               ></label>
+              <label
+                >I Hate money server:
+                <input
+                  type="url"
+                  name="newProjectIHMserver"
+                  id="newProjectIHMserver"
+                  class="IHMServerURLinputs"
+                  required
+              /></label>
             </div>
           </label>
           <button

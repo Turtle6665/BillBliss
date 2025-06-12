@@ -3,9 +3,9 @@
 
 //setup values
 const IhmUrl = "ihatemoney.org"; // do not type in the https/http
-const apiUrl = "https://" + IhmUrl + "/api/";
+let apiUrl = "https://" + IhmUrl + "/api/";
 
 //Service worker options
-const CACHE_VERSION = "0.1.8";
 const Testing = false; // If true, no data is cashed by service ServiceWorker
+const CACHE_VERSION = "0.1.9";
 //                        used to allows quicker updated when testing.

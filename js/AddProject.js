@@ -3,9 +3,9 @@ const apiUrlProjects = apiUrl + "projects/";
 const apiUrlCreateProject = apiUrl + "projects";
 
 //Verifie Connection informations
-function VerifieAuthToken(projectID, projectToken) {
+function VerifieAuthToken(projectID, projectToken, apiUrl) {
   //return true if token/projectID are correct, false if not.
-  return fetch(apiUrlProjects + projectID, {
+  return fetch(apiUrl + "projects/" + projectID, {
     method: "GET",
     headers: {
       Authorization: `Bearer ` + projectToken,
@@ -35,9 +35,16 @@ async function logInByIHMCode() {
   startLoading();
   let projectIDInput = document.getElementById("projectID");
   let projectCodeInput = document.getElementById("projectCode");
+  let projectIHMserverInput = document.getElementById("projectIHMserver");
 
   let projectID = projectIDInput.value.trim(); //remove start and end space
-  let token = await VerifieAuthCode(projectID, projectCodeInput.value);
+  let projectIHMserver =
+    "https://" + projectIHMserverInput.value.trim() + "/api/";
+  let token = await VerifieAuthCode(
+    projectID,
+    projectCodeInput.value,
+    projectIHMserver
+  );
   if (!!token) {
     //is true if token is a non null string
     projectIDInput.value = "";
@@ -47,7 +54,9 @@ async function logInByIHMCode() {
       "./dashboard.html?project=" +
       encodeURIComponent(projectID) +
       "&token=" +
-      encodeURIComponent(token);
+      encodeURIComponent(token) +
+      "&IHMserver=" +
+      encodeURIComponent(projectIHMserver);
   } else {
     endLoading();
   }
@@ -59,9 +68,10 @@ let invitationLink = "";
 function getProjectAuth(invitationLink) {
   let invitationURL = new URL(invitationLink);
   let splitedData = invitationURL.pathname.split("/");
+  let projectIHMserver = invitationURL.origin + "/api/";
   let projectID = splitedData[1];
   let projectToken = splitedData[3];
-  return [projectID, projectToken];
+  return [projectID, projectToken, projectIHMserver];
 }
 
 async function logInByIHMInvitation() {
@@ -78,10 +88,7 @@ async function logInByIHMInvitation() {
 
   //check if it's an invitation link:
 
-  const regexPattern = `^https?:\/\/${IhmUrl.replace(
-    /\./g,
-    "\\.",
-  )}\/.+\/join\/.+$`;
+  const regexPattern = `^https?:\/\/.+\/.+\/join\/.+$`;
   regex = new RegExp(regexPattern);
   if (!regex.test(iHMinvitationLinkvalue)) {
     ShowToast("Invitation link not valid", "Red");
@@ -94,15 +101,18 @@ async function logInByIHMInvitation() {
   projectAuth = getProjectAuth(iHMinvitationLinkvalue);
   let projectID = projectAuth[0];
   let projectToken = projectAuth[1];
+  let projectIHMserver = projectAuth[2];
 
-  if (await VerifieAuthToken(projectID, projectToken)) {
+  if (await VerifieAuthToken(projectID, projectToken, projectIHMserver)) {
     iHMinvitationLink.value = "";
     endLoading();
     window.location.href =
       "./dashboard.html?project=" +
       encodeURIComponent(projectID) +
       "&token=" +
-      encodeURIComponent(projectToken);
+      encodeURIComponent(projectToken) +
+      "&IHMserver=" +
+      encodeURIComponent(projectIHMserver);
   } else {
     endLoading();
     ShowToast("Invitation link not valid", "Red");
@@ -120,8 +130,9 @@ function CreateNewProject() {
   };
   //Advance Options
   if (document.getElementById("newProjectCurrency").value != "") {
-    projectData["default_currency"] =
-      document.getElementById("newProjectCurrency").value;
+    projectData["default_currency"] = document.getElementById(
+      "newProjectCurrency"
+    ).value;
   }
   if (document.getElementById("newProjectId").value != "") {
     projectData["id"] = document.getElementById("newProjectId").value;
@@ -156,7 +167,7 @@ function CreateNewProject() {
       if (projectData["id"] != data) {
         ShowToast(
           "The id of your project is " + JSON.stringify(data),
-          "Orange",
+          "Orange"
         );
       }
       // Extract and handle the ID from the response data
@@ -173,4 +184,5 @@ function CreateNewProject() {
     });
 }
 
+updateIHMURL();
 updateCurrencyList(document.getElementById("newProjectCurrency"), "XXX");
